@@ -1,0 +1,54 @@
+<html lang="id">
+<head>
+    <title>JarvisLeave</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <span>JarvisLeave</span>
+</header>
+<main>
+    <table>
+        <thead>
+            <tr>
+                <td>NIP</td>
+                <td>Nama lengkap</td>
+                <td>Divisi</td>
+                <td>Email</td>
+                <td>Nama pengguna</td>
+                <td>Role</td>
+            </tr>
+        </thead>
+        <tbody id="data"></tbody>
+    </table>
+</main>
+<script>
+    const tbody = document.querySelector('#data');
+
+    fetch('/api/employees')
+        .then(response => response.json())
+        .then(employees => {
+            for (let employee of employees) {
+                const tr = document.createElement('tr');
+
+                function addTd(data) {
+                    const td = document.createElement('td');
+                    td.textContent = data;
+                    tr.appendChild(td);
+                }
+
+                addTd(employee.nip);
+                addTd(employee.namaLengkap);
+                addTd(employee.divisi);
+                addTd(employee.email);
+                addTd(employee.username);
+                addTd(employee.role.nama);
+
+                tbody.appendChild(tr);
+            }
+        });
+</script>
+</body>
+</html>

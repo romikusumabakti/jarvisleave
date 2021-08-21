@@ -1,4 +1,4 @@
-package org.jarvis.leave.controller;
+package org.jarvis.leave.controller.rest;
 
 import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.repository.EmployeeRepository;
@@ -9,33 +9,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/api/employees")
 public class EmployeeController {
 
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @GetMapping("/")
-    private List<Employee> getAllEmployees() {
+    @GetMapping()
+    private List<Employee> getAll() {
         List<Employee> employees = new ArrayList<>();
         employeeRepository.findAll().forEach(employees::add);
         return employees;
     }
 
     @GetMapping("/{id}")
-    private Employee getEmployee(@PathVariable("id") int id) {
+    private Employee get(@PathVariable("id") int id) {
         return employeeRepository.findById(id).get();
     }
 
-    @DeleteMapping("/{id}")
-    private void deleteEmployee(@PathVariable("id") int id) {
-        employeeRepository.deleteById(id);
-    }
-
     @PostMapping("/")
-    private Employee saveEmployee(@RequestBody Employee employee) {
+    private Employee save(@RequestBody Employee employee) {
         employeeRepository.save(employee);
         return employee;
+    }
+
+    @DeleteMapping("/{id}")
+    private void delete(@PathVariable("id") int id) {
+        employeeRepository.deleteById(id);
     }
 
     @PutMapping("/")
