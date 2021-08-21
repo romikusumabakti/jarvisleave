@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class EmployeeDTO {
+public class EmployeeDto {
     Integer id;
     Integer role_id;
     String nip;

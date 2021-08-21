@@ -7,10 +7,11 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class StatusCutiDTO {
+public class HakCutiDto {
     Integer id;
-    String status_cuti;
-    String deskripsi;
+    Integer employee_id;
+    Integer jenis_cuti_id;
+    Integer sisa_cuti;
     String created_by;
     Date created_date;
     String last_modified_by;

@@ -7,11 +7,9 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class LiburDTO {
+public class RoleDto {
     Integer id;
-    String nama_libur;
-    String deskripsi;
-    Date tgl_libur;
+    String nama_role;
     String created_by;
     Date created_date;
     String last_modified_by;

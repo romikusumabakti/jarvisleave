@@ -7,16 +7,11 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class PengajuanCutiDTO {
+public class LiburDto {
     Integer id;
-    Integer employee_id;
-    Integer status_cuti_id;
-    Integer penganti_id;
-    Integer hrd_id;
-    String alamat;
-    String no_telp;
-    String keterangan;
-    Integer lama_cuti;
+    String nama_libur;
+    String deskripsi;
+    Date tgl_libur;
     String created_by;
     Date created_date;
     String last_modified_by;

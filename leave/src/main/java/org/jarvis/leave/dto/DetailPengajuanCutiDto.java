@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class DetailPengajuanCutiDTO {
+public class DetailPengajuanCutiDto {
     Integer id;
     Integer pengajuan_cuti_id;
     Integer jenis_cuti_id;
