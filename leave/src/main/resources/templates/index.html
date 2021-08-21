@@ -12,14 +12,15 @@
 <main>
     <table>
         <thead>
-            <tr>
-                <td>NIP</td>
-                <td>Nama lengkap</td>
-                <td>Divisi</td>
-                <td>Email</td>
-                <td>Nama pengguna</td>
-                <td>Role</td>
-            </tr>
+        <tr>
+            <td>NIP</td>
+            <td>Nama lengkap</td>
+            <td>Divisi</td>
+            <td>Email</td>
+            <td>Nama pengguna</td>
+            <td>Role</td>
+            <td></td>
+        </tr>
         </thead>
         <tbody id="data"></tbody>
     </table>
@@ -27,28 +28,54 @@
 <script>
     const tbody = document.querySelector('#data');
 
-    fetch('/api/employees')
-        .then(response => response.json())
-        .then(employees => {
-            for (let employee of employees) {
-                const tr = document.createElement('tr');
+    function tampilkan() {
+        fetch('/api/employees')
+            .then(response => response.json())
+            .then(employees => {
+                tbody.innerHTML = '';
+                for (let employee of employees) {
+                    const tr = document.createElement('tr');
 
-                function addTd(data) {
+                    function addTd(data) {
+                        const td = document.createElement('td');
+                        td.textContent = data;
+                        tr.appendChild(td);
+                    }
+
+                    addTd(employee.nip);
+                    addTd(employee.namaLengkap);
+                    addTd(employee.divisi);
+                    addTd(employee.email);
+                    addTd(employee.username);
+                    addTd(employee.role.nama);
+
                     const td = document.createElement('td');
-                    td.textContent = data;
+
+                    const button = document.createElement('button');
+                    button.textContent = 'Hapus';
+                    button.onclick = () => hapus(employee.id);
+                    td.appendChild(button);
+
                     tr.appendChild(td);
+
+                    tbody.appendChild(tr);
                 }
+            });
+    }
 
-                addTd(employee.nip);
-                addTd(employee.namaLengkap);
-                addTd(employee.divisi);
-                addTd(employee.email);
-                addTd(employee.username);
-                addTd(employee.role.nama);
+    tampilkan();
 
-                tbody.appendChild(tr);
-            }
-        });
+    function hapus(id) {
+        fetch('/api/employees/' + id, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Employee berhasil dihapus.');
+                    tampilkan();
+                }
+            });
+    }
 </script>
 </body>
 </html>

@@ -33,5 +33,6 @@ public class Base {
     @LastModifiedDate
     private Instant lastModifiedDate;
 
-    private Boolean isDeleted;
+    @Column(columnDefinition = "bool default false")
+    private Boolean isDeleted = false;
 }

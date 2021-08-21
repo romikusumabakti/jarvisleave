@@ -19,7 +19,7 @@ VALUES (1, 'Tahunan', 'Cuti tahunan adalah cuti yang disediakan oleh perusahaan 
         'Dian');
 
 INSERT INTO employee(id, role_id, nip, nama_lengkap, divisi, email, username, password, created_by)
-VALUES (1, 2, '02041911003', 'Annisa Nur Wachidah', 'PPMB', 'romikusumab@gmail.com', 'annisa', '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme', 'Romi'),
+VALUES (1, 2, '02041911003', 'Annisa Nur Wachidah', 'PPMB', 'annisanurw@gmail.com', 'annisa', '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme', 'Romi'),
        (2, 2, '02041911007', 'Candra Komara', 'PPMB', 'candrakomara@gmail.com', 'candra', '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme', 'Romi'),
        (3, 2, '01021911021', "Dian Nurul Khazaainatu Qurrota A'yun", 'PPMB', 'diannurulqa@gmail.com', 'dian', '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme', 'Romi'),
        (4, 1, '02031911067', 'Romi Kusuma Bakti', 'Kerohanian', 'romikusumab@gmail.com', 'romi', '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme', 'Romi'),

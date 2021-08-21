@@ -23,7 +23,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    private Employee get(@PathVariable("id") int id) {
+    private Employee get(@PathVariable int id) {
         return employeeRepository.findById(id).get();
     }
 
@@ -34,8 +34,10 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    private void delete(@PathVariable("id") int id) {
-        employeeRepository.deleteById(id);
+    private void delete(@PathVariable int id) {
+        Employee employee = get(id);
+        employee.setIsDeleted(true);
+        employeeRepository.save(employee);
     }
 
     @PutMapping("/")
