@@ -1,4 +1,4 @@
-package org.jarvis.leave.models;
+package org.jarvis.leave.model;
 
 import lombok.Getter;
 import lombok.Setter;

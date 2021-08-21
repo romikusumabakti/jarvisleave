@@ -1,11 +1,10 @@
-package org.jarvis.leave.models;
+package org.jarvis.leave.model;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -14,11 +13,9 @@ import javax.persistence.ManyToOne;
 public class PengajuanCuti extends Base {
 
     @ManyToOne
-    @JoinColumn(name = "employee")
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn (name = "status_cuti")
     private StatusCuti statusCuti;
 
     private Integer penggantiId;
