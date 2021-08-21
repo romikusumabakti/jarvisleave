@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 public class JenisCuti extends Base {
 
     @Column(length = 50)
-    private String jenis_cuti;
+    private String jenis;
 
     @Column(columnDefinition = "TEXT")
     private String deskripsi;
