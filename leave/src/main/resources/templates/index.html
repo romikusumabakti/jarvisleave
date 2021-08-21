@@ -66,15 +66,16 @@
     tampilkan();
 
     function hapus(id) {
-        fetch('/api/employees/' + id, {
-            method: 'DELETE'
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert('Employee berhasil dihapus.');
-                    tampilkan();
-                }
-            });
+        if (confirm('Apakah Anda yakin ingin menghapus employee ini?')) {
+            fetch('/api/employees/' + id, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        tampilkan();
+                    }
+                });
+        }
     }
 </script>
 </body>
