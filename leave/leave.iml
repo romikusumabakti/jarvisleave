@@ -14,10 +14,14 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
+<<<<<<< HEAD
         <datasource-mapping>
           <factory-entry name="entityManagerFactory" />
           <factory-entry name="leave" />
         </datasource-mapping>
+=======
+        <datasource-mapping />
+>>>>>>> 8e0f6c246cfa9cb820a0c8ba2d3aaed0248ae383
         <naming-strategy-map />
       </configuration>
     </facet>
