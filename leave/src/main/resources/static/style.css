@@ -11,3 +11,38 @@ td {
     border: 1px solid black;
     padding: 8px 12px;
 }
+
+button {
+    height: 36px;
+    padding-inline: 18px;
+    border-radius: 18px;
+    border: none;
+    background: blue;
+    color: white;
+    cursor: pointer;
+}
+
+.overlay-backdrop {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    pointer-events: auto;
+    transition: opacity .4s cubic-bezier(.25,.8,.25,1);
+    opacity: 0;
+    background: rgba(0,0,0,.32);
+}
+
+.overlay-backdrop-showing {
+    opacity: 1;
+}
+
+.overlay-wrapper {
+    display: flex;
+    position: absolute;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}

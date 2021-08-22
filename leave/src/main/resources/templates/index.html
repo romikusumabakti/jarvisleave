@@ -25,10 +25,11 @@
         <tbody id="data"></tbody>
     </table>
 </main>
+<script src="/script.js"></script>
 <script>
     const tbody = document.querySelector('#data');
 
-    function tampilkan() {
+    function showData() {
         fetch('/api/employees')
             .then(response => response.json())
             .then(employees => {
@@ -36,25 +37,34 @@
                 for (let employee of employees) {
                     const tr = document.createElement('tr');
 
-                    function addTd(data) {
-                        const td = document.createElement('td');
-                        td.textContent = data;
-                        tr.appendChild(td);
+                    function addTds(textContents) {
+                        for (let textContent of textContents) {
+                            const td = document.createElement('td');
+                            td.textContent = textContent;
+                            tr.appendChild(td);
+                        }
                     }
 
-                    addTd(employee.nip);
-                    addTd(employee.namaLengkap);
-                    addTd(employee.divisi);
-                    addTd(employee.email);
-                    addTd(employee.username);
-                    addTd(employee.role.nama);
+                    addTds([
+                        employee.nip,
+                        employee.namaLengkap,
+                        employee.divisi,
+                        employee.email,
+                        employee.username,
+                        employee.role.nama
+                    ]);
 
                     const td = document.createElement('td');
 
-                    const button = document.createElement('button');
-                    button.textContent = 'Hapus';
-                    button.onclick = () => hapus(employee.id);
-                    td.appendChild(button);
+                    function addButton(textContent, onclick) {
+                        const button = document.createElement('button');
+                        button.textContent = textContent;
+                        button.onclick = onclick;
+                        td.appendChild(button);
+                    }
+
+                    addButton('Edit', () => openDialog());
+                    addButton('Hapus', () => deleteData(employee));
 
                     tr.appendChild(td);
 
@@ -63,16 +73,16 @@
             });
     }
 
-    tampilkan();
+    showData();
 
-    function hapus(id) {
-        if (confirm('Apakah Anda yakin ingin menghapus employee ini?')) {
-            fetch('/api/employees/' + id, {
+    function deleteData(employee) {
+        if (confirm(`Apakah Anda yakin ingin menghapus employee ini?\n${employee.namaLengkap} (${employee.nip})`)) {
+            fetch('/api/employees/' + employee.id, {
                 method: 'DELETE'
             })
                 .then(response => {
                     if (response.ok) {
-                        tampilkan();
+                        showData();
                     }
                 });
         }
