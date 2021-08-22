@@ -1,24 +1,22 @@
 package org.jarvis.leave.dto;
 
 import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Date;
+import org.jarvis.leave.model.Role;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
-@Setter
 public class EmployeeDto {
-    Integer id;
-    Integer role_id;
-    String nip;
-    String nama_lengkap;
-    String divisi;
-    String email;
-    String username;
-    String password;
-    String created_by;
-    Date created_date;
-    String last_modified_by;
-    Date last_modified_date;
-    Boolean is_deleted;
+    private int role;
+    private String nip;
+    private String namaLengkap;
+    private String divisi;
+    private String email;
+    private String username;
+    private String password;
+
+    public String getPassword() {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
+    }
 }
