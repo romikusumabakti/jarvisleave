@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
 
     @Override
-    @Query("select e from Employee e where e.isDeleted=false")
+    @Query("select u from Employee u where u.isDeleted=false")
     Iterable<Employee> findAll();
 }
