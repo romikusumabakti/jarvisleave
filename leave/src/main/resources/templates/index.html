@@ -1,0 +1,92 @@
+<html lang="id">
+<head>
+    <title>JarvisLeave</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <span>JarvisLeave</span>
+</header>
+<main>
+    <table>
+        <thead>
+        <tr>
+            <td>NIP</td>
+            <td>Nama lengkap</td>
+            <td>Divisi</td>
+            <td>Email</td>
+            <td>Nama pengguna</td>
+            <td>Role</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody id="data"></tbody>
+    </table>
+</main>
+<script src="/script.js"></script>
+<script>
+    const tbody = document.querySelector('#data');
+
+    function showData() {
+        fetch('/api/employees')
+            .then(response => response.json())
+            .then(employees => {
+                tbody.innerHTML = '';
+                for (let employee of employees) {
+                    const tr = document.createElement('tr');
+
+                    function addTds(textContents) {
+                        for (let textContent of textContents) {
+                            const td = document.createElement('td');
+                            td.textContent = textContent;
+                            tr.appendChild(td);
+                        }
+                    }
+
+                    addTds([
+                        employee.nip,
+                        employee.namaLengkap,
+                        employee.divisi,
+                        employee.email,
+                        employee.username,
+                        employee.role.nama
+                    ]);
+
+                    const td = document.createElement('td');
+
+                    function addButton(textContent, onclick) {
+                        const button = document.createElement('button');
+                        button.textContent = textContent;
+                        button.onclick = onclick;
+                        td.appendChild(button);
+                    }
+
+                    addButton('Edit', () => openDialog());
+                    addButton('Hapus', () => deleteData(employee));
+
+                    tr.appendChild(td);
+
+                    tbody.appendChild(tr);
+                }
+            });
+    }
+
+    showData();
+
+    function deleteData(employee) {
+        if (confirm(`Apakah Anda yakin ingin menghapus employee ini?\n${employee.namaLengkap} (${employee.nip})`)) {
+            fetch('/api/employees/' + employee.id, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        showData();
+                    }
+                });
+        }
+    }
+</script>
+</body>
+</html>
