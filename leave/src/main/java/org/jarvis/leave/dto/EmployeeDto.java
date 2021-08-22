@@ -1,7 +1,6 @@
 package org.jarvis.leave.dto;
 
 import lombok.Getter;
-import org.jarvis.leave.model.Role;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
