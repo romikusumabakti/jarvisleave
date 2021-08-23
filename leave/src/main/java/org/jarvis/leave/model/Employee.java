@@ -7,9 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-@Entity
 @Getter
 @Setter
+@Entity
 public class Employee extends Base {
 
     @ManyToOne

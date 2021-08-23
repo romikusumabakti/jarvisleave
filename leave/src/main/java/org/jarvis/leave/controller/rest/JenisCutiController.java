@@ -2,7 +2,6 @@ package org.jarvis.leave.controller.rest;
 
 import org.jarvis.leave.dto.JenisCutiDto;
 import org.jarvis.leave.model.JenisCuti;
-import org.jarvis.leave.repository.RoleRepository;
 import org.jarvis.leave.service.JenisCutiService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package org.jarvis.leave.service;
 
-import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.model.HakCuti;
 import org.jarvis.leave.repository.HakCutiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
