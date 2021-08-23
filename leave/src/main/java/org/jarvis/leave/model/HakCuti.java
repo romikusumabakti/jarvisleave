@@ -6,9 +6,9 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-@Entity
 @Getter
 @Setter
+@Entity
 public class HakCuti extends Base {
 
     @ManyToOne

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HakCutiRepository extends CrudRepository<HakCuti, Integer> {
+
     @Override
     @Query("select u from HakCuti u where u.isDeleted=false")
     Iterable<HakCuti> findAll();

@@ -1,8 +1,6 @@
 package org.jarvis.leave.service;
 
-import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.model.PengajuanCuti;
-import org.jarvis.leave.repository.EmployeeRepository;
 import org.jarvis.leave.repository.PengajuanCutiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
