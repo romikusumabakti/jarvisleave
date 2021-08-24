@@ -7,9 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
-@Entity
 @Getter
 @Setter
+@Entity
 public class DetailPengajuanCuti extends Base {
 
     @ManyToOne

@@ -7,9 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.time.LocalDate;
 
-@Entity
 @Getter
 @Setter
+@Entity
 public class Libur extends Base {
 
     @Column(length = 100)

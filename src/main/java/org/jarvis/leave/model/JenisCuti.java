@@ -6,9 +6,9 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
 @Getter
 @Setter
+@Entity
 public class JenisCuti extends Base {
 
     @Column(length = 50)
