@@ -4,9 +4,9 @@ import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,9 +20,7 @@ public class EmployeeService {
     }
 
     public List<Employee> findAll() {
-        List<Employee> employees = new ArrayList<>();
-        employeeRepository.findAll().forEach(employees::add);
-        return employees;
+        return employeeRepository.findAll();
     }
 
     public Employee findById(@PathVariable int id) {
