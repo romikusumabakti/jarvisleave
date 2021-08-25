@@ -1,4 +1,4 @@
-package org.jarvis.leave.controller.rest;
+package org.jarvis.leave.controller;
 
 import org.jarvis.leave.dto.EmployeeDto;
 import org.jarvis.leave.model.Employee;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employees")
+@RequestMapping("/api/employee")
 public class EmployeeController {
 
     EmployeeService employeeService;

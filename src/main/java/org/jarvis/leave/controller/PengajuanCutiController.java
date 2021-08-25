@@ -1,4 +1,4 @@
-package org.jarvis.leave.controller.rest;
+package org.jarvis.leave.controller;
 
 import org.jarvis.leave.dto.PengajuanCutiDto;
 import org.jarvis.leave.model.PengajuanCuti;

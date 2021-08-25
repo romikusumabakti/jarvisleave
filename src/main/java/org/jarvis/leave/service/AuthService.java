@@ -8,7 +8,6 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -16,30 +15,40 @@ import java.util.Map;
 @Service
 public class AuthService {
 
-    public String createToken(Map<String, Claim> claims, String issuer) {
+    Algorithm algorithm = Algorithm.HMAC256("secret");
+
+    public String createToken(String issuer) {
 
         try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
             return JWT.create()
                     .withIssuer(issuer)
                     .sign(algorithm);
-        } catch (JWTCreationException exception){
+        } catch (JWTCreationException exception) {
             return exception.getMessage();
         }
 
     }
 
-    public Boolean verifyToken(String token, UserDetails userDetails) {
+    public Boolean verifyToken(String token, String issuer) {
 
         try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer(userDetails.getUsername())
-                    .build(); //Reusable verifier instance
-            DecodedJWT jwt = verifier.verify(token);
+                    .withIssuer(issuer)
+                    .build();
+            verifier.verify(token);
             return true;
-        } catch (JWTVerificationException exception){
+        } catch (JWTVerificationException exception) {
             return false;
+        }
+    }
+
+    public String getIssuer(String token) {
+
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getIssuer();
+        } catch (JWTDecodeException exception) {
+            return null;
         }
     }
 
@@ -48,7 +57,7 @@ public class AuthService {
         try {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getClaims();
-        } catch (JWTDecodeException exception){
+        } catch (JWTDecodeException exception) {
             return null;
         }
     }
