@@ -1,25 +1,25 @@
 body {
     margin: 0;
     font-family: sans-serif;
+
+    --primary-color: blue;
+    --hover-color: #fff4;
+    --active-color: #fff8;
+    --border-color: rgba(0,0,0,.12);
+
+    --mdc-theme-primary: blue;
+
+    --button-size: 36px;
+    --mdc-shape-small: calc(var(--button-size) / 2);
 }
 
-table {
-    border-collapse: collapse;
+.mdc-button {
+    padding-inline: var(--mdc-shape-small);
+    text-transform: unset;
 }
 
-td {
-    border: 1px solid black;
-    padding: 8px 12px;
-}
-
-button {
-    height: 36px;
-    padding-inline: 18px;
-    border-radius: 18px;
-    border: none;
-    background: blue;
-    color: white;
-    cursor: pointer;
+.icon-button {
+    width: var(--button-size);
 }
 
 .overlay-backdrop {
