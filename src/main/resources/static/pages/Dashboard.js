@@ -1,13 +1,6 @@
-import {html} from '../js/standalone.module.js';
-import {useEffect, useState} from "../js/hooks.module.js";
-
-import Button from "../components/Button.js";
-import Table from "../components/Table.js";
-import TableHeader from "../components/TableHeader.js";
-import TableHeaderCell from "../components/TableHeaderCell.js";
-import TableContent from "../components/TableContent.js";
-import TableRow from "../components/TableRow.js";
-import TableCell from "../components/TableCell.js";
+import {useEffect, useState} from "../js/react.js";
+import {Button, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow} from "../js/material-ui.js";
+import html from '../js/htm.js';
 
 function Dashboard() {
     const [employees, setEmployees] = useState();
@@ -23,17 +16,19 @@ function Dashboard() {
     return html`
         <main>
             <h1>Dasbor</h1>
-            <${Table} label="Employee">
-                <${TableHeader}>
-                    <${TableHeaderCell}>NIP<//>
-                    <${TableHeaderCell}>Nama lengkap<//>
-                    <${TableHeaderCell}>Divisi<//>
-                    <${TableHeaderCell}>Email<//>
-                    <${TableHeaderCell}>Nama pengguna<//>
-                    <${TableHeaderCell}>Role<//>
-                    <${TableHeaderCell}><//>
+            <${Table}>
+                <${TableHead}>
+                    <${TableRow}>
+                        <${TableCell}>NIP<//>
+                        <${TableCell}>Nama lengkap<//>
+                        <${TableCell}>Divisi<//>
+                        <${TableCell}>Email<//>
+                        <${TableCell}>Nama pengguna<//>
+                        <${TableCell}>Role<//>
+                        <${TableCell}><//>
+                    <//>
                 <//>
-                <${TableContent}>
+                <${TableBody}>
                 ${employees ? employees.map(employee => html`
                     <${TableRow}>
                         <${TableCell}>${employee.nip}<//>
@@ -43,11 +38,11 @@ function Dashboard() {
                         <${TableCell}>${employee.username}<//>
                         <${TableCell}>${employee.role.nama}<//>
                         <${TableCell}>
-                            <${Button} variant="contained">Edit<//>
-                            <${Button} variant="outlined">Hapus<//>
+                            <${Button} variant="contained" hidden>edit<//>
+                            <${Button} variant="outlined" hidden>delete<//>
                         <//>
                     <//>
-                `) : 'Memuat...'}
+                `) : html`<${CircularProgress} />`}
                 <//>
             <//>
         </main>
