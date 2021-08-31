@@ -1,5 +1,5 @@
-import {useEffect, useState} from "../js/react.js";
-import {Button, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow} from "../js/material-ui.js";
+import {useEffect, useState} from '../js/react.js';
+import {Button, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow} from '../js/material-ui.js';
 import html from '../js/htm.js';
 
 function Dashboard() {
