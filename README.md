@@ -1,7 +1,7 @@
 # JarvisLeave
 
 ## Sistem manajemen cuti
-JarvisLeave adalah sistem manajemen cuti open source yang dikembangkan dalam Spring Boot (framework web Java) dan basis data MySQL.
+JarvisLeave adalah sistem manajemen cuti open source yang dikembangkan dalam Spring Boot (framework web Java) dan basis data MariaDB.
 JarvisLeave dirancang untuk menyediakan alur kerja pengajuan cuti dan lembur sederhana untuk organisasi besar.
 
 ## Dibuat dengan React & Material-UI
