@@ -1,6 +1,16 @@
 import {useEffect, useState} from '../js/react.js';
-import {Button, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow} from '../js/material-ui.js';
+import {
+    Button,
+    CircularProgress,
+    IconButton,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow
+} from '../js/material-ui.js';
 import html from '../js/htm.js';
+import MaterialIcon from "../components/MaterialIcon.js"
 
 function Dashboard() {
     const [employees, setEmployees] = useState();
@@ -38,8 +48,12 @@ function Dashboard() {
                         <${TableCell}>${employee.username}<//>
                         <${TableCell}>${employee.role.nama}<//>
                         <${TableCell}>
-                            <${Button} variant="contained" hidden>edit<//>
-                            <${Button} variant="outlined" hidden>delete<//>
+                            <${IconButton}>
+                                <${MaterialIcon}>edit<//>
+                            <//>
+                            <${IconButton}>
+                                <${MaterialIcon}>delete<//>
+                            <//>
                         <//>
                     <//>
                 `) : html`<${CircularProgress} />`}

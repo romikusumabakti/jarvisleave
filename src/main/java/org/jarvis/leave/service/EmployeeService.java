@@ -23,8 +23,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee findById(@PathVariable int id) {
-        return employeeRepository.findById(id).orElse(null);
+    public Employee getById(@PathVariable int id) {
+        return employeeRepository.getById(id);
     }
 
     public Employee saveOrUpdate(@RequestBody Employee employee) {
@@ -33,7 +33,7 @@ public class EmployeeService {
     }
 
     public void deleteById(@PathVariable int id) {
-        Employee employee = findById(id);
+        Employee employee = getById(id);
         employee.setIsDeleted(true);
         employeeRepository.save(employee);
     }

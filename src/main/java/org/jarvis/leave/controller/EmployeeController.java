@@ -31,7 +31,7 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     private Employee findById(@PathVariable int id) {
-        return employeeService.findById(id);
+        return employeeService.getById(id);
     }
 
     @PostMapping()
@@ -44,7 +44,7 @@ public class EmployeeController {
     @PutMapping()
     private Employee update(@RequestBody EmployeeDto employeeDto) {
         Employee employee = modelMapper.map(employeeDto, Employee.class);
-        employee.setRole(roleRepository.findById(employeeDto.getRole()).orElse(null));
+        employee.setRole(roleRepository.getById(employeeDto.getRole()));
         return employeeService.saveOrUpdate(employee);
     }
 

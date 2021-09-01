@@ -1,14 +1,16 @@
 package org.jarvis.leave.repository;
 
 import org.jarvis.leave.model.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface RoleRepository extends CrudRepository<Role, Integer> {
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 
     @Override
     @Query("select u from Role u where u.isDeleted=false")
-    Iterable<Role> findAll();
+    List<Role> findAll();
 }
