@@ -6,6 +6,9 @@ import html from './js/htm.js';
 const Dashboard = lazy(() => import('./pages/Dashboard.js'));
 
 const theme = createTheme({
+    typography: {
+        fontFamily: '"Google Sans", sans-serif',
+    },
     components: {
         MuiButton: {
             styleOverrides: {
