@@ -45,7 +45,7 @@ public class PengajuanCutiController {
     @PutMapping()
     private PengajuanCuti update(@RequestBody PengajuanCutiDto pengajuanCutiDto) {
         PengajuanCuti pengajuanCuti = modelMapper.map(pengajuanCutiDto, PengajuanCuti.class);
-        pengajuanCuti.setEmployee(employeeRepository.findById(pengajuanCutiDto.getEmployee_id()).orElse(null));
+        pengajuanCuti.setEmployee(employeeRepository.getById(pengajuanCutiDto.getEmployee_id()));
         return pengajuanCutiService.saveOrUpdate(pengajuanCuti);
     }
 
