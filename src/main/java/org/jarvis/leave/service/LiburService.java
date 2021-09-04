@@ -1,5 +1,6 @@
 package org.jarvis.leave.service;
 
+import org.jarvis.leave.model.DetailPengajuanCuti;
 import org.jarvis.leave.model.Libur;
 import org.jarvis.leave.repository.LiburRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,10 @@ public class LiburService {
 
     public Libur findById(@PathVariable int id) {
         return liburRepository.findById(id).orElse(null);
+    }
+
+    public Libur getById(@PathVariable int id) {
+        return liburRepository.getById(id);
     }
 
     public Libur saveOrUpdate(@RequestBody Libur libur) {
