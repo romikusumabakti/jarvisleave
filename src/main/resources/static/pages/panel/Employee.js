@@ -1,16 +1,22 @@
-import {useEffect, useState} from '../modules/react.js';
+import {useEffect, useState} from '../../modules/react.js';
 import {
     Button,
     CircularProgress,
-    IconButton, Paper, Snackbar, Stack,
+    IconButton,
+    Paper,
+    Snackbar,
+    Stack,
     Table,
     TableBody,
-    TableCell, TableContainer,
+    TableCell,
+    TableContainer,
     TableHead,
-    TableRow, Typography
-} from '../modules/material-ui.js';
-import html from '../modules/htm.js';
-import MaterialIcon from "../components/MaterialIcon.js"
+    TableRow,
+    Typography
+} from '../../modules/material-ui.js';
+import html from '../../modules/htm.js';
+import MaterialIcon from "../../components/MaterialIcon.js"
+import api from "../../utils/api.js"
 
 function Employee() {
     const [employees, setEmployees] = useState();
@@ -19,7 +25,7 @@ function Employee() {
     const [deletedIndex, setDeletedIndex] = useState();
 
     useEffect(() => {
-        fetch('/api/employee')
+        api('/employee')
             .then(response => response.json())
             .then(employees => {
                 setEmployees(employees);
@@ -27,9 +33,8 @@ function Employee() {
     }, []);
 
     const del = (id) => {
-        fetch('/api/employee/' + id, {
-            method: 'DELETE'
-        }).then(() => {
+        api('/employee/' + id, 'DELETE')
+        .then(() => {
             setDeleted(employees.find(employee => employee.id === id));
             setDeletedIndex(employees.findIndex(employee => employee.id === id));
             setEmployees(employees.filter(employee => employee.id !== id));
@@ -38,16 +43,25 @@ function Employee() {
     };
 
     const cancelDelete = () => {
-        setEmployees([...employees.slice(0, deletedIndex), deleted, ...employees.slice(deletedIndex)]);
-        setDeleted(null);
-        setDeletedIndex(null);
-        setDeleteOpen(false);
+        api('/employee/' + deleted.id, 'POST')
+        .then(() => {
+            setEmployees([...employees.slice(0, deletedIndex), deleted, ...employees.slice(deletedIndex)]);
+            setDeleted(null);
+            setDeletedIndex(null);
+            setDeleteOpen(false);
+        });
     };
 
     return html`
         <${Stack} p=${2} spacing=${2}>
-            <${Typography} variant="h4">
-                Karyawan
+            <${Stack} direction="row" justifyContent="space-between">
+                <${Stack} direction="row" alignItems="center" gap=${1}>
+                    <${MaterialIcon}>people<//>
+                    <${Typography} variant="h5">Karyawan<//>
+                <//>
+                <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`}>
+                    Buat
+                <//>
             <//>
             <${TableContainer} component=${Paper}>
                 <${Table}>
@@ -56,7 +70,7 @@ function Employee() {
                             <${TableCell}>NIP<//>
                             <${TableCell}>Nama<//>
                             <${TableCell}>Divisi<//>
-                            <${TableCell}>Email<//>
+<!--                            <${TableCell}>Email<//>-->
                             <${TableCell}>Nama pengguna<//>
                             <${TableCell}>Role<//>
                             <${TableCell}><//>
@@ -68,7 +82,7 @@ function Employee() {
                             <${TableCell}>${employee.nip}<//>
                             <${TableCell}>${employee.nama}<//>
                             <${TableCell}>${employee.divisi.nama}<//>
-                            <${TableCell}>${employee.email}<//>
+<!--                            <${TableCell}>${employee.email}<//>-->
                             <${TableCell}>${employee.username}<//>
                             <${TableCell}>${employee.role.nama}<//>
                             <${TableCell}>

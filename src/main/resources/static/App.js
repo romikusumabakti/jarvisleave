@@ -1,23 +1,23 @@
-import React, {lazy, Suspense, useState} from './modules/react.js';
+import React, {createContext, Suspense, useEffect, useState} from './modules/react.js';
 import {
     CircularProgress,
-    Container,
     createTheme,
-    CssBaseline, Divider, Stack,
-    ThemeProvider, Typography,
+    CssBaseline,
+    Stack,
+    ThemeProvider,
     useMediaQuery
 } from './modules/material-ui.js';
 import {BrowserRouter, Route} from './modules/react-router-dom.js';
 import html from './modules/htm.js';
 import Header from "./fragments/Header.js"
-import Employee from "./pages/Employee.js"
 import Login from "./fragments/Login.js"
-import JarvisLogo from "./components/JarvisLogo.js"
+import NavDrawer from "./fragments/NavDrawer.js"
+import Panel from "./pages/Panel.js"
+import api from "./utils/api.js"
 
-const Dashboard = lazy(() => import('./pages/Employee.js'));
+export const AuthContext = createContext();
 
 function App() {
-
 
     const [mode, setMode] = useState(window.localStorage.getItem('mode'));
 
@@ -70,6 +70,21 @@ function App() {
                     root: {
                         background: theme.palette.background.paper,
                         color: theme.palette.text.primary,
+                    },
+                },
+            },
+            MuiList: {
+                styleOverrides: {
+                    root: {
+                        paddingRight: 8,
+                    },
+                },
+            },
+            MuiListItemButton: {
+                styleOverrides: {
+                    root: {
+                        borderTopRightRadius: 24,
+                        borderBottomRightRadius: 24,
                     },
                 },
             },
@@ -128,38 +143,45 @@ function App() {
     });
 
     const [loginOpen, setLoginOpen] = useState(false);
+    const [user, setUser] = useState(null);
+
+    useEffect(async () => {
+        if (localStorage.getItem('token')) {
+            const response = await api('/auth/me');
+            if (response.ok) {
+                const user = await response.json();
+                setUser(user);
+                console.log(user);
+            } else {
+                const error = await response.text();
+                console.error(error);
+            }
+        }
+    }, []);
 
     return html`
-    <${BrowserRouter}>
-        <${ThemeProvider} theme=${theme}>
-            <${CssBaseline} />
-            <${Header} loginButtonOnClick=${() => setLoginOpen(true)} mode=${mode} handleMode=${handleMode}/>
-            <${Container} maxWidth="xl">
-                <${Suspense} fallback=${html`<${CircularProgress} />`}>
-                    <${Route} exact path="/">
-                        <h1>Ini halaman Dasbor.</h1>
+        <${AuthContext.Provider} value=${{ user, setUser }}>
+            <${BrowserRouter}>
+                <${ThemeProvider} theme=${theme}>
+                    <${CssBaseline} />
+                    <${Header} loginButtonOnClick=${() => setLoginOpen(true)} mode=${mode} handleMode=${handleMode} sx=${{ zIndex: (theme) => theme.zIndex.drawer + 1 }}/>
+                    <${Suspense} fallback=${html`<${CircularProgress} />`}>
+                        <${Route} exact path="/">
+                            <h1>Ini halaman Beranda.</h1>
+                        <//>
+                        ${user ? html`
+                            <${Route} path="/panel">
+                                <${Panel}/>
+                            <//>
+                        ` : null}
+                        <${Route} exact path="/about">
+                            <h1>Ini halaman Tentang.</h1>
+                        <//>
                     <//>
-                    <${Route} path="/monitoring">
-                        <h1>Ini halaman Monitoring.</h1>
-                    <//>
-                    <${Route} path="/submission">
-                        <h1>Ini halaman Pengajuan.</h1>
-                    <//>
-                    <${Route} path="/employee">
-                        <${Employee}/>
-                    <//>
+                    <${Login} open=${loginOpen} onClose=${() => setLoginOpen(false)}/>
                 <//>
             <//>
-            <${Divider} />
-            <${Stack} p=${3} spacing=${1} alignItems="center">
-                <${JarvisLogo} size=${24}/>
-                <${Typography} variant="subtitle2">
-                    © 2021 PUB Angkatan 18 (Jarvis)
-                <//>
-            <//>
-            <${Login} open=${loginOpen} onClose=${() => setLoginOpen(false)}/>
         <//>
-    <//>
 `}
 
 export default App;

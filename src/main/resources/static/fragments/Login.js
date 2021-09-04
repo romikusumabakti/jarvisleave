@@ -6,36 +6,58 @@ import {
     Stack,
     TextField, Typography
 } from "../modules/material-ui.js"
-import {useState} from "../modules/react.js"
+import {useContext, useState} from "../modules/react.js"
 import JarvisIcon from "../components/JarvisIcon.js"
+import api from "../utils/api.js"
+import {AuthContext} from "../App.js"
 
 function Login(props) {
 
-    const [user, setUser] = useState(null);
+    const { setUser } = useContext(AuthContext);
+    const [checked, setChecked] = useState(null);
     const [loading, setLoading] = useState(false);
     const [idError, setIdError] = useState(null);
+    const [passwordError, setPasswordError] = useState(null);
 
-    const getUser = async (event) => {
+    const check = async (event) => {
         event.preventDefault();
         setLoading(true);
-        fetch(`/api/auth/check?id=${event.target.id.value}`)
-            .then(async response => {
-                if (response.ok) {
-                    const user = await response.json();
-                    setUser(user);
-                    setIdError(null);
-                } else {
-                    const error = await response.text();
-                    setIdError(error);
-                    event.target.id.focus();
-                }
-                setLoading(false);
-            });
+        const response = await api(`/auth/check?id=${event.target.id.value}`);
+        if (response.ok) {
+            const checked = await response.json();
+            setChecked(checked);
+            setIdError(null);
+        } else {
+            const error = await response.text();
+            setIdError(error);
+            event.target.id.focus();
+        }
+        setLoading(false);
+    };
+
+    const login = async (event) => {
+        event.preventDefault();
+        setLoading(true);
+        const response = await api('/auth/login', 'POST', JSON.stringify({
+            username: checked.username,
+            password: event.target.password.value,
+        }));
+        if (response.ok) {
+            const token = await response.text();
+            localStorage.setItem('token', token);
+            setUser(checked);
+            onClose();
+        } else {
+            const error = await response.text();
+            setPasswordError(error);
+            event.target.password.focus();
+        }
+        setLoading(false);
     };
 
     const onClose = () => {
         if (!loading) {
-            setUser(null);
+            setChecked(null);
             props.onClose();
         }
     };
@@ -43,8 +65,8 @@ function Login(props) {
     return html`
         <${Dialog} open=${props.open} onClose=${onClose} fullWidth maxWidth="xs">
             <${DialogContent}>
-                <${Stack} spacing=${3} component="form" onSubmit=${getUser} hidden=${user !== null}>
-                    ${!user ? html`
+                <${Stack} spacing=${3} component="form" onSubmit=${check} hidden=${checked !== null}>
+                    ${!checked ? html`
                         <${Stack} spacing=${1} alignItems="center">
                             <${JarvisIcon} size=${64} padding=${8}/>
                             <${Typography} variant="h5">
@@ -72,8 +94,8 @@ function Login(props) {
                         <//>
                     ` : null}
                 <//>
-                <${Stack} spacing=${3} component="form" hidden=${user === null}>
-                    ${user ? html`
+                <${Stack} spacing=${3} component="form" onSubmit=${login} hidden=${checked === null}>
+                    ${checked ? html`
                         <${Stack} spacing=${1} alignItems="center">
                             <${JarvisIcon} size=${64} padding=${8}/>
                             <${Typography} variant="h5">
@@ -81,10 +103,10 @@ function Login(props) {
                             <//>
                             <${Stack} alignItems="center">
                                 <${Typography} variant="h6">
-                                    ${user?.nama}
+                                    ${checked.nama}
                                 <//>
                                 <${Typography} variant="subtitle1">
-                                    Divisi ${user?.divisi.nama}
+                                    Divisi ${checked.divisi.nama}
                                 <//>
                             <//>
                         <//>
@@ -96,10 +118,13 @@ function Login(props) {
                                 fullWidth
                                 required
                                 InputLabelProps=${{required: false}}
+                                name="password"
+                                error=${passwordError !== null}
+                                helperText=${passwordError}
                         />
                         <${Stack} direction="row" justifyContent="space-between">
-                            <${Button} type="reset" onClick=${() => setUser(null)} disabled=${loading}>Kembali<//>
-                            <${Button} variant="contained" onClick=${getUser} disabled=${loading}>Login<//>
+                            <${Button} type="reset" onClick=${() => setChecked(null)} disabled=${loading}>Kembali<//>
+                            <${Button} type="submit" variant="contained" disabled=${loading}>Login<//>
                         <//>
                     ` : null}
                 <//>

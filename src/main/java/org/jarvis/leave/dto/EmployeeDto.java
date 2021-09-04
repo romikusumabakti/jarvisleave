@@ -1,6 +1,7 @@
 package org.jarvis.leave.dto;
 
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -14,8 +15,10 @@ public class EmployeeDto {
     private String username;
     private String password;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     public String getPassword() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(password);
     }
 }

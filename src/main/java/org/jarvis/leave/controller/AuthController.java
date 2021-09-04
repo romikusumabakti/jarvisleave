@@ -14,6 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,15 +48,38 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
-
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
             UserDetails userDetails = employeeDetailsService.loadUserByUsername(loginDto.getUsername());
             String token = authService.createToken(userDetails.getUsername());
             return ResponseEntity.ok(token);
-
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Kata sandi salah.");
+        }
+    }
+
+    @GetMapping("/me")
+    private ResponseEntity<?> me(HttpServletRequest request) {
+        final String authorizationHeader = request.getHeader("Authorization");
+
+        String jwt = null;
+        String username = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwt = authorizationHeader.substring(7);
+            username = authService.getIssuer(jwt);
+        }
+
+        Employee employee = null;
+
+        if (username != null) {
+            employee = employeeRepository.getByNipUsernameOrEmail(username);
+        }
+
+        if (employee != null) {
+            return ResponseEntity.ok(employee);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Token tidak valid.");
         }
     }
 }
