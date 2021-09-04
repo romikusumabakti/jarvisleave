@@ -44,8 +44,8 @@ public class HakCutiController {
     @PutMapping()
     private HakCuti update(@RequestBody HakCutiDto hakCutiDto) {
         HakCuti hakCuti = modelMapper.map(hakCutiDto, HakCuti.class);
-        hakCuti.setEmployee(employeeRepository.findById(hakCutiDto.getEmployee()).orElse(null));
-        hakCuti.setJenisCuti(jenisCutiRepository.findById(hakCutiDto.getJenisCuti()).orElse(null));
+        hakCuti.setEmployee(employeeRepository.getById(hakCutiDto.getEmployee()));
+        hakCuti.setJenisCuti(jenisCutiRepository.getById(hakCutiDto.getJenisCuti()));
         return hakCutiService.saveOrUpdate(hakCuti);
     }
 
