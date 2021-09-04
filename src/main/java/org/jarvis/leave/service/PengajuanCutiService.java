@@ -36,7 +36,7 @@ public class PengajuanCutiService {
     }
 
     public void deleteById(@PathVariable int id) {
-        PengajuanCuti pengajuanCuti = findById(id);
+        PengajuanCuti pengajuanCuti = getById(id);
         pengajuanCuti.setIsDeleted(true);
         pengajuanCutiRepository.save(pengajuanCuti);
     }

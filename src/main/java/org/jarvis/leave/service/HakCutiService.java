@@ -1,5 +1,6 @@
 package org.jarvis.leave.service;
 
+import org.jarvis.leave.model.DetailPengajuanCuti;
 import org.jarvis.leave.model.HakCuti;
 import org.jarvis.leave.repository.HakCutiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,17 @@ public class HakCutiService {
         return hakCutiRepository.findById(id).orElse(null);
     }
 
+    public HakCuti getById(@PathVariable int id) {
+        return hakCutiRepository.getById(id);
+    }
+
     public HakCuti saveOrUpdate(@RequestBody HakCuti hakCuti) {
         hakCutiRepository.save(hakCuti);
         return hakCuti;
     }
 
     public void deleteById(@PathVariable int id) {
-        HakCuti hakCuti = findById(id);
+        HakCuti hakCuti = getById(id);
         hakCuti.setIsDeleted(true);
         hakCutiRepository.save(hakCuti);
     }

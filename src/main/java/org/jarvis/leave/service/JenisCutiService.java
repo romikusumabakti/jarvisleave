@@ -36,7 +36,7 @@ public class JenisCutiService {
     }
 
     public void deleteById(@PathVariable int id) {
-        JenisCuti jenisCuti = findById(id);
+        JenisCuti jenisCuti = getById(id);
         jenisCuti.setIsDeleted(true);
         jenisCutiRepository.save(jenisCuti);
     }

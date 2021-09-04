@@ -37,7 +37,7 @@ public class RoleService {
     }
 
     public void deleteById(@PathVariable int id) {
-        Role role = (Role) findById(id);
+        Role role = (Role) getById(id);
         role.setIsDeleted(true);
         roleRepository.save(role);
     }

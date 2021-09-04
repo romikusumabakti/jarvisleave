@@ -33,7 +33,7 @@ public class LiburService {
     }
 
     public void deleteById(@PathVariable int id) {
-        Libur libur = findById(id);
+        Libur libur = getById(id);
         libur.setIsDeleted(true);
         liburRepository.save(libur);
     }

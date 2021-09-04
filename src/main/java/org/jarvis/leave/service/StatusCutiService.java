@@ -36,7 +36,7 @@ public class StatusCutiService {
     }
 
     public void deleteById(@PathVariable int id) {
-        StatusCuti statusCuti = (StatusCuti) findById(id);
+        StatusCuti statusCuti = (StatusCuti) getById(id);
         statusCuti.setIsDeleted(true);
         statusCutiRepository.save(statusCuti);
     }
