@@ -1,5 +1,6 @@
 package org.jarvis.leave.service;
 
+import org.jarvis.leave.model.DetailPengajuanCuti;
 import org.jarvis.leave.model.Role;
 import org.jarvis.leave.model.StatusCuti;
 import org.jarvis.leave.repository.RoleRepository;
@@ -29,6 +30,10 @@ public class RoleService {
 
     public RoleRepository findById(@PathVariable int id) {
         return (RoleRepository) roleRepository.findById(id).orElse(null);
+    }
+
+    public Role getById(@PathVariable int id) {
+        return roleRepository.getById(id);
     }
 
     public Role saveOrUpdate(@RequestBody Role role) {
