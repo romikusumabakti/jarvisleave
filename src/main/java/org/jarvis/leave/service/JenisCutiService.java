@@ -1,5 +1,6 @@
 package org.jarvis.leave.service;
 
+import org.jarvis.leave.model.DetailPengajuanCuti;
 import org.jarvis.leave.model.JenisCuti;
 import org.jarvis.leave.repository.JenisCutiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class JenisCutiService {
 
     public JenisCuti findById(@PathVariable int id) {
         return jenisCutiRepository.findById(id).orElse(null);
+    }
+
+    public JenisCuti getById(@PathVariable int id) {
+        return jenisCutiRepository.getById(id);
     }
 
     public JenisCuti saveOrUpdate(@RequestBody JenisCuti jenisCuti) {
