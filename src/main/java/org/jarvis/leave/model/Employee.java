@@ -12,24 +12,22 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Employee extends Base {
 
+    private String nama;
+
+    @Column(unique = true)
+    private String email;
+
+    @Column(unique = true)
+    private String nip;
+
+    @ManyToOne
+    private Divisi divisi;
+
     @ManyToOne
     private Role role;
 
-    @Column(length = 18)
-    private String nip;
-
-    @Column(length = 100)
-    private String namaLengkap;
-
-    @Column(length = 50)
-    private String divisi;
-
-    @Column(length = 100)
-    private String email;
-
-    @Column(length = 50)
+    @Column(unique = true)
     private String username;
 
-    @Column(columnDefinition = "TEXT")
     private String password;
 }

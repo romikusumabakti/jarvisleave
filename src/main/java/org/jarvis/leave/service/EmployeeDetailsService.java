@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmployeeDetailsService implements UserDetailsService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeDetailsService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Employee employee = employeeRepository.findByNipOrUsername(username);
+        Employee employee = employeeRepository.get(username);
         if (employee == null) {
             throw new UsernameNotFoundException(username);
         }

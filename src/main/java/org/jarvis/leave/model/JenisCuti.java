@@ -11,9 +11,6 @@ import javax.persistence.Entity;
 @Entity
 public class JenisCuti extends Base {
 
-    @Column(length = 50)
-    private String jenis;
-
-    @Column(columnDefinition = "TEXT")
+    private String nama;
     private String deskripsi;
 }

@@ -1,5 +1,5 @@
-import ReactDOM from './js/react-dom.js';
-import html from './js/htm.js';
+import ReactDOM from './modules/react-dom.js';
+import html from './modules/htm.js';
 import App from "./App.js"
 
 ReactDOM.render(html`

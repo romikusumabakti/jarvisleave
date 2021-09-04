@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class JenisCutiDto {
-    private String jenis;
+    private String nama;
     private String deskripsi;
 }

@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class EmployeeDto {
     private int role;
     private String nip;
-    private String namaLengkap;
+    private String nama;
     private String divisi;
     private String email;
     private String username;

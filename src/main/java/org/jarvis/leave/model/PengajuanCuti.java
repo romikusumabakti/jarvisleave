@@ -18,17 +18,16 @@ public class PengajuanCuti extends Base {
     @ManyToOne
     private StatusCuti statusCuti;
 
-    private Integer penggantiId;
+    @ManyToOne
+    private Employee pengganti;
 
-    private Integer hrdId;
+    @ManyToOne
+    private Employee approver;
 
-    @Column(columnDefinition = "TEXT")
     private String alamat;
 
-    @Column(length = 15)
     private String noTelepon;
 
-    @Column(columnDefinition = "TEXT")
     private String keterangan;
 
     private Integer lamaCuti;
