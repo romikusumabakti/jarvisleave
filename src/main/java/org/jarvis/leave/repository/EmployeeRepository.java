@@ -15,5 +15,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     List<Employee> findAll();
 
     @Query("select u from Employee u where u.nip = ?1 OR u.username = ?1 OR u.email = ?1")
-    Employee get(String NipOrUsername);
+    Employee getByNipUsernameOrEmail(String NipOrUsername);
 }

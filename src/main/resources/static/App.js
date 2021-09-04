@@ -152,7 +152,7 @@ function App() {
             <//>
             <${Divider} />
             <${Stack} p=${3} spacing=${1} alignItems="center">
-                <${JarvisLogo} size=${32}/>
+                <${JarvisLogo} size=${24}/>
                 <${Typography} variant="subtitle2">
                     © 2021 PUB Angkatan 18 (Jarvis)
                 <//>

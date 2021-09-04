@@ -27,8 +27,8 @@ public class RoleService {
         return roles;
     }
 
-    public RoleRepository findById(@PathVariable int id) {
-        return (RoleRepository) roleRepository.findById(id).orElse(null);
+    public RoleRepository getById(@PathVariable int id) {
+        return (RoleRepository) roleRepository.getById(id);
     }
 
     public Role saveOrUpdate(@RequestBody Role role) {
@@ -37,7 +37,7 @@ public class RoleService {
     }
 
     public void deleteById(@PathVariable int id) {
-        Role role = (Role) findById(id);
+        Role role = (Role) getById(id);
         role.setIsDeleted(true);
         roleRepository.save(role);
     }

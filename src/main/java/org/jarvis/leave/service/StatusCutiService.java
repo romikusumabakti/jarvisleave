@@ -26,8 +26,8 @@ public class StatusCutiService {
         return statusCutis;
     }
 
-    public StatusCutiRepository findById(@PathVariable int id) {
-        return (StatusCutiRepository) statusCutiRepository.findById(id).orElse(null);
+    public StatusCutiRepository getById(@PathVariable int id) {
+        return (StatusCutiRepository) statusCutiRepository.getById(id);
     }
 
     public StatusCuti saveOrUpdate(@RequestBody StatusCuti statusCuti) {
@@ -36,7 +36,7 @@ public class StatusCutiService {
     }
 
     public void deleteById(@PathVariable int id) {
-        StatusCuti statusCuti = (StatusCuti) findById(id);
+        StatusCuti statusCuti = (StatusCuti) getById(id);
         statusCuti.setIsDeleted(true);
         statusCutiRepository.save(statusCuti);
     }

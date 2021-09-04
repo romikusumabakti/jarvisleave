@@ -26,8 +26,8 @@ public class PengajuanCutiService {
         return pengajuanCutis;
     }
 
-    public PengajuanCuti findById(@PathVariable int id) {
-        return pengajuanCutiRepository.findById(id).orElse(null);
+    public PengajuanCuti getById(@PathVariable int id) {
+        return pengajuanCutiRepository.getById(id);
     }
 
     public PengajuanCuti saveOrUpdate(@RequestBody PengajuanCuti pengajuanCuti) {
@@ -36,7 +36,7 @@ public class PengajuanCutiService {
     }
 
     public void deleteById(@PathVariable int id) {
-        PengajuanCuti pengajuanCuti = findById(id);
+        PengajuanCuti pengajuanCuti = getById(id);
         pengajuanCuti.setIsDeleted(true);
         pengajuanCutiRepository.save(pengajuanCuti);
     }

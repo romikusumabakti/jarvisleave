@@ -23,8 +23,8 @@ public class LiburService {
         return (List<Libur>) liburRepository.findAll();
     }
 
-    public Libur findById(@PathVariable int id) {
-        return liburRepository.findById(id).orElse(null);
+    public Libur getById(@PathVariable int id) {
+        return liburRepository.getById(id);
     }
 
     public Libur saveOrUpdate(@RequestBody Libur libur) {
@@ -33,7 +33,7 @@ public class LiburService {
     }
 
     public void deleteById(@PathVariable int id) {
-        Libur libur = findById(id);
+        Libur libur = getById(id);
         libur.setIsDeleted(true);
         liburRepository.save(libur);
     }

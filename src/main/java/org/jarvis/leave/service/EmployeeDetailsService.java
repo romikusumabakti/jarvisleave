@@ -20,7 +20,7 @@ public class EmployeeDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Employee employee = employeeRepository.get(username);
+        Employee employee = employeeRepository.getByNipUsernameOrEmail(username);
         if (employee == null) {
             throw new UsernameNotFoundException(username);
         }

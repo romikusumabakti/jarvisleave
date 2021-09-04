@@ -1,14 +1,16 @@
 package org.jarvis.leave.repository;
 
 import org.jarvis.leave.model.PengajuanCuti;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface PengajuanCutiRepository extends CrudRepository<PengajuanCuti, Integer> {
+public interface PengajuanCutiRepository extends JpaRepository<PengajuanCuti, Integer> {
 
     @Override
     @Query("select u from PengajuanCuti u where u.isDeleted=false")
-    Iterable<PengajuanCuti> findAll();
+    List<PengajuanCuti> findAll();
 }
