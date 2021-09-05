@@ -31,13 +31,13 @@ public class HakCutiController {
     }
 
     @GetMapping("/{id}")
-    private HakCuti getById(@PathVariable int id) { return hakCutiService.getById(id); }
+    private HakCuti findById(@PathVariable int id) { return hakCutiService.findById(id); }
 
     @PostMapping()
     private HakCuti save(@RequestBody HakCutiDto hakCutiDto) {
         HakCuti hakCuti = modelMapper.map(hakCutiDto, HakCuti.class);
-        hakCuti.setEmployee(employeeRepository.getById(hakCutiDto.getEmployee()));
-        hakCuti.setJenisCuti(jenisCutiRepository.getById(hakCutiDto.getJenisCuti()));
+        hakCuti.setEmployee(employeeRepository.findById(hakCutiDto.getEmployee()).orElse(null));
+        hakCuti.setJenisCuti(jenisCutiRepository.findById(hakCutiDto.getJenisCuti()).orElse(null));
         return hakCutiService.saveOrUpdate(hakCuti);
     }
 

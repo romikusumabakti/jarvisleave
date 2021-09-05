@@ -4,6 +4,7 @@ import org.jarvis.leave.dto.EmployeeDto;
 import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.repository.RoleRepository;
 import org.jarvis.leave.service.EmployeeService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ public class EmployeeController {
 
     EmployeeService employeeService;
     RoleRepository roleRepository;
+    ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public EmployeeController(EmployeeService employeeService, RoleRepository roleRepository) {
@@ -28,27 +30,26 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    private Employee getById(@PathVariable int id) {
+    private Employee findById(@PathVariable int id) {
         return employeeService.getById(id);
     }
 
     @PostMapping()
     private Employee save(@RequestBody EmployeeDto employeeDto) {
-        return employeeService.saveOrUpdate(employeeDto);
+        Employee employee = modelMapper.map(employeeDto, Employee.class);
+        employee.setRole(roleRepository.findById(employeeDto.getRole()).orElse(null));
+        return employeeService.saveOrUpdate(employee);
     }
 
     @PutMapping()
     private Employee update(@RequestBody EmployeeDto employeeDto) {
-        return employeeService.saveOrUpdate(employeeDto);
+        Employee employee = modelMapper.map(employeeDto, Employee.class);
+        employee.setRole(roleRepository.getById(employeeDto.getRole()));
+        return employeeService.saveOrUpdate(employee);
     }
 
     @DeleteMapping("/{id}")
     private void deleteById(@PathVariable int id) {
         employeeService.deleteById(id);
-    }
-
-    @PostMapping("/{id}")
-    private void cancelDeleteById(@PathVariable int id) {
-        employeeService.cancelDeleteById(id);
     }
 }

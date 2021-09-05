@@ -1,5 +1,6 @@
 package org.jarvis.leave.service;
 
+import org.jarvis.leave.model.DetailPengajuanCuti;
 import org.jarvis.leave.model.StatusCuti;
 import org.jarvis.leave.repository.StatusCutiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,12 @@ public class StatusCutiService {
         return statusCutis;
     }
 
-    public StatusCutiRepository getById(@PathVariable int id) {
-        return (StatusCutiRepository) statusCutiRepository.getById(id);
+    public StatusCuti findById(@PathVariable int id) {
+        return statusCutiRepository.findById(id).orElse(null);
+    }
+
+    public StatusCuti getById(@PathVariable int id) {
+        return statusCutiRepository.getById(id);
     }
 
     public StatusCuti saveOrUpdate(@RequestBody StatusCuti statusCuti) {

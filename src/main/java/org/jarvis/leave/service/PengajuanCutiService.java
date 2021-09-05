@@ -1,5 +1,6 @@
 package org.jarvis.leave.service;
 
+import org.jarvis.leave.model.DetailPengajuanCuti;
 import org.jarvis.leave.model.PengajuanCuti;
 import org.jarvis.leave.repository.PengajuanCutiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ public class PengajuanCutiService {
         List<PengajuanCuti> pengajuanCutis = new ArrayList<>();
         pengajuanCutiRepository.findAll().forEach(pengajuanCutis::add);
         return pengajuanCutis;
+    }
+
+    public PengajuanCuti findById(@PathVariable int id) {
+        return pengajuanCutiRepository.findById(id).orElse(null);
     }
 
     public PengajuanCuti getById(@PathVariable int id) {

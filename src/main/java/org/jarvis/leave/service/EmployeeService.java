@@ -1,13 +1,11 @@
 package org.jarvis.leave.service;
 
-import org.jarvis.leave.dto.EmployeeDto;
 import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.repository.EmployeeRepository;
-import org.jarvis.leave.repository.RoleRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -15,40 +13,28 @@ import java.util.List;
 public class EmployeeService {
 
     EmployeeRepository employeeRepository;
-    RoleRepository roleRepository;
-    ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, RoleRepository roleRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.roleRepository = roleRepository;
     }
 
     public List<Employee> findAll() {
         return employeeRepository.findAll();
     }
 
-    public Employee getById(int id) {
+    public Employee getById(@PathVariable int id) {
         return employeeRepository.getById(id);
     }
 
-    public Employee saveOrUpdate(EmployeeDto employeeDto) {
-        Employee employee = modelMapper.map(employeeDto, Employee.class);
-        employee.setRole(roleRepository.getById(employeeDto.getRole()));
+    public Employee saveOrUpdate(@RequestBody Employee employee) {
         employeeRepository.save(employee);
-        employee.setLastModifiedBy(((Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
         return employee;
     }
 
-    public void deleteById(int id) {
+    public void deleteById(@PathVariable int id) {
         Employee employee = getById(id);
         employee.setIsDeleted(true);
-        employeeRepository.save(employee);
-    }
-
-    public void cancelDeleteById(int id) {
-        Employee employee = getById(id);
-        employee.setIsDeleted(false);
         employeeRepository.save(employee);
     }
 }
