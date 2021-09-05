@@ -6,11 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class AuthService {
@@ -47,16 +44,6 @@ public class AuthService {
         try {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getIssuer();
-        } catch (JWTDecodeException exception) {
-            return null;
-        }
-    }
-
-    private Map<String, Claim> getClaims(String token) {
-
-        try {
-            DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaims();
         } catch (JWTDecodeException exception) {
             return null;
         }

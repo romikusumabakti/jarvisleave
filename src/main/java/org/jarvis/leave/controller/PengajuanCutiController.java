@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pengajuan_cuti")
@@ -31,26 +32,22 @@ public class PengajuanCutiController {
     }
 
     @GetMapping("/{id}")
-    private PengajuanCuti findById(@PathVariable int id) {
+    private Optional<PengajuanCuti> findById(@PathVariable Long id) {
         return pengajuanCutiService.findById(id);
     }
 
     @PostMapping()
     private PengajuanCuti save(@RequestBody PengajuanCutiDto pengajuanCutiDto) {
-        PengajuanCuti pengajuanCuti = modelMapper.map(pengajuanCutiDto, PengajuanCuti.class);
-        pengajuanCuti.setEmployee(employeeRepository.findById(pengajuanCutiDto.getEmployee_id()).orElse(null));
-        return pengajuanCutiService.saveOrUpdate(pengajuanCuti);
+        return pengajuanCutiService.saveOrUpdate(pengajuanCutiDto);
     }
 
     @PutMapping()
     private PengajuanCuti update(@RequestBody PengajuanCutiDto pengajuanCutiDto) {
-        PengajuanCuti pengajuanCuti = modelMapper.map(pengajuanCutiDto, PengajuanCuti.class);
-        pengajuanCuti.setEmployee(employeeRepository.getById(pengajuanCutiDto.getEmployee_id()));
-        return pengajuanCutiService.saveOrUpdate(pengajuanCuti);
+        return pengajuanCutiService.saveOrUpdate(pengajuanCutiDto);
     }
 
     @DeleteMapping("/{id}")
-    private void deleteById(@PathVariable int id) {
+    private void deleteById(@PathVariable Long id) {
         pengajuanCutiService.deleteById(id);
     }
 }

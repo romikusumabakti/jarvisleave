@@ -10,15 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping ("/api/hak_cuti")
 public class HakCutiController {
 
     HakCutiService hakCutiService;
-    EmployeeRepository employeeRepository;
-    JenisCutiRepository jenisCutiRepository;
-    ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public HakCutiController(HakCutiService hakCutiService) {
@@ -31,26 +29,20 @@ public class HakCutiController {
     }
 
     @GetMapping("/{id}")
-    private HakCuti findById(@PathVariable int id) { return hakCutiService.findById(id); }
+    private Optional<HakCuti> findById(@PathVariable Long id) { return hakCutiService.findById(id); }
 
     @PostMapping()
     private HakCuti save(@RequestBody HakCutiDto hakCutiDto) {
-        HakCuti hakCuti = modelMapper.map(hakCutiDto, HakCuti.class);
-        hakCuti.setEmployee(employeeRepository.findById(hakCutiDto.getEmployee()).orElse(null));
-        hakCuti.setJenisCuti(jenisCutiRepository.findById(hakCutiDto.getJenisCuti()).orElse(null));
-        return hakCutiService.saveOrUpdate(hakCuti);
+        return hakCutiService.saveOrUpdate(hakCutiDto);
     }
 
     @PutMapping()
     private HakCuti update(@RequestBody HakCutiDto hakCutiDto) {
-        HakCuti hakCuti = modelMapper.map(hakCutiDto, HakCuti.class);
-        hakCuti.setEmployee(employeeRepository.getById(hakCutiDto.getEmployee()));
-        hakCuti.setJenisCuti(jenisCutiRepository.getById(hakCutiDto.getJenisCuti()));
-        return hakCutiService.saveOrUpdate(hakCuti);
+        return hakCutiService.saveOrUpdate(hakCutiDto);
     }
 
     @DeleteMapping("/{id}")
-    private void deleteById(@PathVariable int id) {
+    private void deleteById(@PathVariable Long id) {
         hakCutiService.deleteById(id);
     }
 }

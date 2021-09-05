@@ -3,18 +3,17 @@ package org.jarvis.leave.controller;
 import org.jarvis.leave.dto.JenisCutiDto;
 import org.jarvis.leave.model.JenisCuti;
 import org.jarvis.leave.service.JenisCutiService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/jenis_cuti")
 public class JenisCutiController {
 
     JenisCutiService jenisCutiService;
-    ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public JenisCutiController(JenisCutiService jenisCutiService) {
@@ -27,24 +26,22 @@ public class JenisCutiController {
     }
 
     @GetMapping("/{id}")
-    private JenisCuti findById(@PathVariable int id) {
+    private Optional<JenisCuti> findById(@PathVariable Long id) {
         return jenisCutiService.findById(id);
     }
 
     @PostMapping()
     private JenisCuti save(@RequestBody JenisCutiDto jenisCutiDto) {
-        JenisCuti jenisCuti = modelMapper.map(jenisCutiDto, JenisCuti.class);
-        return jenisCutiService.saveOrUpdate(jenisCuti);
+        return jenisCutiService.saveOrUpdate(jenisCutiDto);
     }
 
     @PutMapping()
     private JenisCuti update(@RequestBody JenisCutiDto jenisCutiDto) {
-        JenisCuti jenisCuti = modelMapper.map(jenisCutiDto, JenisCuti.class);
-        return jenisCutiService.saveOrUpdate(jenisCuti);
+        return jenisCutiService.saveOrUpdate(jenisCutiDto);
     }
 
     @DeleteMapping("/{id}")
-    private void deleteById(@PathVariable int id) {
+    private void deleteById(@PathVariable Long id) {
         jenisCutiService.deleteById(id);
     }
 }

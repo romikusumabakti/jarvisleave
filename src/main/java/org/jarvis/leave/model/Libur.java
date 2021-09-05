@@ -11,12 +11,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 public class Libur extends Base {
-
-    @Column(length = 100)
     private String nama;
-
-    @Column(columnDefinition = "TEXT")
     private String deskripsi;
-
     private LocalDate tanggal;
 }

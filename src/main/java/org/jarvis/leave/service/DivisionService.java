@@ -6,10 +6,10 @@ import org.jarvis.leave.repository.DivisionRepository;
 import org.jarvis.leave.repository.RoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DivisionService {
@@ -28,8 +28,8 @@ public class DivisionService {
         return divisionRepository.findAll();
     }
 
-    public Division getById(int id) {
-        return divisionRepository.getById(id);
+    public Optional<Division> findById(Long id) {
+        return divisionRepository.findById(id);
     }
 
     public Division saveOrUpdate(DivisionDto divisionDto) {
@@ -38,14 +38,14 @@ public class DivisionService {
         return division;
     }
 
-    public void deleteById(int id) {
-        Division division = getById(id);
+    public void deleteById(Long id) {
+        Division division = divisionRepository.getById(id);
         division.setIsDeleted(true);
         divisionRepository.save(division);
     }
 
-    public void cancelDeleteById(int id) {
-        Division division = getById(id);
+    public void cancelDeleteById(Long id) {
+        Division division = divisionRepository.getById(id);
         division.setIsDeleted(false);
         divisionRepository.save(division);
     }

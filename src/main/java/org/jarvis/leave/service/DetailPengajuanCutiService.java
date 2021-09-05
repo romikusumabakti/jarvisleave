@@ -1,39 +1,34 @@
 package org.jarvis.leave.service;
 
 import org.jarvis.leave.model.DetailPengajuanCuti;
-import org.jarvis.leave.model.Employee;
-import org.jarvis.leave.model.HakCuti;
 import org.jarvis.leave.repository.DetailPengajuanCutiRepository;
-import org.jarvis.leave.repository.HakCutiRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DetailPengajuanCutiService {
+
     DetailPengajuanCutiRepository detailPengajuanCutiRepository;
+    ModelMapper modelMapper;
 
     @Autowired
-    public DetailPengajuanCutiService(DetailPengajuanCutiRepository detailPengajuanCutiRepository) {
+    public DetailPengajuanCutiService(DetailPengajuanCutiRepository detailPengajuanCutiRepository, ModelMapper modelMapper) {
         this.detailPengajuanCutiRepository = detailPengajuanCutiRepository;
+        this.modelMapper = modelMapper;
     }
 
     public List<DetailPengajuanCuti> findAll() {
-        List<DetailPengajuanCuti> detailPengajuanCutis = new ArrayList<>();
-        detailPengajuanCutiRepository.findAll().forEach(detailPengajuanCutis::add);
-        return detailPengajuanCutis;
+        return detailPengajuanCutiRepository.findAll();
     }
 
-    public DetailPengajuanCuti findById(@PathVariable int id) {
-        return detailPengajuanCutiRepository.findById(id).orElse(null);
-    }
-
-    public DetailPengajuanCuti getById(@PathVariable int id) {
-        return detailPengajuanCutiRepository.getById(id);
+    public Optional<DetailPengajuanCuti> findById(@PathVariable Long id) {
+        return detailPengajuanCutiRepository.findById(id);
     }
 
     public DetailPengajuanCuti saveOrUpdate(@RequestBody DetailPengajuanCuti detailPengajuanCuti) {
@@ -41,9 +36,15 @@ public class DetailPengajuanCutiService {
         return detailPengajuanCuti;
     }
 
-    public void deleteById(@PathVariable int id) {
-        DetailPengajuanCuti detailPengajuanCuti = getById(id);
+    public void deleteById(@PathVariable Long id) {
+        DetailPengajuanCuti detailPengajuanCuti = detailPengajuanCutiRepository.getById(id);
         detailPengajuanCuti.setIsDeleted(true);
+        detailPengajuanCutiRepository.save(detailPengajuanCuti);
+    }
+
+    public void cancelDeleteById(Long id) {
+        DetailPengajuanCuti detailPengajuanCuti = detailPengajuanCutiRepository.getById(id);
+        detailPengajuanCuti.setIsDeleted(false);
         detailPengajuanCutiRepository.save(detailPengajuanCuti);
     }
 }

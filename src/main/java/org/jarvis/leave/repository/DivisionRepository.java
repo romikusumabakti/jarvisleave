@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DivisionRepository extends JpaRepository<Division, Integer> {
+public interface DivisionRepository extends JpaRepository<Division, Long> {
 
     @Override
     @Query("select u from Division u where u.isDeleted=false")

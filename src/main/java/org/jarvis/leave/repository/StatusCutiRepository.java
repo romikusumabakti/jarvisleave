@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StatusCutiRepository extends JpaRepository<StatusCuti, Integer> {
+public interface StatusCutiRepository extends JpaRepository<StatusCuti, Long> {
 
     @Override
     @Query("select u from StatusCuti u where u.isDeleted=false")

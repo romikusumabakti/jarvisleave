@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/division")
@@ -28,8 +29,8 @@ public class DivisionController {
     }
 
     @GetMapping("/{id}")
-    private Division getById(@PathVariable int id) {
-        return divisionService.getById(id);
+    private Optional<Division> findById(@PathVariable Long id) {
+        return divisionService.findById(id);
     }
 
     @PostMapping()
@@ -43,12 +44,12 @@ public class DivisionController {
     }
 
     @DeleteMapping("/{id}")
-    private void deleteById(@PathVariable int id) {
+    private void deleteById(@PathVariable Long id) {
         divisionService.deleteById(id);
     }
 
     @PostMapping("/{id}")
-    private void cancelDeleteById(@PathVariable int id) {
+    private void cancelDeleteById(@PathVariable Long id) {
         divisionService.cancelDeleteById(id);
     }
 }

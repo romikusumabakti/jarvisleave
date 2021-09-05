@@ -7,10 +7,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 public class EmployeeDto {
-    private int role;
+    private Long role;
     private String nip;
     private String name;
-    private String division;
+    private Long division;
     private String email;
     private String username;
     private String password;
