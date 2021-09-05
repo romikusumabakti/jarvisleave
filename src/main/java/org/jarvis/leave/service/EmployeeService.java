@@ -1,6 +1,5 @@
 package org.jarvis.leave.service;
 
-import org.jarvis.leave.dto.EmployeeDto;
 import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.repository.EmployeeRepository;
 import org.jarvis.leave.repository.RoleRepository;
@@ -34,9 +33,7 @@ public class EmployeeService {
         return employeeRepository.findById(id);
     }
 
-    public Employee saveOrUpdate(@RequestBody EmployeeDto employeeDto) {
-        Employee employee = modelMapper.map(employeeDto, Employee.class);
-        employee.setRole(roleRepository.getById(employeeDto.getRole()));
+    public Employee saveOrUpdate(@RequestBody Employee employee) {
         employeeRepository.save(employee);
         return employee;
     }

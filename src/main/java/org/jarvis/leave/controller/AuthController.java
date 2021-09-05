@@ -34,8 +34,8 @@ public class AuthController {
     }
 
     @GetMapping("/check")
-    private ResponseEntity<?> check(@RequestParam String id) {
-        Employee employee = employeeRepository.getByNipUsernameOrEmail(id);
+    private ResponseEntity<?> check(@RequestParam String username) {
+        Employee employee = employeeRepository.getByNipUsernameOrEmail(username);
         if (employee != null) {
             return ResponseEntity.ok(employee);
         } else {

@@ -1,9 +1,8 @@
-import React, {createContext, Suspense, useEffect, useState} from './modules/react.js';
+import React, {createContext, lazy, Suspense, useEffect, useState} from './modules/react.js';
 import {
     CircularProgress,
     createTheme,
     CssBaseline,
-    Stack,
     ThemeProvider,
     useMediaQuery
 } from './modules/material-ui.js';
@@ -11,9 +10,9 @@ import {BrowserRouter, Route} from './modules/react-router-dom.js';
 import html from './modules/htm.js';
 import Header from "./fragments/Header.js"
 import Login from "./fragments/Login.js"
-import NavDrawer from "./fragments/NavDrawer.js"
-import Panel from "./pages/Panel.js"
 import api from "./utils/api.js"
+
+const Panel = lazy(() => import('./pages/Panel.js'));
 
 export const AuthContext = createContext();
 
@@ -109,6 +108,11 @@ function App() {
                     },
                 },
             },
+            MuiTextField: {
+                defaultProps: {
+                    InputLabelProps: {required: false}
+                },
+            },
             MuiButton: {
                 styleOverrides: {
                     root: {
@@ -121,17 +125,10 @@ function App() {
                     disableElevation: true,
                 },
             },
-            MuiDialogTitle: {
-                styleOverrides: {
-                    root: {
-                        padding: '18px 32px',
-                    },
-                },
-            },
             MuiDialogContent: {
                 styleOverrides: {
                     root: {
-                        padding: '18px 32px',
+                        padding: 24,
                     },
                 },
             },
@@ -139,18 +136,8 @@ function App() {
                 styleOverrides: {
                     root: {
                         padding: 24,
+                        gap: 16,
                     },
-                },
-            },
-            MuiSnackbarContent: {
-                styleOverrides: {
-                    root: {
-                        background: theme.palette.background.paper,
-                        color: theme.palette.text.primary,
-                    },
-                },
-                defaultProps: {
-                    elevation: 1,
                 },
             },
         },
@@ -172,10 +159,8 @@ function App() {
             if (response.ok) {
                 const user = await response.json();
                 setUser(user);
-                console.log(user);
             } else {
                 const error = await response.text();
-                console.error(error);
             }
         }
     }, []);

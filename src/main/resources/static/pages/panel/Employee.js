@@ -21,20 +21,29 @@ import api from "../../utils/api.js"
 function Employee() {
 
     const [employees, setEmployees] = useState();
+    const [roles, setRoles] = useState();
     const [divisions, setDivisions] = useState();
-
-    const [deleteOpen, setDeleteOpen] = useState(false);
-    const [deleted, setDeleted] = useState();
-    const [deletedIndex, setDeletedIndex] = useState();
 
     const [editOpen, setEditOpen] = useState(false);
     const [employee, setEmployee] = useState({});
+    
+    const [savedOpen, setSavedOpen] = useState(false);
+
+    const [deletedOpen, setDeletedOpen] = useState(false);
+    const [deleted, setDeleted] = useState();
+    const [deletedIndex, setDeletedIndex] = useState();
 
     useEffect(() => {
         api('/employee')
             .then(response => response.json())
             .then(employees => {
                 setEmployees(employees);
+            });
+
+        api('/role')
+            .then(response => response.json())
+            .then(roles => {
+                setRoles(roles);
             });
 
         api('/division')
@@ -45,18 +54,46 @@ function Employee() {
     }, []);
 
     const handleChange = event => {
-      employee[event.target.name] = event.target.value;
-      console.log(employee);
+        const key = event.target.name;
+        const value = event.target.value;
+        if (value !== '') {
+            setEmployee({...employee, [key]: value});
+        } else {
+            setEmployee({...employee, [key]: null});
+        }
+        console.log(employee)
     };
 
     const edit = id => {
         api('/employee/' + id)
             .then(response => response.json())
             .then(employee => {
-                setEmployee(employee);
+                setEmployee({
+                    ...employee,
+                    role: employee.role.id,
+                    division: employee.division.id,
+                });
                 setEditOpen(true);
             });
-    }
+    };
+
+    const cancelEdit = () => {
+      setEmployee({});
+      setEditOpen(false);
+    };
+
+    const save = event => {
+        event.preventDefault();
+        console.log(employee);
+        api('/employee', 'POST', employee)
+            .then(response => response.json())
+            .then(employee => {
+                setEmployees(employees.map(e => (e.id === employee.id) ? employee : e));
+                setEmployee({});
+                setEditOpen(false);
+                setSavedOpen(true);
+            });
+    };
 
     const del = id => {
         api('/employee/' + id, 'DELETE')
@@ -65,7 +102,7 @@ function Employee() {
                 setDeleted(employees.find(employee => employee.id === id));
                 setDeletedIndex(employees.findIndex(employee => employee.id === id));
                 setEmployees(employees.filter(employee => employee.id !== id));
-                setDeleteOpen(true);
+                setDeletedOpen(true);
             }
         });
     };
@@ -77,7 +114,7 @@ function Employee() {
                 setEmployees([...employees.slice(0, deletedIndex), deleted, ...employees.slice(deletedIndex)]);
                 setDeleted(null);
                 setDeletedIndex(null);
-                setDeleteOpen(false);
+                setDeletedOpen(false);
             }
         });
     };
@@ -90,7 +127,7 @@ function Employee() {
                     <${Typography} variant="h5">Karyawan<//>
                 <//>
                 <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEditOpen(true)}>
-                    Buat
+                    Buat karyawan
                 <//>
             <//>
             <${TableContainer} component=${Paper}>
@@ -111,10 +148,10 @@ function Employee() {
                         <${TableRow}>
                             <${TableCell}>${employee.nip}<//>
                             <${TableCell}>${employee.name}<//>
+                            <${TableCell}>${employee.role.name}<//>
                             <${TableCell}>${employee.division.name}<//>
 <!--                            <${TableCell}>${employee.email}<//>-->
                             <${TableCell}>${employee.username}<//>
-                            <${TableCell}>${employee.role.name}<//>
                             <${TableCell}>
                                 <${Stack} direction="row" spacing=${2}>
                                     <${IconButton} onClick=${() => edit(employee.id)}>
@@ -131,31 +168,17 @@ function Employee() {
                 <//>
             <//>
         <//>
-        <${Snackbar}
-                open=${deleteOpen}
-                autoHideDuration=${10000}
-                onClose=${() => setDeleteOpen(false)}
-                message="1 karyawan dihapus."
-                action=${html`
-                    <${Button} size="small" onClick=${cancelDelete}>Batal<//>
-                    <${IconButton}
-                            size="small"
-                            aria-label="close"
-                            color="inherit"
-                            onClick=${() => setDeleteOpen(false)}
-                    >
-                        <${MaterialIcon} size="small" >close<//>
-                    <//>
-                `}
-        />
         <${Dialog}
                 open=${editOpen}
-                onClose=${() => setEditOpen(false)}
+                onClose=${cancelEdit}
                 scroll="paper"
                 fullWidth
+                component="form"
+                onSubmit=${save}
         >
-            <${DialogTitle}>${employee ? 'Edit' : 'Buat'} karyawan<//>
+            <${DialogTitle}>${employee.id ? 'Edit' : 'Buat'} karyawan<//>
             <${DialogContent} dividers>
+                <input type="hidden" name="id" value=${employee.id}/>
                 <${Stack} spacing=${3}>
                     <${TextField}
                             label="NIP"
@@ -164,6 +187,8 @@ function Employee() {
                             name="nip"
                             value=${employee.nip}
                             onChange=${handleChange}
+                            required
+                            autoFocus=${!employee.id}
                     />
                     <${TextField}
                             label="Nama"
@@ -172,17 +197,33 @@ function Employee() {
                             name="name"
                             value=${employee.name}
                             onChange=${handleChange}
+                            required
                     />
+                    <${FormControl} fullWidth>
+                        <${InputLabel}>Role<//>
+                        <${Select}
+                                label="Role"
+                                name="role"
+                                value=${employee.role}
+                                onChange=${handleChange}
+                                required
+                        >
+                            ${roles ? roles.map(role => html`
+                                <${MenuItem} value=${role.id} key=${role.id}>${role.name}<//>
+                            `) : null}
+                        <//>
+                    <//>
                     <${FormControl} fullWidth>
                         <${InputLabel}>Divisi<//>
                         <${Select}
                                 label="Divisi"
                                 name="division"
-                                value=${employee.division?.id}
+                                value=${employee.division}
                                 onChange=${handleChange}
+                                required
                         >
                             ${divisions ? divisions.map(division => html`
-                                <${MenuItem} value=${division.id} key=${division.id}>${division.name}</MenuItem>
+                                <${MenuItem} value=${division.id} key=${division.id}>${division.name}<//>
                             `) : null}
                         <//>
                     <//>
@@ -194,6 +235,7 @@ function Employee() {
                             name="email"
                             value=${employee.email}
                             onChange=${handleChange}
+                            required
                     />
                     <${TextField}
                             label="Nama pengguna"
@@ -202,14 +244,60 @@ function Employee() {
                             name="username"
                             value=${employee.username}
                             onChange=${handleChange}
+                            required
+                    />
+                    <${TextField}
+                            label="Kata sandi${employee.id ? ' ' + (employee.password ? '(diubah)' : '(tidak diubah)') : ''}"
+                            type="password"
+                            fullWidth
+                            variant="outlined"
+                            name="password"
+                            value=${employee.password}
+                            onChange=${handleChange}
+                            required=${!employee.id}
                     />
                 <//>
             <//>
             <${DialogActions}>
-                <${Button} variant="outlined" onClick=${() => setEditOpen(false)}>Batal<//>
-                <${Button} variant="contained" onClick=${() => setEditOpen(false)}>Simpan<//>
+                <${Button} variant="outlined" type="reset" onClick=${cancelEdit}>Batal<//>
+                <${Button} variant="contained" type="submit">Simpan<//>
             <//>
         <//>
+        <${Snackbar}
+                open=${savedOpen}
+                autoHideDuration=${2750}
+                onClose=${() => setSavedOpen(false)}
+                message="Karyawan disimpan."
+                action=${html`
+                    <${IconButton}
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick=${() => setSavedOpen(false)}
+                    >
+                        <${MaterialIcon} size="small" >close<//>
+                    <//>
+                `}
+        />
+        <${Snackbar}
+                open=${deletedOpen}
+                autoHideDuration=${6000}
+                onClose=${() => setDeletedOpen(false)}
+                message="1 karyawan dihapus."
+                action=${html`
+                    <${Button} size="small" color="inherit" onClick=${cancelDelete}>
+                        Batal
+                    <//>
+                    <${IconButton}
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick=${() => setDeletedOpen(false)}
+                    >
+                        <${MaterialIcon} size="small" >close<//>
+                    <//>
+                `}
+        />
     `;
 }
 

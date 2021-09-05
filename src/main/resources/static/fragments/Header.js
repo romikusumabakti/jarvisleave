@@ -10,17 +10,21 @@ function Header(props) {
 
     const { user, setUser } = useContext(AuthContext);
 
+    const userTabs = user ? [
+        {
+            title: 'Panel',
+            path: '/panel',
+            exact: false,
+        },
+    ] : [];
+
     const tabs = [
         {
             title: 'Beranda',
             path: '',
             exact: true,
         },
-        {
-            title: 'Panel',
-            path: '/panel',
-            exact: false,
-        },
+            ...userTabs,
         {
             title: 'Tentang',
             path: '/about',

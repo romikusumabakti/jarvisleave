@@ -16,21 +16,21 @@ function Login(props) {
     const { setUser } = useContext(AuthContext);
     const [checked, setChecked] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [idError, setIdError] = useState(null);
+    const [usernameError, setUsernameError] = useState(null);
     const [passwordError, setPasswordError] = useState(null);
 
     const check = async (event) => {
         event.preventDefault();
         setLoading(true);
-        const response = await api(`/auth/check?id=${event.target.id.value}`);
+        const response = await api(`/auth/check?username=${event.target.username.value}`);
         if (response.ok) {
             const checked = await response.json();
             setChecked(checked);
-            setIdError(null);
+            setUsernameError(null);
         } else {
             const error = await response.text();
-            setIdError(error);
-            event.target.id.focus();
+            setUsernameError(error);
+            event.target.username.focus();
         }
         setLoading(false);
     };
@@ -38,10 +38,10 @@ function Login(props) {
     const login = async (event) => {
         event.preventDefault();
         setLoading(true);
-        const response = await api('/auth/login', 'POST', JSON.stringify({
+        const response = await api('/auth/login', 'POST', {
             username: checked.username,
             password: event.target.password.value,
-        }));
+        });
         if (response.ok) {
             const token = await response.text();
             localStorage.setItem('token', token);
@@ -77,15 +77,13 @@ function Login(props) {
                     <//>
                     <${TextField}
                             autoFocus
-                            id="id"
                             label="NIP, nama pengguna, atau email"
                             fullWidth
                             required
                             spellcheck="false"
-                            InputLabelProps=${{required: false}}
-                            name="id"
-                            error=${idError !== null}
-                            helperText=${idError}
+                            name="username"
+                            error=${usernameError !== null}
+                            helperText=${usernameError}
                     />
                     <${Stack} direction="row" justifyContent="space-between">
                         <${Button} type="reset" onClick=${onClose} disabled=${loading}>Batal<//>
@@ -111,12 +109,10 @@ function Login(props) {
                     <//>
                     <${TextField}
                             autoFocus
-                            id="password"
                             label="Kata sandi"
                             type="password"
                             fullWidth
                             required
-                            InputLabelProps=${{required: false}}
                             name="password"
                             error=${passwordError !== null}
                             helperText=${passwordError}

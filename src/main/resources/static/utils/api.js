@@ -6,7 +6,7 @@ async function api(url, method, body) {
             'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json',
         },
-        body: body,
+        body: JSON.stringify(body),
     })
 }
 
