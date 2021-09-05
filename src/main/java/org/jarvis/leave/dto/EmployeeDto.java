@@ -9,15 +9,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class EmployeeDto {
     private int role;
     private String nip;
-    private String nama;
-    private String divisi;
+    private String name;
+    private String division;
     private String email;
     private String username;
     private String password;
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
     public String getPassword() {
         return passwordEncoder.encode(password);
     }

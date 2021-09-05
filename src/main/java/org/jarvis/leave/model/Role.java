@@ -11,6 +11,5 @@ import javax.persistence.Entity;
 @Entity
 public class Role extends Base {
 
-    @Column(length = 50)
-    private String nama;
+    private String name;
 }

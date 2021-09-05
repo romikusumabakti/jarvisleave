@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -28,8 +29,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee getById(int id) {
-        return employeeRepository.getById(id);
+    public Optional<Employee> findById(int id) {
+        return employeeRepository.findById(id);
     }
 
     public Employee saveOrUpdate(EmployeeDto employeeDto) {
@@ -41,13 +42,13 @@ public class EmployeeService {
     }
 
     public void deleteById(int id) {
-        Employee employee = getById(id);
+        Employee employee = employeeRepository.getById(id);
         employee.setIsDeleted(true);
         employeeRepository.save(employee);
     }
 
     public void cancelDeleteById(int id) {
-        Employee employee = getById(id);
+        Employee employee = employeeRepository.getById(id);
         employee.setIsDeleted(false);
         employeeRepository.save(employee);
     }

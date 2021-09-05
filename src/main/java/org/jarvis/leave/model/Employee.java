@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Employee extends Base {
 
-    private String nama;
+    private String name;
 
     @Column(unique = true)
     private String email;
@@ -21,7 +21,7 @@ public class Employee extends Base {
     private String nip;
 
     @ManyToOne
-    private Divisi divisi;
+    private Division division;
 
     @ManyToOne
     private Role role;

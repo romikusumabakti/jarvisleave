@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/employee")
@@ -28,8 +29,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    private Employee getById(@PathVariable int id) {
-        return employeeService.getById(id);
+    private Optional<Employee> getById(@PathVariable int id) {
+        return employeeService.findById(id);
     }
 
     @PostMapping()

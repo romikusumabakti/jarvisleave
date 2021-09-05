@@ -1,8 +1,8 @@
-INSERT IGNORE INTO role(id, nama)
+INSERT IGNORE INTO role(id, name)
 VALUES (1, 'HRD'),
        (2, 'Karyawan');
 
-INSERT IGNORE INTO divisi(id, nama)
+INSERT IGNORE INTO division(id, name)
 VALUES (1, 'PPMB'),
        (2, 'Pendidikan'),
        (3, 'Kerohanian'),
@@ -21,7 +21,7 @@ INSERT IGNORE INTO jenis_cuti(id, nama, deskripsi)
 VALUES (1, 'Tahunan', 'Cuti tahunan adalah cuti yang disediakan oleh perusahaan di luar cuti bersama pemerintah'),
        (2, 'Cuti lintas tahun', 'Cuti lintas tahun adalah sisa cuti tahunan yang tersisa dari tahun sebelumnya dan hanya bisa dipakai pada 6 bulan pertama saja');
 
-INSERT IGNORE INTO employee(id, role_id, nip, nama, divisi_id, email, username, password)
+INSERT IGNORE INTO employee(id, role_id, nip, name, division_id, email, username, password)
 VALUES (1, 1, '02041911003', 'Annisa Nur Wachidah', 1, 'annisanurw@gmail.com', 'annisa',
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme'),
        (2, 1, '02041911007', 'Candra Komara', 1, 'candrakomara@gmail.com', 'candra',

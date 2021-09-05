@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @Entity
-public class Divisi extends Base {
+public class Division extends Base {
 
-    private String nama;
+    private String name;
 }

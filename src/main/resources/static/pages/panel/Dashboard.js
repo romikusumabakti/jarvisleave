@@ -67,7 +67,7 @@ function Dashboard() {
                     Buat
                 <//>
             <//>
-            <${Typography} variant="h4">Hai, ${user.nama}!<//>
+            <${Typography} variant="h4">Hai, ${user.name}!<//>
             <${Grid} container spacing=${2} sx=${{ paddingLeft: '-24px' }}>
                 <${Grid} item>
                     <${Card}>

@@ -64,70 +64,68 @@ function Login(props) {
 
     return html`
         <${Dialog} open=${props.open} onClose=${onClose} fullWidth maxWidth="xs">
-            <${DialogContent}>
-                <${Stack} spacing=${3} component="form" onSubmit=${check} hidden=${checked !== null}>
-                    ${!checked ? html`
-                        <${Stack} spacing=${1} alignItems="center">
-                            <${JarvisIcon} size=${64} padding=${8}/>
-                            <${Typography} variant="h5">
-                                Login
+            <${Stack} p=${3} spacing=${3} component="form" onSubmit=${check} hidden=${checked !== null}>
+                ${!checked ? html`
+                    <${Stack} spacing=${1} alignItems="center">
+                        <${JarvisIcon} size=${64} padding=${8}/>
+                        <${Typography} variant="h5">
+                            Login
+                        <//>
+                        <${Typography} variant="subtitle1">
+                            menggunakan Akun JarvisLeave
+                        <//>
+                    <//>
+                    <${TextField}
+                            autoFocus
+                            id="id"
+                            label="NIP, nama pengguna, atau email"
+                            fullWidth
+                            required
+                            spellcheck="false"
+                            InputLabelProps=${{required: false}}
+                            name="id"
+                            error=${idError !== null}
+                            helperText=${idError}
+                    />
+                    <${Stack} direction="row" justifyContent="space-between">
+                        <${Button} type="reset" onClick=${onClose} disabled=${loading}>Batal<//>
+                        <${Button} type="submit" variant="contained" disabled=${loading}>Berikutnya<//>
+                    <//>
+                ` : null}
+            <//>
+            <${Stack} p=${3} spacing=${3} component="form" onSubmit=${login} hidden=${checked === null}>
+                ${checked ? html`
+                    <${Stack} spacing=${1} alignItems="center">
+                        <${JarvisIcon} size=${64} padding=${8}/>
+                        <${Typography} variant="h5">
+                            Selamat datang
+                        <//>
+                        <${Stack} alignItems="center">
+                            <${Typography} variant="h6">
+                                ${checked.name}
                             <//>
                             <${Typography} variant="subtitle1">
-                                menggunakan Akun JarvisLeave
+                                Divisi ${checked.division.name}
                             <//>
                         <//>
-                        <${TextField}
-                                autoFocus
-                                id="id"
-                                label="NIP, nama pengguna, atau email"
-                                fullWidth
-                                required
-                                spellcheck="false"
-                                InputLabelProps=${{required: false}}
-                                name="id"
-                                error=${idError !== null}
-                                helperText=${idError}
-                        />
-                        <${Stack} direction="row" justifyContent="space-between">
-                            <${Button} type="reset" onClick=${onClose} disabled=${loading}>Batal<//>
-                            <${Button} type="submit" variant="contained" disabled=${loading}>Berikutnya<//>
-                        <//>
-                    ` : null}
-                <//>
-                <${Stack} spacing=${3} component="form" onSubmit=${login} hidden=${checked === null}>
-                    ${checked ? html`
-                        <${Stack} spacing=${1} alignItems="center">
-                            <${JarvisIcon} size=${64} padding=${8}/>
-                            <${Typography} variant="h5">
-                                Selamat datang
-                            <//>
-                            <${Stack} alignItems="center">
-                                <${Typography} variant="h6">
-                                    ${checked.nama}
-                                <//>
-                                <${Typography} variant="subtitle1">
-                                    Divisi ${checked.divisi.nama}
-                                <//>
-                            <//>
-                        <//>
-                        <${TextField}
-                                autoFocus
-                                id="password"
-                                label="Kata sandi"
-                                type="password"
-                                fullWidth
-                                required
-                                InputLabelProps=${{required: false}}
-                                name="password"
-                                error=${passwordError !== null}
-                                helperText=${passwordError}
-                        />
-                        <${Stack} direction="row" justifyContent="space-between">
-                            <${Button} type="reset" onClick=${() => setChecked(null)} disabled=${loading}>Kembali<//>
-                            <${Button} type="submit" variant="contained" disabled=${loading}>Login<//>
-                        <//>
-                    ` : null}
-                <//>
+                    <//>
+                    <${TextField}
+                            autoFocus
+                            id="password"
+                            label="Kata sandi"
+                            type="password"
+                            fullWidth
+                            required
+                            InputLabelProps=${{required: false}}
+                            name="password"
+                            error=${passwordError !== null}
+                            helperText=${passwordError}
+                    />
+                    <${Stack} direction="row" justifyContent="space-between">
+                        <${Button} type="reset" onClick=${() => setChecked(null)} disabled=${loading}>Kembali<//>
+                        <${Button} type="submit" variant="contained" disabled=${loading}>Login<//>
+                    <//>
+                ` : null}
             <//>
         <//>
     `;

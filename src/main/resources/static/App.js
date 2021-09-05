@@ -121,6 +121,27 @@ function App() {
                     disableElevation: true,
                 },
             },
+            MuiDialogTitle: {
+                styleOverrides: {
+                    root: {
+                        padding: '18px 32px',
+                    },
+                },
+            },
+            MuiDialogContent: {
+                styleOverrides: {
+                    root: {
+                        padding: '18px 32px',
+                    },
+                },
+            },
+            MuiDialogActions: {
+                styleOverrides: {
+                    root: {
+                        padding: 24,
+                    },
+                },
+            },
             MuiSnackbarContent: {
                 styleOverrides: {
                     root: {
