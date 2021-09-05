@@ -27,8 +27,12 @@ public class StatusCutiService {
         return statusCutis;
     }
 
-    public StatusCutiRepository getById(@PathVariable int id) {
-        return (StatusCutiRepository) statusCutiRepository.getById(id);
+    public StatusCuti findById(@PathVariable int id) {
+        return statusCutiRepository.findById(id).orElse(null);
+    }
+
+    public StatusCuti getById(@PathVariable int id) {
+        return statusCutiRepository.getById(id);
     }
 
     public StatusCuti getById(@PathVariable int id) {

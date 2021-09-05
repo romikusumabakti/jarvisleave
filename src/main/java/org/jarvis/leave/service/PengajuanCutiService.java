@@ -27,6 +27,10 @@ public class PengajuanCutiService {
         return pengajuanCutis;
     }
 
+    public PengajuanCuti findById(@PathVariable int id) {
+        return pengajuanCutiRepository.findById(id).orElse(null);
+    }
+
     public PengajuanCuti getById(@PathVariable int id) {
         return pengajuanCutiRepository.getById(id);
     }

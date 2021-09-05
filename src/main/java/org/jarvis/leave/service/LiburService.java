@@ -24,6 +24,10 @@ public class LiburService {
         return (List<Libur>) liburRepository.findAll();
     }
 
+    public Libur findById(@PathVariable int id) {
+        return liburRepository.findById(id).orElse(null);
+    }
+
     public Libur getById(@PathVariable int id) {
         return liburRepository.getById(id);
     }

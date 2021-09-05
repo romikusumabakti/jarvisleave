@@ -27,8 +27,8 @@ public class JenisCutiController {
     }
 
     @GetMapping("/{id}")
-    private JenisCuti getById(@PathVariable int id) {
-        return jenisCutiService.getById(id);
+    private JenisCuti findById(@PathVariable int id) {
+        return jenisCutiService.findById(id);
     }
 
     @PostMapping()

@@ -27,6 +27,10 @@ public class JenisCutiService {
         return jenisCutis;
     }
 
+    public JenisCuti findById(@PathVariable int id) {
+        return jenisCutiRepository.findById(id).orElse(null);
+    }
+
     public JenisCuti getById(@PathVariable int id) {
         return jenisCutiRepository.getById(id);
     }

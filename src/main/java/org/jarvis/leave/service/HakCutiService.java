@@ -26,6 +26,10 @@ public class HakCutiService {
         return hakCutis;
     }
 
+    public HakCuti findById(@PathVariable int id) {
+        return hakCutiRepository.findById(id).orElse(null);
+    }
+
     public HakCuti getById(@PathVariable int id) {
         return hakCutiRepository.getById(id);
     }

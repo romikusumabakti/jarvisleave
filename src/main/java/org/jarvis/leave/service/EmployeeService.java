@@ -1,13 +1,11 @@
 package org.jarvis.leave.service;
 
-import org.jarvis.leave.dto.EmployeeDto;
 import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.repository.EmployeeRepository;
-import org.jarvis.leave.repository.RoleRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +14,10 @@ import java.util.Optional;
 public class EmployeeService {
 
     EmployeeRepository employeeRepository;
-    RoleRepository roleRepository;
-    ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, RoleRepository roleRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.roleRepository = roleRepository;
     }
 
     public List<Employee> findAll() {
@@ -33,11 +28,8 @@ public class EmployeeService {
         return employeeRepository.findById(id);
     }
 
-    public Employee saveOrUpdate(EmployeeDto employeeDto) {
-        Employee employee = modelMapper.map(employeeDto, Employee.class);
-        employee.setRole(roleRepository.getById(employeeDto.getRole()));
+    public Employee saveOrUpdate(@RequestBody Employee employee) {
         employeeRepository.save(employee);
-        employee.setLastModifiedBy(((Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
         return employee;
     }
 

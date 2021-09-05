@@ -1,10 +1,7 @@
 package org.jarvis.leave.service;
 
-import org.jarvis.leave.model.DetailPengajuanCuti;
 import org.jarvis.leave.model.Role;
-import org.jarvis.leave.model.StatusCuti;
 import org.jarvis.leave.repository.RoleRepository;
-import org.jarvis.leave.repository.StatusCutiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +25,8 @@ public class RoleService {
         return roles;
     }
 
-    public RoleRepository getById(@PathVariable int id) {
-        return (RoleRepository) roleRepository.getById(id);
+    public Role findById(@PathVariable int id) {
+        return roleRepository.findById(id).orElse(null);
     }
 
     public Role getById(@PathVariable int id) {

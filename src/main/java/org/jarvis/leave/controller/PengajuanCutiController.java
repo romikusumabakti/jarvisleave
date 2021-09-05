@@ -31,14 +31,14 @@ public class PengajuanCutiController {
     }
 
     @GetMapping("/{id}")
-    private PengajuanCuti getById(@PathVariable int id) {
-        return pengajuanCutiService.getById(id);
+    private PengajuanCuti findById(@PathVariable int id) {
+        return pengajuanCutiService.findById(id);
     }
 
     @PostMapping()
     private PengajuanCuti save(@RequestBody PengajuanCutiDto pengajuanCutiDto) {
         PengajuanCuti pengajuanCuti = modelMapper.map(pengajuanCutiDto, PengajuanCuti.class);
-        pengajuanCuti.setEmployee(employeeRepository.getById(pengajuanCutiDto.getEmployee_id()));
+        pengajuanCuti.setEmployee(employeeRepository.findById(pengajuanCutiDto.getEmployee_id()).orElse(null));
         return pengajuanCutiService.saveOrUpdate(pengajuanCuti);
     }
 
