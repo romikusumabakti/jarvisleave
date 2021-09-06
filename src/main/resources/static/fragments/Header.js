@@ -1,16 +1,17 @@
 import html from '../modules/htm.js';
 import {AppBar, Button, IconButton, Stack, Toolbar, Tooltip, useTheme} from "../modules/material-ui.js"
 import MaterialIcon from "../components/MaterialIcon.js"
-import {Link, NavLink, useLocation, useRouteMatch} from "../modules/react-router-dom.js"
+import {Link, NavLink} from "../modules/react-router-dom.js"
 import JarvisLogo from "../components/JarvisLogo.js"
 import {useContext} from "../modules/react.js"
 import {AuthContext} from "../App.js"
+import AccountMenu from "./AccountMenu.js"
 
 function Header(props) {
 
     const { user, setUser } = useContext(AuthContext);
 
-    const userTabs = user ? [
+    const userPages = user ? [
         {
             title: 'Panel',
             path: '/panel',
@@ -18,24 +19,19 @@ function Header(props) {
         },
     ] : [];
 
-    const tabs = [
+    const pages = [
         {
             title: 'Beranda',
             path: '',
             exact: true,
         },
-            ...userTabs,
+            ...userPages,
         {
             title: 'Tentang',
             path: '/about',
             exact: true,
         },
     ];
-
-    const logout = () => {
-        localStorage.removeItem('token');
-        setUser(null);
-    }
 
     return html`
         <${AppBar} position="sticky" sx=${props.sx}>
@@ -52,25 +48,26 @@ function Header(props) {
                     <${JarvisLogo} size=${20}/>
                 <//>
                 <${Stack} direction="row" flexGrow=${1}>
-                    ${tabs.map(tab => html`
+                    ${pages.map(tab => html`
                         <${Button} component=${NavLink} exact=${tab.exact} to=${tab.path} activeClassName='active'>${tab.title}<//>
                     `)}
                 <//>
                 <${Stack} direction="row" spacing=${1} alignItems="center">
-                    <${IconButton} onClick=${props.handleMode}>
-                        ${useTheme().palette.mode === 'light' ? html`
-                            <${Tooltip} title="Ubah ke tema gelap">
+                    ${useTheme().palette.mode === 'light' ? html`
+                        <${Tooltip} title="Ubah ke tema gelap">
+                            <${IconButton} onClick=${props.handleMode}>
                                 <${MaterialIcon}>dark_mode<//>
                             <//>
-                        `
-                        : html`
-                            <${Tooltip} title="Ubah ke tema terang">
+                        <//>
+                    ` : html`
+                        <${Tooltip} title="Ubah ke tema terang">
+                            <${IconButton} onClick=${props.handleMode}>
                                 <${MaterialIcon}>light_mode<//>
                             <//>
-                        `}
-                    <//>
+                        <//>
+                    `}
                     ${user ? html`
-                        <${Button} variant="outlined" onClick=${logout}>Logout<//>
+                        <${AccountMenu}/>
                     ` : html`
                         <${Button} variant="outlined" onClick=${props.loginButtonOnClick}>Login<//>
                     `}

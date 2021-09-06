@@ -64,23 +64,19 @@ function Dashboard() {
                     <${Typography} variant="h5">Dasbor<//>
                 <//>
                 <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`}>
-                    Buat
+                    Ajukan cuti
                 <//>
             <//>
             <${Typography} variant="h4">Hai, ${user.name}!<//>
-            <${Grid} container spacing=${2} sx=${{ paddingLeft: '-24px' }}>
-                <${Grid} item>
-                    <${Card}>
-                        <${CardActionArea} sx=${{ p: 4 }}>
-                            <${Typography} variant="h5">Karyawan<//>
-                        <//>
+            <${Stack} direction="row" spacing=${2}>
+                <${Card}>
+                    <${CardActionArea} sx=${{ p: 4 }}>
+                        <${Typography} variant="h5">Karyawan<//>
                     <//>
                 <//>
-                <${Grid} item>
-                    <${Card}>
-                        <${CardActionArea} sx=${{ p: 4 }}>
-                            <${Typography} variant="h5">Karyawan<//>
-                        <//>
+                <${Card}>
+                    <${CardActionArea} sx=${{ p: 4 }}>
+                        <${Typography} variant="h5">Karyawan<//>
                     <//>
                 <//>
             <//>

@@ -29,23 +29,27 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Optional<Employee> findById(Long id) {
-        return employeeRepository.findById(id);
+    public Employee findById(Long id) {
+        return employeeRepository.findById(id).orElse(null);
     }
 
-    public Employee saveOrUpdate(@RequestBody Employee employee) {
+    public Employee findByNipUsernameOrEmail(String id) {
+        return employeeRepository.findByNipUsernameOrEmail(id);
+    }
+
+    public Employee saveOrUpdate(Employee employee) {
         employeeRepository.save(employee);
-        return employee;
+        return findById(employee.getId());
     }
 
     public void deleteById(Long id) {
-        Employee employee = employeeRepository.getById(id);
+        Employee employee = findById(id);
         employee.setIsDeleted(true);
         employeeRepository.save(employee);
     }
 
     public void cancelDeleteById(Long id) {
-        Employee employee = employeeRepository.getById(id);
+        Employee employee = findById(id);
         employee.setIsDeleted(false);
         employeeRepository.save(employee);
     }

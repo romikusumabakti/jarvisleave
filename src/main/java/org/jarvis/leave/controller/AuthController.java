@@ -2,9 +2,9 @@ package org.jarvis.leave.controller;
 
 import org.jarvis.leave.dto.LoginDto;
 import org.jarvis.leave.model.Employee;
-import org.jarvis.leave.repository.EmployeeRepository;
 import org.jarvis.leave.service.AuthService;
 import org.jarvis.leave.service.EmployeeDetailsService;
+import org.jarvis.leave.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +23,19 @@ public class AuthController {
     AuthenticationManager authenticationManager;
     EmployeeDetailsService employeeDetailsService;
     AuthService authService;
-    EmployeeRepository employeeRepository;
+    EmployeeService employeeService;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, EmployeeDetailsService employeeDetailsService, AuthService authService, EmployeeRepository employeeRepository) {
+    public AuthController(AuthenticationManager authenticationManager, EmployeeDetailsService employeeDetailsService, AuthService authService, EmployeeService employeeService) {
         this.authenticationManager = authenticationManager;
         this.employeeDetailsService = employeeDetailsService;
         this.authService = authService;
-        this.employeeRepository = employeeRepository;
+        this.employeeService = employeeService;
     }
 
     @GetMapping("/check")
     private ResponseEntity<?> check(@RequestParam String username) {
-        Employee employee = employeeRepository.getByNipUsernameOrEmail(username);
+        Employee employee = employeeService.findByNipUsernameOrEmail(username);
         if (employee != null) {
             return ResponseEntity.ok(employee);
         } else {
@@ -55,11 +55,11 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/me")
+    @GetMapping("/user")
     private ResponseEntity<?> me(HttpServletRequest request) {
         final String authorizationHeader = request.getHeader("Authorization");
 
-        String jwt = null;
+        String jwt;
         String username = null;
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -70,7 +70,7 @@ public class AuthController {
         Employee employee = null;
 
         if (username != null) {
-            employee = employeeRepository.getByNipUsernameOrEmail(username);
+            employee = employeeService.findByNipUsernameOrEmail(username);
         }
 
         if (employee != null) {

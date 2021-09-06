@@ -72,9 +72,9 @@ function App() {
                     },
                 },
             },
-            MuiList: {
+            MuiDrawer: {
                 styleOverrides: {
-                    root: {
+                    paper: {
                         paddingRight: 8,
                     },
                 },
@@ -136,7 +136,7 @@ function App() {
                 styleOverrides: {
                     root: {
                         padding: 24,
-                        gap: 16,
+                        gap: 8,
                     },
                 },
             },
@@ -155,7 +155,7 @@ function App() {
 
     useEffect(async () => {
         if (localStorage.getItem('token')) {
-            const response = await api('/auth/me');
+            const response = await api('/auth/user');
             if (response.ok) {
                 const user = await response.json();
                 setUser(user);

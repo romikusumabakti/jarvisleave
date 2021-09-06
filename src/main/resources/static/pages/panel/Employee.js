@@ -25,6 +25,7 @@ function Employee() {
     const [divisions, setDivisions] = useState();
 
     const [editOpen, setEditOpen] = useState(false);
+    const [editErrors, setEditErrors] = useState({});
     const [employee, setEmployee] = useState({});
     
     const [savedOpen, setSavedOpen] = useState(false);
@@ -61,7 +62,6 @@ function Employee() {
         } else {
             setEmployee({...employee, [key]: null});
         }
-        console.log(employee)
     };
 
     const edit = id => {
@@ -79,20 +79,23 @@ function Employee() {
 
     const cancelEdit = () => {
       setEmployee({});
+      setEditErrors({});
       setEditOpen(false);
     };
 
-    const save = event => {
+    const save = async event => {
         event.preventDefault();
-        console.log(employee);
-        api('/employee', 'POST', employee)
-            .then(response => response.json())
-            .then(employee => {
-                setEmployees(employees.map(e => (e.id === employee.id) ? employee : e));
-                setEmployee({});
-                setEditOpen(false);
-                setSavedOpen(true);
-            });
+        const response = await api('/employee', 'POST', employee)
+        if (response.ok) {
+            const employee = await response.json();
+            setEmployees(employees.map(e => (e.id === employee.id) ? employee : e));
+            setEmployee({});
+            setEditOpen(false);
+            setSavedOpen(true);
+        } else {
+            const errors = await response.json();
+            setEditErrors(errors);
+        }
     };
 
     const del = id => {
@@ -126,8 +129,13 @@ function Employee() {
                     <${MaterialIcon}>people<//>
                     <${Typography} variant="h5">Karyawan<//>
                 <//>
-                <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEditOpen(true)}>
-                    Buat karyawan
+                <${Stack} direction="row" gap=${2}>
+                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>description<//>`} onClick=${() => setEditOpen(true)}>
+                        Ekspor ke Excel
+                    <//>
+                    <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEditOpen(true)}>
+                        Buat karyawan
+                    <//>
                 <//>
             <//>
             <${TableContainer} component=${Paper}>
@@ -189,6 +197,8 @@ function Employee() {
                             onChange=${handleChange}
                             required
                             autoFocus=${!employee.id}
+                            error=${editErrors.nip}
+                            helperText=${editErrors.nip}
                     />
                     <${TextField}
                             label="Nama"
@@ -236,6 +246,8 @@ function Employee() {
                             value=${employee.email}
                             onChange=${handleChange}
                             required
+                            error=${editErrors.email}
+                            helperText=${editErrors.email}
                     />
                     <${TextField}
                             label="Nama pengguna"
@@ -245,6 +257,8 @@ function Employee() {
                             value=${employee.username}
                             onChange=${handleChange}
                             required
+                            error=${editErrors.username}
+                            helperText=${editErrors.username}
                     />
                     <${TextField}
                             label="Kata sandi${employee.id ? ' ' + (employee.password ? '(diubah)' : '(tidak diubah)') : ''}"
