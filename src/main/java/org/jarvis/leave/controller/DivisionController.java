@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/division")
+@RequestMapping("/api/divisions")
 public class DivisionController {
 
     DivisionService divisionService;

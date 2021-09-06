@@ -49,7 +49,13 @@ function Header(props) {
                 <//>
                 <${Stack} direction="row" flexGrow=${1}>
                     ${pages.map(tab => html`
-                        <${Button} component=${NavLink} exact=${tab.exact} to=${tab.path} activeClassName='active'>${tab.title}<//>
+                        <${Button} component=${NavLink} exact=${tab.exact} to=${tab.path} activeClassName="active" sx=${{
+                            '&.active': {
+                                backgroundColor: useTheme().palette.mode === 'light' ? 'rgba(25, 118, 210, 0.08)' : 'rgba(144, 202, 249, 0.16)',
+                            },
+                        }}>
+                            ${tab.title}
+                        <//>
                     `)}
                 <//>
                 <${Stack} direction="row" spacing=${1} alignItems="center">

@@ -1,9 +1,17 @@
 import {useEffect, useState} from '../../modules/react.js';
 import {
     Button,
-    CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
-    IconButton, InputLabel, MenuItem,
-    Paper, Select,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    IconButton,
+    InputLabel,
+    MenuItem,
+    Paper,
+    Select,
     Snackbar,
     Stack,
     Table,
@@ -11,7 +19,8 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, TextField,
+    TableRow,
+    TextField,
     Typography
 } from '../../modules/material-ui.js';
 import html from '../../modules/htm.js';
@@ -24,30 +33,28 @@ function Employee() {
     const [roles, setRoles] = useState();
     const [divisions, setDivisions] = useState();
 
-    const [editOpen, setEditOpen] = useState(false);
-    const [editErrors, setEditErrors] = useState({});
-    const [employee, setEmployee] = useState({});
-    
-    const [savedOpen, setSavedOpen] = useState(false);
+    const [notification, setNotification] = useState();
 
-    const [deletedOpen, setDeletedOpen] = useState(false);
+    const [edited, setEdited] = useState();
+    const [editErrors, setEditErrors] = useState({});
+
     const [deleted, setDeleted] = useState();
     const [deletedIndex, setDeletedIndex] = useState();
 
     useEffect(() => {
-        api('/employee')
+        api('/employees')
             .then(response => response.json())
             .then(employees => {
                 setEmployees(employees);
             });
 
-        api('/role')
+        api('/roles')
             .then(response => response.json())
             .then(roles => {
                 setRoles(roles);
             });
 
-        api('/division')
+        api('/divisions')
             .then(response => response.json())
             .then(divisions => {
                 setDivisions(divisions);
@@ -58,40 +65,37 @@ function Employee() {
         const key = event.target.name;
         const value = event.target.value;
         if (value !== '') {
-            setEmployee({...employee, [key]: value});
+            setEdited({...edited, [key]: value});
         } else {
-            setEmployee({...employee, [key]: null});
+            setEdited({...edited, [key]: null});
         }
     };
 
     const edit = id => {
-        api('/employee/' + id)
+        api('/employees/' + id)
             .then(response => response.json())
             .then(employee => {
-                setEmployee({
+                setEdited({
                     ...employee,
                     role: employee.role.id,
                     division: employee.division.id,
                 });
-                setEditOpen(true);
             });
     };
 
     const cancelEdit = () => {
-      setEmployee({});
+      setEdited();
       setEditErrors({});
-      setEditOpen(false);
     };
 
     const save = async event => {
         event.preventDefault();
-        const response = await api('/employee', 'POST', employee)
+        const response = await api('/employees', 'POST', edited)
         if (response.ok) {
-            const employee = await response.json();
-            setEmployees(employees.map(e => (e.id === employee.id) ? employee : e));
-            setEmployee({});
-            setEditOpen(false);
-            setSavedOpen(true);
+            const edited = response.json();
+            setEmployees(employees.map(employee => (employee.id === edited.id) ? edited : employee));
+            setEdited(null);
+            setNotification("Karyawan disimpan.");
         } else {
             const errors = await response.json();
             setEditErrors(errors);
@@ -99,28 +103,37 @@ function Employee() {
     };
 
     const del = id => {
-        api('/employee/' + id, 'DELETE')
+        api('/employees/' + id, 'DELETE')
         .then(response => {
             if (response.ok) {
                 setDeleted(employees.find(employee => employee.id === id));
                 setDeletedIndex(employees.findIndex(employee => employee.id === id));
                 setEmployees(employees.filter(employee => employee.id !== id));
-                setDeletedOpen(true);
             }
         });
     };
 
     const cancelDelete = () => {
-        api('/employee/' + deleted.id, 'POST')
-        .then(response => {
-            if (response.ok) {
-                setEmployees([...employees.slice(0, deletedIndex), deleted, ...employees.slice(deletedIndex)]);
-                setDeleted(null);
-                setDeletedIndex(null);
-                setDeletedOpen(false);
-            }
-        });
+        api('/employees/' + deleted.id, 'POST')
+            .then(response => {
+                if (response.ok) {
+                    setEmployees([...employees.slice(0, deletedIndex), deleted, ...employees.slice(deletedIndex)]);
+                    setDeleted(null);
+                    setDeletedIndex(null);
+                }
+            });
     };
+
+    const exportToExcel = async () => {
+        const response = await api('/employees/excel')
+        const filename =  response.headers.get('Content-Disposition').split('filename=')[1];
+        const excel = await response.blob();
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(excel);
+        a.download = filename;
+        a.click();
+        setNotification('Daftar karyawan diekspor ke Excel.');
+    }
 
     return html`
         <${Stack} p=${2} spacing=${2}>
@@ -130,10 +143,10 @@ function Employee() {
                     <${Typography} variant="h5">Karyawan<//>
                 <//>
                 <${Stack} direction="row" gap=${2}>
-                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>description<//>`} href="/api/employee/excel">
+                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>description<//>`} onClick=${exportToExcel}>
                         Ekspor ke Excel
                     <//>
-                    <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEditOpen(true)}>
+                    <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEdited({})}>
                         Buat karyawan
                     <//>
                 <//>
@@ -177,26 +190,26 @@ function Employee() {
             <//>
         <//>
         <${Dialog}
-                open=${editOpen}
+                open=${edited}
                 onClose=${cancelEdit}
                 scroll="paper"
                 fullWidth
                 component="form"
                 onSubmit=${save}
         >
-            <${DialogTitle}>${employee.id ? 'Edit' : 'Buat'} karyawan<//>
+            <${DialogTitle}>${edited?.id ? 'Edit' : 'Buat'} karyawan<//>
             <${DialogContent} dividers>
-                <input type="hidden" name="id" value=${employee.id}/>
+                <input type="hidden" name="id" value=${edited?.id}/>
                 <${Stack} spacing=${3}>
                     <${TextField}
                             label="NIP"
                             fullWidth
                             variant="outlined"
                             name="nip"
-                            value=${employee.nip}
+                            value=${edited?.nip}
                             onChange=${handleChange}
                             required
-                            autoFocus=${!employee.id}
+                            autoFocus=${!edited?.id}
                             error=${editErrors.nip}
                             helperText=${editErrors.nip}
                     />
@@ -205,7 +218,7 @@ function Employee() {
                             fullWidth
                             variant="outlined"
                             name="name"
-                            value=${employee.name}
+                            value=${edited?.name}
                             onChange=${handleChange}
                             required
                     />
@@ -214,7 +227,7 @@ function Employee() {
                         <${Select}
                                 label="Role"
                                 name="role"
-                                value=${employee.role}
+                                value=${edited?.role}
                                 onChange=${handleChange}
                                 required
                         >
@@ -228,7 +241,7 @@ function Employee() {
                         <${Select}
                                 label="Divisi"
                                 name="division"
-                                value=${employee.division}
+                                value=${edited?.division}
                                 onChange=${handleChange}
                                 required
                         >
@@ -243,7 +256,7 @@ function Employee() {
                             fullWidth
                             variant="outlined"
                             name="email"
-                            value=${employee.email}
+                            value=${edited?.email}
                             onChange=${handleChange}
                             required
                             error=${editErrors.email}
@@ -254,21 +267,21 @@ function Employee() {
                             fullWidth
                             variant="outlined"
                             name="username"
-                            value=${employee.username}
+                            value=${edited?.username}
                             onChange=${handleChange}
                             required
                             error=${editErrors.username}
                             helperText=${editErrors.username}
                     />
                     <${TextField}
-                            label="Kata sandi${employee.id ? ' ' + (employee.password ? '(diubah)' : '(tidak diubah)') : ''}"
+                            label="Kata sandi${edited?.id ? ' ' + (edited?.password ? '(diubah)' : '(tidak diubah)') : ''}"
                             type="password"
                             fullWidth
                             variant="outlined"
                             name="password"
-                            value=${employee.password}
+                            value=${edited?.password}
                             onChange=${handleChange}
-                            required=${!employee.id}
+                            required=${!edited?.id}
                     />
                 <//>
             <//>
@@ -278,25 +291,25 @@ function Employee() {
             <//>
         <//>
         <${Snackbar}
-                open=${savedOpen}
+                open=${notification}
                 autoHideDuration=${2750}
-                onClose=${() => setSavedOpen(false)}
-                message="Karyawan disimpan."
+                onClose=${() => setNotification(null)}
+                message=${notification}
                 action=${html`
                     <${IconButton}
                             size="small"
                             aria-label="close"
                             color="inherit"
-                            onClick=${() => setSavedOpen(false)}
+                            onClick=${() => setNotification(null)}
                     >
                         <${MaterialIcon} size="small" >close<//>
                     <//>
                 `}
         />
         <${Snackbar}
-                open=${deletedOpen}
+                open=${deleted}
                 autoHideDuration=${6000}
-                onClose=${() => setDeletedOpen(false)}
+                onClose=${() => setDeleted(null)}
                 message="1 karyawan dihapus."
                 action=${html`
                     <${Button} size="small" color="inherit" onClick=${cancelDelete}>
@@ -306,7 +319,7 @@ function Employee() {
                             size="small"
                             aria-label="close"
                             color="inherit"
-                            onClick=${() => setDeletedOpen(false)}
+                            onClick=${() => setDeleted(null)}
                     >
                         <${MaterialIcon} size="small" >close<//>
                     <//>

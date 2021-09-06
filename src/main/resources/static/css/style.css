@@ -110,10 +110,6 @@ form {
     margin: 0;
 }
 
-.active {
-     background-color: rgba(25, 118, 210, .1) !important;
- }
-
 [hidden] {
     display: none !important;
 }
