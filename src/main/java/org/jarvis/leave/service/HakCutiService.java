@@ -34,26 +34,23 @@ public class HakCutiService {
         return hakCutiRepository.findAll();
     }
 
-    public Optional<HakCuti> findById(@PathVariable Long id) {
-        return hakCutiRepository.findById(id);
+    public HakCuti findById(@PathVariable Long id) {
+        return hakCutiRepository.findById(id).orElse(null);
     }
 
-    public HakCuti saveOrUpdate(@RequestBody HakCutiDto hakCutiDto) {
-        HakCuti hakCuti = modelMapper.map(hakCutiDto, HakCuti.class);
-        hakCuti.setEmployee(employeeRepository.findById(hakCutiDto.getEmployee()).orElse(null));
-        hakCuti.setJenisCuti(jenisCutiRepository.findById(hakCutiDto.getJenisCuti()).orElse(null));
+    public HakCuti saveOrUpdate(@RequestBody HakCuti hakCuti) {
         hakCutiRepository.save(hakCuti);
         return hakCuti;
     }
 
     public void deleteById(@PathVariable Long id) {
-        HakCuti hakCuti = hakCutiRepository.getById(id);
+        HakCuti hakCuti = findById(id);
         hakCuti.setIsDeleted(true);
         hakCutiRepository.save(hakCuti);
     }
 
     public void cancelDeleteById(Long id) {
-        HakCuti hakCuti = hakCutiRepository.getById(id);
+        HakCuti hakCuti = findById(id);
         hakCuti.setIsDeleted(false);
         hakCutiRepository.save(hakCuti);
     }

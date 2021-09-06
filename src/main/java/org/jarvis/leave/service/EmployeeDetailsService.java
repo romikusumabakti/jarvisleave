@@ -20,6 +20,7 @@ public class EmployeeDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
+
         Employee employee = employeeService.findByNipUsernameOrEmail(username);
         if (employee == null) {
             throw new UsernameNotFoundException(username);

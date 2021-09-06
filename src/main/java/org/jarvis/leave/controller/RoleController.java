@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -27,7 +26,7 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    private Optional<Role> findById(@PathVariable Long id) {
+    private Role findById(@PathVariable Long id) {
         return roleService.findById(id);
     }
 

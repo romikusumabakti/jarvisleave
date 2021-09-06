@@ -7,7 +7,7 @@ import {AuthContext} from "../App.js"
 import Footer from "../fragments/Footer.js"
 
 const Dashboard = lazy(() => import('./panel/Dashboard.js'));
-const Employee = lazy(() => import('./panel/Employee.js'));
+const Employee = lazy(() => import('./panel/Employees.js'));
 
 function Panel() {
 

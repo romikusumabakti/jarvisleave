@@ -13,5 +13,4 @@ public interface DetailPengajuanCutiRepository extends JpaRepository<DetailPenga
     @Override
     @Query("select u from DetailPengajuanCuti u where u.isDeleted=false")
     List<DetailPengajuanCuti> findAll();
-
 }

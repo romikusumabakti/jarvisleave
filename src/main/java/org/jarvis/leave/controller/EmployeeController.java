@@ -54,51 +54,52 @@ public class EmployeeController {
         return employeeService.findById(id);
     }
 
-    private ResponseEntity<?> saveOrUpdate(EmployeeDto employeeDto) {
+    private Employee map(EmployeeDto employeeDto) {
 
         Employee employee = modelMapper.map(employeeDto, Employee.class);
-        employee.setRole(roleService.findById(employeeDto.getRole()).orElse(null));
-        employee.setDivision(divisionService.findById(employeeDto.getDivision()).orElse(null));
+        employee.setRole(roleService.findById(employeeDto.getRole()));
+        employee.setDivision(divisionService.findById(employeeDto.getDivision()));
 
-        if (employeeDto.getId() == null) {
-
-            Map<String, String> errors = new HashMap<>();
-
-            if (employeeService.findByNipUsernameOrEmail(employeeDto.getNip()) != null) {
-                errors.put("nip", "NIP sudah dipakai.");
-            }
-
-            if (employeeService.findByNipUsernameOrEmail(employeeDto.getUsername()) != null) {
-                errors.put("username", "Nama pengguna sudah dipakai.");
-            }
-
-            if (employeeService.findByNipUsernameOrEmail(employeeDto.getEmail()) != null) {
-                errors.put("email", "Email sudah dipakai.");
-            }
-
-            if (!errors.isEmpty()) {
-                return ResponseEntity.badRequest().body(errors);
-            }
-        } else {
-
-            if (employeeDto.getPassword() != null) {
-                employee.setPassword(passwordEncoder.encode(employeeDto.getPassword()));
-            } else {
-                employee.setPassword(employeeService.findById(employeeDto.getId()).getPassword());
-            }
-        }
-
-        return ResponseEntity.ok(employeeService.saveOrUpdate(employee));
+        return employee;
     }
 
     @PostMapping()
     private ResponseEntity<?> save(@RequestBody EmployeeDto employeeDto) {
-        return saveOrUpdate(employeeDto);
+
+        Map<String, String> errors = new HashMap<>();
+
+        if (employeeService.findByNipUsernameOrEmail(employeeDto.getNip()) != null) {
+            errors.put("nip", "NIP sudah dipakai.");
+        }
+
+        if (employeeService.findByNipUsernameOrEmail(employeeDto.getUsername()) != null) {
+            errors.put("username", "Nama pengguna sudah dipakai.");
+        }
+
+        if (employeeService.findByNipUsernameOrEmail(employeeDto.getEmail()) != null) {
+            errors.put("email", "Email sudah dipakai.");
+        }
+
+        if (!errors.isEmpty()) {
+            return ResponseEntity.badRequest().body(errors);
+        } else {
+            Employee employee = map(employeeDto);
+            return ResponseEntity.ok(employee);
+        }
     }
 
     @PutMapping()
-    private ResponseEntity<?> update(@RequestBody EmployeeDto employeeDto) {
-        return saveOrUpdate(employeeDto);
+    private Employee update(@RequestBody EmployeeDto employeeDto) {
+
+        Employee employee = map(employeeDto);
+
+        if (employeeDto.getPassword() != null) {
+            employee.setPassword(passwordEncoder.encode(employeeDto.getPassword()));
+        } else {
+            employee.setPassword(employeeService.findById(employeeDto.getId()).getPassword());
+        }
+
+        return employeeService.saveOrUpdate(employee);
     }
 
     @DeleteMapping("/{id}")

@@ -4,15 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class ForwardingController {
+public class ForwardController {
 
-    @RequestMapping(value={"/{path:[a-z0-9]+}"})
+    @RequestMapping(value={"/{path:[a-z0-9]+}", "/panel/**"})
     public String forward() {
-        return "forward:/";
-    }
-
-    @RequestMapping(value={"/panel/**"})
-    public String forward2() {
         return "forward:/";
     }
 }

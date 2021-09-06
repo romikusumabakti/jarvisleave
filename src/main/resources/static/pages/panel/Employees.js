@@ -27,7 +27,7 @@ import html from '../../modules/htm.js';
 import MaterialIcon from "../../components/MaterialIcon.js"
 import api from "../../utils/api.js"
 
-function Employee() {
+function Employees() {
 
     const [employees, setEmployees] = useState();
     const [roles, setRoles] = useState();
@@ -35,7 +35,7 @@ function Employee() {
 
     const [notification, setNotification] = useState();
 
-    const [edited, setEdited] = useState();
+    const [edited, setEdited] = useState(null);
     const [editErrors, setEditErrors] = useState({});
 
     const [deleted, setDeleted] = useState();
@@ -84,15 +84,15 @@ function Employee() {
     };
 
     const cancelEdit = () => {
-      setEdited();
+      setEdited(null);
       setEditErrors({});
     };
 
     const save = async event => {
         event.preventDefault();
-        const response = await api('/employees', 'POST', edited)
+        const response = await api('/employees', edited.id ? 'PUT' : 'POST', edited)
         if (response.ok) {
-            const edited = response.json();
+            const edited = await response.json();
             setEmployees(employees.map(employee => (employee.id === edited.id) ? edited : employee));
             setEdited(null);
             setNotification("Karyawan disimpan.");
@@ -190,7 +190,7 @@ function Employee() {
             <//>
         <//>
         <${Dialog}
-                open=${edited}
+                open=${edited !== null}
                 onClose=${cancelEdit}
                 scroll="paper"
                 fullWidth
@@ -328,4 +328,4 @@ function Employee() {
     `;
 }
 
-export default Employee;
+export default Employees;

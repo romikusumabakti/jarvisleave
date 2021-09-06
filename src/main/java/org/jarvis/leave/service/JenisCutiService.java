@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class JenisCutiService {
@@ -19,33 +18,31 @@ public class JenisCutiService {
     ModelMapper modelMapper;
 
     @Autowired
-    public JenisCutiService(JenisCutiRepository jenisCutiRepository, ModelMapper modelMapper) {
+    public JenisCutiService(JenisCutiRepository jenisCutiRepository) {
         this.jenisCutiRepository = jenisCutiRepository;
-        this.modelMapper = modelMapper;
     }
 
     public List<JenisCuti> findAll() {
         return jenisCutiRepository.findAll();
     }
 
-    public Optional<JenisCuti> findById(@PathVariable Long id) {
-        return jenisCutiRepository.findById(id);
+    public JenisCuti findById(@PathVariable Long id) {
+        return jenisCutiRepository.findById(id).orElse(null);
     }
 
-    public JenisCuti saveOrUpdate(@RequestBody JenisCutiDto jenisCutiDto) {
-        JenisCuti jenisCuti = modelMapper.map(jenisCutiDto, JenisCuti.class);
+    public JenisCuti saveOrUpdate(@RequestBody JenisCuti jenisCuti) {
         jenisCutiRepository.save(jenisCuti);
-        return jenisCuti;
+        return findById(jenisCuti.getId());
     }
 
     public void deleteById(@PathVariable Long id) {
-        JenisCuti jenisCuti = jenisCutiRepository.getById(id);
+        JenisCuti jenisCuti = findById(id);
         jenisCuti.setIsDeleted(true);
         jenisCutiRepository.save(jenisCuti);
     }
 
     public void cancelDeleteById(Long id) {
-        JenisCuti jenisCuti = jenisCutiRepository.getById(id);
+        JenisCuti jenisCuti = findById(id);
         jenisCuti.setIsDeleted(false);
         jenisCutiRepository.save(jenisCuti);
     }

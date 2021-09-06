@@ -2,21 +2,23 @@ package org.jarvis.leave.controller;
 
 import org.jarvis.leave.dto.HakCutiDto;
 import org.jarvis.leave.model.HakCuti;
-import org.jarvis.leave.repository.EmployeeRepository;
-import org.jarvis.leave.repository.JenisCutiRepository;
+import org.jarvis.leave.service.EmployeeService;
 import org.jarvis.leave.service.HakCutiService;
+import org.jarvis.leave.service.JenisCutiService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping ("/api/hak_cuti")
 public class HakCutiController {
 
     HakCutiService hakCutiService;
+    EmployeeService employeeService;
+    JenisCutiService jenisCutiService;
+    ModelMapper modelMapper;
 
     @Autowired
     public HakCutiController(HakCutiService hakCutiService) {
@@ -29,16 +31,22 @@ public class HakCutiController {
     }
 
     @GetMapping("/{id}")
-    private Optional<HakCuti> findById(@PathVariable Long id) { return hakCutiService.findById(id); }
+    private HakCuti findById(@PathVariable Long id) { return hakCutiService.findById(id); }
 
     @PostMapping()
     private HakCuti save(@RequestBody HakCutiDto hakCutiDto) {
-        return hakCutiService.saveOrUpdate(hakCutiDto);
+        HakCuti hakCuti = modelMapper.map(hakCutiDto, HakCuti.class);
+        hakCuti.setEmployee(employeeService.findById(hakCutiDto.getEmployee()));
+        hakCuti.setJenisCuti(jenisCutiService.findById(hakCutiDto.getJenisCuti()));
+        return hakCutiService.saveOrUpdate(hakCuti);
     }
 
     @PutMapping()
     private HakCuti update(@RequestBody HakCutiDto hakCutiDto) {
-        return hakCutiService.saveOrUpdate(hakCutiDto);
+        HakCuti hakCuti = modelMapper.map(hakCutiDto, HakCuti.class);
+        hakCuti.setEmployee(employeeService.findById(hakCutiDto.getEmployee()));
+        hakCuti.setJenisCuti(jenisCutiService.findById(hakCutiDto.getJenisCuti()));
+        return hakCutiService.saveOrUpdate(hakCuti);
     }
 
     @DeleteMapping("/{id}")

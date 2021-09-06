@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RoleService {
@@ -28,8 +27,8 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    public Optional<Role> findById(@PathVariable Long id) {
-        return roleRepository.findById(id);
+    public Role findById(@PathVariable Long id) {
+        return roleRepository.findById(id).orElse(null);
     }
 
     public Role saveOrUpdate(@RequestBody RoleDto roleDto) {

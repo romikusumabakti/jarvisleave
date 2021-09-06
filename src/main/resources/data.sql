@@ -24,7 +24,7 @@ VALUES (1, 'Tahunan', 'Cuti tahunan adalah cuti yang disediakan oleh perusahaan 
 INSERT IGNORE INTO employee(id, role_id, nip, name, division_id, email, username, password)
 VALUES (1, 1, '02041911003', 'Annisa Nur Wachidah', 1, 'annisanurw@gmail.com', 'annisa',
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme'),
-       (2, 1, '02041911007', 'Candra Komara', 1, 'candrakomara@gmail.com', 'candra',
+       (2, 1, '02041911007', 'Candra Komara', 2, 'candrakomara@gmail.com', 'candra',
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme'),
        (3, 1, '01021911021', "Dian Nurul Khazaainatu Qurrota A'yun", 1, 'diannurulqa@gmail.com', 'dian',
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme'),
