@@ -1,19 +1,16 @@
 import html from '../modules/htm.js';
-import {
-    Button,
-    Dialog,
-    DialogContent,
-    Stack,
-    TextField, Typography
-} from "../modules/material-ui.js"
+import {Button, Dialog, Stack, TextField, Typography} from "../modules/material-ui.js"
 import {useContext, useState} from "../modules/react.js"
 import JarvisIcon from "../components/JarvisIcon.js"
 import api from "../utils/api.js"
 import {AuthContext} from "../App.js"
+import {useHistory} from "../modules/react-router-dom.js"
 
 function Login(props) {
 
     const { setUser } = useContext(AuthContext);
+    const history = useHistory();
+
     const [checked, setChecked] = useState(null);
     const [loading, setLoading] = useState(false);
     const [usernameError, setUsernameError] = useState(null);
@@ -47,6 +44,9 @@ function Login(props) {
             localStorage.setItem('token', token);
             setUser(checked);
             onClose();
+            if (history.location.pathname === '/') {
+                history.push('/panel');
+            }
         } else {
             const error = await response.text();
             setPasswordError(error);

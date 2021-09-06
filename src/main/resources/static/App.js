@@ -11,6 +11,7 @@ import html from './modules/htm.js';
 import Header from "./fragments/Header.js"
 import Login from "./fragments/Login.js"
 import api from "./utils/api.js"
+import Home from "./pages/Home.js"
 
 const Panel = lazy(() => import('./pages/Panel.js'));
 
@@ -173,13 +174,11 @@ function App() {
                     <${Header} loginButtonOnClick=${() => setLoginOpen(true)} mode=${mode} handleMode=${handleMode} sx=${{ zIndex: (theme) => theme.zIndex.drawer + 1 }}/>
                     <${Suspense} fallback=${html`<${CircularProgress} />`}>
                         <${Route} exact path="/">
-                            <h1>Ini halaman Beranda.</h1>
+                            <${Home}/>
                         <//>
-                        ${user ? html`
-                            <${Route} path="/panel">
-                                <${Panel}/>
-                            <//>
-                        ` : null}
+                        <${Route} path="/panel">
+                            <${Panel}/>
+                        <//>
                         <${Route} exact path="/about">
                             <h1>Ini halaman Tentang.</h1>
                         <//>

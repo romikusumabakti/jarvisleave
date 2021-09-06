@@ -8,12 +8,10 @@ import {useHistory} from "../modules/react-router-dom.js"
 function AccountMenu() {
 
     const { user, setUser } = useContext(AuthContext);
-    const history = useHistory();
 
     const logout = () => {
         localStorage.removeItem('token');
         setUser(null);
-        history.push('/');
     }
 
     const [anchorEl, setAnchorEl] = React.useState(null);

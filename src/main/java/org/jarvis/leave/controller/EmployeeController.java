@@ -1,5 +1,10 @@
 package org.jarvis.leave.controller;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jarvis.leave.dto.EmployeeDto;
 import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.service.DivisionService;
@@ -11,8 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/employee")
@@ -51,7 +62,7 @@ public class EmployeeController {
 
         if (employeeDto.getId() == null) {
 
-            HashMap<String, String> errors = new HashMap<>();
+            Map<String, String> errors = new HashMap<>();
 
             if (employeeService.findByNipUsernameOrEmail(employeeDto.getNip()) != null) {
                 errors.put("nip", "NIP sudah dipakai.");
@@ -98,5 +109,49 @@ public class EmployeeController {
     @PostMapping("/{id}")
     private void cancelDeleteById(@PathVariable Long id) {
         employeeService.cancelDeleteById(id);
+    }
+
+    @GetMapping("/excel")
+    private void exportToExcel(HttpServletResponse response) throws IOException {
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Karyawan");
+        Row header = sheet.createRow(0);
+
+        String[] fields = {"NIP", "Nama", "Role", "Divisi", "Email", "Nama pengguna"};
+
+        for (int i = 0; i < fields.length; i++) {
+            Cell headerCell = header.createCell(i);
+            headerCell.setCellValue(fields[i]);
+            sheet.setColumnWidth(i, 5000);
+        }
+
+        List<Employee> employees = employeeService.findAll();
+
+        int rowCount = 1;
+        for (Employee employee : employees) {
+            Row row = sheet.createRow(rowCount++);
+            int cellCount = 0;
+            row.createCell(cellCount++).setCellValue(employee.getNip());
+            row.createCell(cellCount++).setCellValue(employee.getName());
+            row.createCell(cellCount++).setCellValue(employee.getRole().getName());
+            row.createCell(cellCount++).setCellValue(employee.getDivision().getName());
+            row.createCell(cellCount++).setCellValue(employee.getEmail());
+            row.createCell(cellCount).setCellValue(employee.getUsername());
+        }
+
+        response.setContentType("application/octet-stream");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss");
+        String currentDateTime = dateTimeFormatter.format(LocalDateTime.now());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=Karyawan " + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        ServletOutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        workbook.close();
+
+        outputStream.close();
     }
 }

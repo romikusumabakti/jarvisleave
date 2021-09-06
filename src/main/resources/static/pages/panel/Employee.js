@@ -130,7 +130,7 @@ function Employee() {
                     <${Typography} variant="h5">Karyawan<//>
                 <//>
                 <${Stack} direction="row" gap=${2}>
-                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>description<//>`} onClick=${() => setEditOpen(true)}>
+                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>description<//>`} href="/api/employee/excel">
                         Ekspor ke Excel
                     <//>
                     <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEditOpen(true)}>
