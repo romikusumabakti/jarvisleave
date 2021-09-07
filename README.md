@@ -22,6 +22,9 @@ Setiap data dapat diekspor ke dalam format Microsoft Excel.
 ## Batal hapus
 Setiap data yang dihapus dapat dikembalikan.
 
+## Tema gelap
+Beralih antara tema terang dan gelap kapan saja dengan sekali klik.
+
 ## Gratis dan open source
 JarvisLeave benar-benar gratis dan open source di bawah lisensi MIT.
 
