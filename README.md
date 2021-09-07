@@ -37,18 +37,19 @@ Tidak ada yang perlu disiapkan, klik Run dan aplikasi akan menyiapkan basis data
 - romi
 - tiara
 ### Nama pengguna karyawan
-- iqbal
-- danil
-- anjar
-- hera
-- rizal
-- maratus
-- dio
-- niki
 - ade
-- putri
-- firdi
+- anjar
+- danil
+- dio
 - elvina
+- fatin
+- hera
+- iqbal
+- maratus
+- niki
+- putri
+- rizal
 ### Kata sandi
 > 1234
-*Anda juga dapat login menggunakan NIP atau email
+
+*Anda juga dapat login menggunakan NIP atau email.
