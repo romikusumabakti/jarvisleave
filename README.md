@@ -28,16 +28,8 @@ Beralih antara tema terang dan gelap kapan saja dengan sekali klik.
 ## Gratis dan open source
 JarvisLeave benar-benar gratis dan open source di bawah lisensi MIT.
 
-## Fitur
-* Pemberitahuan melalui email (diminta, diterima, ditolak, dan pengguna baru).
-* Alur kerja persetujuan permintaan cuti (1 validator).
-* Laporan cuti (difilter berdasarkan divisi).
-* Laporan kehadiran bulanan.
-* Ekspor ke XLSX (Excel, LibreOffice) dalam sekali klik (hampir semua halaman aplikasi).
-* Pengguna HRD dapat mengedit permintaan cuti atau lembur.
-* Tetapkan kontrak Anda sendiri dan jenis cuti.
-* Kalender cuti (individu, tim, kolaborator, dll.).
-* Hari non-kerja (akhir pekan dan hari holiday) dapat ditentukan dalam kontrak sehingga secara otomatis menghitung durasi cuti dan menampilkannya di kalender.
-* REST API.
-* Otentikasi JWT.
-* Tersedia dalam bahasa Indonesia.
+## Demo
+Tidak ada yang perlu disiapkan, klik Run dan aplikasi akan menyiapkan basis data secara otomatis.
+Nama pengguna HRD: annisa, candra, dian, romi, tiara
+Nama pengguna karyawan: iqbal, danil, anjar, hera, rizal, maratus, dio, niki, ade, putri, firdi, elvina
+Kata sandi: 1234
