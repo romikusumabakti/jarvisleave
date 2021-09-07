@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/jenis_cuti")
+@RequestMapping("/api/leave_types")
 public class LeaveTypeController {
 
     LeaveTypeService leaveTypeService;

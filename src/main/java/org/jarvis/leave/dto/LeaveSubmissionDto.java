@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class LeaveSubmissionDto {
+    private Long id;
     private Long employee;
     private Long replacement;
     private Integer duration;

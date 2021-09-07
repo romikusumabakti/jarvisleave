@@ -24,11 +24,11 @@ import html from '../../modules/htm.js';
 import MaterialIcon from "../../components/MaterialIcon.js"
 import {api, jsonApi} from "../../utils/api.js"
 
-function Holidays() {
+function Approvals() {
 
     const dateFormat = new Intl.DateTimeFormat('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-    const [holidays, setHolidays] = useState();
+    const [leaveSubmissions, setLeaveSubmissions] = useState();
 
     const [notification, setNotification] = useState();
 
@@ -38,10 +38,10 @@ function Holidays() {
     const [deletedIndex, setDeletedIndex] = useState();
 
     useEffect(() => {
-        api('/holidays')
+        api('/leave_submissions')
             .then(response => response.json())
-            .then(holidays => {
-                setHolidays(holidays);
+            .then(leaveSubmissions => {
+                setLeaveSubmissions(leaveSubmissions);
             });
     }, []);
 
@@ -56,10 +56,10 @@ function Holidays() {
     };
 
     const edit = id => {
-        api('/holidays/' + id)
+        api('/leave_submissions/' + id)
             .then(response => response.json())
-            .then(holiday => {
-                setEdited({...holiday});
+            .then(leaveSubmission => {
+                setEdited({...leaveSubmission});
             });
     };
 
@@ -69,35 +69,35 @@ function Holidays() {
 
     const save = async event => {
         event.preventDefault();
-        jsonApi('/holidays', edited.id ? 'PUT' : 'POST', edited)
+        jsonApi('/leave_submissions', edited.id ? 'PUT' : 'POST', edited)
             .then(response => response.json())
-            .then(holiday => {
+            .then(leaveSubmission => {
                 if (edited.id) {
-                    setHolidays(holidays.map(e => (e.id === holiday.id) ? holiday : e));
+                    setLeaveSubmissions(leaveSubmissions.map(e => (e.id === leaveSubmission.id) ? leaveSubmission : e));
                 } else {
-                    setHolidays([...holidays, holiday]);
+                    setLeaveSubmissions([...leaveSubmissions, leaveSubmission]);
                 }
                 setEdited(null);
-                setNotification("Hari libur disimpan.");
+                setNotification("Persetujuan disimpan.");
             });
     };
 
     const del = id => {
-        api('/holidays/' + id, 'DELETE')
+        api('/leave_submissions/' + id, 'DELETE')
             .then(response => {
                 if (response.ok) {
-                    setDeleted(holidays.find(holiday => holiday.id === id));
-                    setDeletedIndex(holidays.findIndex(holiday => holiday.id === id));
-                    setHolidays(holidays.filter(holiday => holiday.id !== id));
+                    setDeleted(leaveSubmissions.find(leaveSubmission => leaveSubmission.id === id));
+                    setDeletedIndex(leaveSubmissions.findIndex(leaveSubmission => leaveSubmission.id === id));
+                    setLeaveSubmissions(leaveSubmissions.filter(leaveSubmission => leaveSubmission.id !== id));
                 }
             });
     };
 
     const cancelDelete = () => {
-        api('/holidays/' + deleted.id, 'POST')
+        api('/leave_submissions/' + deleted.id, 'POST')
             .then(response => {
                 if (response.ok) {
-                    setHolidays([...holidays.slice(0, deletedIndex), deleted, ...holidays.slice(deletedIndex)]);
+                    setLeaveSubmissions([...leaveSubmissions.slice(0, deletedIndex), deleted, ...leaveSubmissions.slice(deletedIndex)]);
                     setDeleted(null);
                     setDeletedIndex(null);
                 }
@@ -112,20 +112,20 @@ function Holidays() {
         input.onchange = () => {
             const formData = new FormData();
             formData.append('file', input.files[0]);
-            api('/holidays/excel', 'POST', formData)
-                .then(setNotification('Daftar hari libur diimpor dari Excel.'));
+            api('/leave_submissions/excel', 'POST', formData)
+                .then(setNotification('Daftar persetujuan diimpor dari Excel.'));
         };
     };
 
     const exportToExcel = async () => {
-        const response = await api('/holidays/excel');
+        const response = await api('/leave_submissions/excel');
         const filename = response.headers.get('Content-Disposition').split('filename=')[1];
         response.blob().then(excel => {
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(excel);
             a.download = filename;
             a.click();
-            setNotification('Daftar hari libur diekspor ke Excel.');
+            setNotification('Daftar persetujuan diekspor ke Excel.');
         })
     };
 
@@ -133,16 +133,10 @@ function Holidays() {
         <${Stack} p=${2} spacing=${2}>
             <${Stack} direction="row" justifyContent="space-between">
                 <${Stack} direction="row" alignItems="center" gap=${1}>
-                    <${MaterialIcon}>date_range<//>
-                    <${Typography} variant="h5">Hari libur<//>
+                    <${MaterialIcon}>rule<//>
+                    <${Typography} variant="h5">Persetujuan<//>
                 <//>
                 <${Stack} direction="row" gap=${2}>
-                    <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEdited({})}>
-                        Buat hari libur
-                    <//>
-                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>file_upload<//>`} onClick=${importFromExcel}>
-                        Impor dari Excel
-                    <//>
                     <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>file_download<//>`} onClick=${exportToExcel}>
                         Ekspor ke Excel
                     <//>
@@ -152,28 +146,35 @@ function Holidays() {
                 <${Table}>
                     <${TableHead}>
                         <${TableRow}>
-                            <${TableCell}>Nama<//>
+                            <${TableCell}>Karyawan<//>
+                            <${TableCell}>Pengganti<//>
+                            <${TableCell}>Durasi<//>
                             <${TableCell}>Deskripsi<//>
-                            <${TableCell}>Tanggal<//>
                             <${TableCell}><//>
                         <//>
                     <//>
                     <${TableBody}>
-                        ${holidays ? holidays.map(holiday => html`
+                        ${leaveSubmissions ? leaveSubmissions.map(leaveSubmission => html`
                             <${TableRow}>
-                                <${TableCell}>${holiday.name}<//>
-                                <${TableCell}>${holiday.description}<//>
-                                <${TableCell}>${dateFormat.format(new Date(holiday.date))}<//>
+                                <${TableCell}>${leaveSubmission.employee.name}<//>
+                                <${TableCell}>${leaveSubmission.replacement.name}<//>
+                                <${TableCell}>${leaveSubmission.duration} hari<//>
+                                <${TableCell}>${leaveSubmission.description}<//>
                                 <${TableCell}>
                                     <${Stack} direction="row" spacing=${2} justifyContent="flex-end">
-                                        <${Tooltip} title="Edit hari libur">
-                                            <${IconButton} onClick=${() => edit(holiday.id)}>
-                                                <${MaterialIcon}>edit<//>
+                                        <${Tooltip} title="Detail pengajuan">
+                                            <${IconButton} onClick=${() => edit(leaveSubmission.id)}>
+                                                <${MaterialIcon}>info<//>
                                             <//>
                                         <//>
-                                        <${Tooltip} title="Hapus hari libur">
-                                            <${IconButton} onClick=${() => del(holiday.id)}>
-                                                <${MaterialIcon}>delete<//>
+                                        <${Tooltip} title="Setujui pengajuan">
+                                            <${IconButton} onClick=${() => edit(leaveSubmission.id)}>
+                                                <${MaterialIcon}>done<//>
+                                            <//>
+                                        <//>
+                                        <${Tooltip} title="Tolak pengajuan">
+                                            <${IconButton} onClick=${() => del(leaveSubmission.id)}>
+                                                <${MaterialIcon}>close<//>
                                             <//>
                                         <//>
                                     <//>
@@ -192,7 +193,7 @@ function Holidays() {
                 component="form"
                 onSubmit=${save}
         >
-            <${DialogTitle}>${edited?.id ? 'Edit' : 'Buat'} hari libur<//>
+            <${DialogTitle}>${edited?.id ? 'Edit' : 'Buat'} persetujuan<//>
             <${DialogContent} dividers>
                 <input type="hidden" name="id" value=${edited?.id}/>
                 <${Stack} spacing=${3}>
@@ -251,7 +252,7 @@ function Holidays() {
                 open=${deleted}
                 autoHideDuration=${6000}
                 onClose=${() => setDeleted(null)}
-                message="1 hari libur dihapus."
+                message="1 persetujuan dihapus."
                 action=${html`
                     <${Button} size="small" color="inherit" onClick=${cancelDelete}>
                         Batal
@@ -269,4 +270,4 @@ function Holidays() {
     `;
 }
 
-export default Holidays;
+export default Approvals;

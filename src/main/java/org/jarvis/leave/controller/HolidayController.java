@@ -50,4 +50,9 @@ public class HolidayController {
     private void deleteById(@PathVariable Long id) {
         holidayService.deleteById(id);
     }
+
+    @PostMapping("/{id}")
+    private void cancelDeleteById(@PathVariable Long id) {
+        holidayService.cancelDeleteById(id);
+    }
 }

@@ -6,7 +6,7 @@ import {AuthContext} from "../../App.js"
 
 function Dashboard() {
 
-    const { user } = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
 
     return html`
         <${Stack} p=${2} spacing=${2}>

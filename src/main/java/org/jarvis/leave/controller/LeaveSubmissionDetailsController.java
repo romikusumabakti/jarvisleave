@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/detail_pengajuan_cuti")
+@RequestMapping("/api/leave_submissions_details")
 public class LeaveSubmissionDetailsController {
     LeaveSubmissionDetailsService leaveSubmissionDetailsService;
     LeaveSubmissionRepository leaveSubmissionRepository;

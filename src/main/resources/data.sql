@@ -1,8 +1,10 @@
-INSERT IGNORE INTO role(id, name)
+INSERT
+IGNORE INTO role(id, name)
 VALUES (1, 'HRD'),
        (2, 'Karyawan');
 
-INSERT IGNORE INTO division(id, name)
+INSERT
+IGNORE INTO division(id, name)
 VALUES (1, 'PPMB'),
        (2, 'Pendidikan'),
        (3, 'Kerohanian'),
@@ -10,18 +12,26 @@ VALUES (1, 'PPMB'),
        (5, 'Kesejahteraan'),
        (6, 'Kesehatan');
 
-INSERT IGNORE INTO leave_status(id, name, description)
-VALUES (1, 'Draft', 'Draft adalah status cuti di mana pengajuan cuti sudah dibuat tapi belum diajukan'),
-       (2, 'Open', 'Open adalah status cuti di mana pengajuan cuti sudah diajukan kepada HRD'),
-       (3, 'Approved', 'Approved adalah status cuti di mana pengajuan cuti sudah disetujui oleh HRD'),
-       (4, 'Rejected', 'Rejected adalah status cuti di mana pengajuan cuti sudah ditolak oleh HRD'),
-       (5, 'Cancelled', 'Cancelled adalah status cuti di mana pengajuan cuti yang sebelumnya open namun digagalkan oleh karyawan itu sendiri');
+INSERT
+IGNORE INTO leave_type(id, name, description)
+VALUES (1, 'Tahunan', 'Cuti yang disediakan oleh perusahaan di luar cuti bersama pemerintah.'),
+       (2, 'Lintas tahun', 'Sisa cuti tahunan yang tersisa dari tahun sebelumnya dan hanya bisa dipakai pada 6 bulan pertama saja.');
 
-INSERT IGNORE INTO leave_type(id, name, description)
-VALUES (1, 'Tahunan', 'Cuti tahunan adalah cuti yang disediakan oleh perusahaan di luar cuti bersama pemerintah'),
-       (2, 'Cuti lintas tahun', 'Cuti lintas tahun adalah sisa cuti tahunan yang tersisa dari tahun sebelumnya dan hanya bisa dipakai pada 6 bulan pertama saja');
+INSERT
+IGNORE INTO leave_status(id, name, description)
+VALUES (1, 'Draf', 'Pengajuan cuti sudah dibuat tapi belum diajukan.'),
+       (2, 'Tertunda', 'Pengajuan cuti sudah diajukan kepada HRD.'),
+       (3, 'Disetujui', 'Pengajuan cuti sudah disetujui oleh HRD.'),
+       (4, 'Ditolak', 'Pengajuan cuti sudah ditolak oleh HRD.'),
+       (5, 'Dibatalkan', 'Pengajuan cuti dibatalkan oleh karyawan itu sendiri.');
 
-INSERT IGNORE INTO employee(id, role_id, nip, name, division_id, email, username, password)
+INSERT
+IGNORE INTO holiday(id, name, description, date)
+VALUES (1, 'Maulid Nabi Muhammad SAW', 'Peringatan Maulid Nabi Muhammad SAW.', '2021-10-20'),
+       (2, "Isra' Mi'raj Nabi Muhammad SAW", "Peringatan Isra' Mi'raj Nabi Muhammad SAW.", '2022-03-28');
+
+INSERT
+IGNORE INTO employee(id, role_id, nip, name, division_id, email, username, password)
 VALUES (1, 1, '02041911003', 'Annisa Nur Wachidah', 1, 'annisanurw@gmail.com', 'annisa',
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme'),
        (2, 1, '02041911007', 'Candra Komara', 2, 'candrakomara@gmail.com', 'candra',
@@ -56,3 +66,15 @@ VALUES (1, 1, '02041911003', 'Annisa Nur Wachidah', 1, 'annisanurw@gmail.com', '
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme'),
        (17, 2, '01021911024', 'Elvina Fitriani', 1, 'elvinafitriani@gmail.com', 'elvina',
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme');
+
+INSERT
+IGNORE INTO leave_submission(id, employee_id, replacement_id, duration, description, phone, address, status_id)
+VALUES (1, FLOOR(6 + (RAND() * 6)), FLOOR(12 + (RAND() * 6)), 1, 'Mudik', '081234567890', 'Bandung', 2),
+       (2, FLOOR(6 + (RAND() * 6)), FLOOR(12 + (RAND() * 6)), 2, 'Lelah', '081234567890', 'Bandung', 2),
+       (3, FLOOR(6 + (RAND() * 6)), FLOOR(12 + (RAND() * 6)), 3, 'Refreshing', '081234567890', 'Bandung', 2);
+
+INSERT
+IGNORE INTO leave_submission_details(id, submission_id, type_id, date)
+VALUES (1, 1, 1, '2021-10-01'),
+       (2, 2, 1, '2021-11-01'),
+       (3, 3, 1, '2021-12-01');

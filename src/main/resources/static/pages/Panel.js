@@ -7,8 +7,59 @@ import {AuthContext} from "../App.js"
 import Footer from "../fragments/Footer.js"
 
 const Dashboard = lazy(() => import('./panel/Dashboard.js'));
-const Employees = lazy(() => import('./panel/Employees.js'));
+
+const Approvals = lazy(() => import('./panel/Approvals.js'));
 const Holidays = lazy(() => import('./panel/Holidays.js'));
+const Employees = lazy(() => import('./panel/Employees.js'));
+const Divisions = lazy(() => import('./panel/Divisions.js'));
+
+export const pages = [
+    {
+        icon: 'home',
+        title: 'Dasbor',
+        path: '',
+        component: Dashboard,
+    },
+    {
+        icon: 'calendar_today',
+        title: 'Kalender',
+        path: '/calendar',
+        component: Dashboard,
+    },
+    {
+        icon: 'event',
+        title: 'Cuti saya',
+        path: '/my_leaves',
+        component: Dashboard,
+    },
+];
+
+export const adminPages = [
+    {
+        icon: 'rule',
+        title: 'Persetujuan',
+        path: '/approvals',
+        component: Approvals,
+    },
+    {
+        icon: 'date_range',
+        title: 'Hari libur',
+        path: '/holidays',
+        component: Holidays,
+    },
+    {
+        icon: 'people',
+        title: 'Karyawan',
+        path: '/employees',
+        component: Employees,
+    },
+    {
+        icon: 'groups',
+        title: 'Divisi',
+        path: '/divisions',
+        component: Divisions,
+    },
+];
 
 function Panel() {
 
@@ -21,24 +72,11 @@ function Panel() {
                 <${NavDrawer} url=${url}/>
                     <${Stack} minWidth=${0} flexGrow=${1}>
                         <${Suspense} fallback=${html`<${CircularProgress} />`}>
-                            <${Route} exact path="${path}/">
-                                <${Dashboard}/>
-                            <//>
-                            <${Route} path="${path}/calendar">
-                                <h1>Ini halaman Kalender.</h1>
-                            <//>
-                            <${Route} path="${path}/my_leaves">
-                                <h1>Ini halaman Cuti Saya.</h1>
-                            <//>
-                            <${Route} path="${path}/approvals">
-                                <h1>Ini halaman Persetujuan.</h1>
-                            <//>
-                            <${Route} path="${path}/holidays">
-                                <${Holidays}/>
-                            <//>
-                            <${Route} path="${path}/employees">
-                                <${Employees}/>
-                            <//>
+                            ${[...pages, ...adminPages].map(page => html`
+                                <${Route} exact path="${path + page.path}">
+                                    <${page.component}/>
+                                <//>
+                            `)}
                         <//>
                         <${Divider}/>
                         <${Footer}/>

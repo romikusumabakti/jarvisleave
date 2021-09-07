@@ -21,6 +21,7 @@ import {
     TableHead,
     TableRow,
     TextField,
+    Tooltip,
     Typography
 } from '../../modules/material-ui.js';
 import html from '../../modules/htm.js';
@@ -162,7 +163,7 @@ function Employees() {
                 <//>
                 <${Stack} direction="row" gap=${2}>
                     <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEdited({})}>
-                        Buat karyawan
+                        Rekrut karyawan
                     <//>
                     <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>file_upload<//>`} onClick=${importFromExcel}>
                         Impor dari Excel
@@ -195,12 +196,16 @@ function Employees() {
                                     <!--                            <${TableCell}>${employee.email}<//>-->
                                 <${TableCell}>${employee.username}<//>
                                 <${TableCell}>
-                                    <${Stack} direction="row" spacing=${2}>
-                                        <${IconButton} onClick=${() => edit(employee.id)}>
-                                            <${MaterialIcon}>edit<//>
+                                    <${Stack} direction="row" spacing=${2} justifyContent="flex-end">
+                                        <${Tooltip} title="Edit karyawan">
+                                            <${IconButton} onClick=${() => edit(employee.id)}>
+                                                <${MaterialIcon}>edit<//>
+                                            <//>
                                         <//>
-                                        <${IconButton} onClick=${() => del(employee.id)}>
-                                            <${MaterialIcon}>delete<//>
+                                        <${Tooltip} title="Hapus karyawan">
+                                            <${IconButton} onClick=${() => del(employee.id)}>
+                                                <${MaterialIcon}>delete<//>
+                                            <//>
                                         <//>
                                     <//>
                                 <//>

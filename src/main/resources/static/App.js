@@ -11,9 +11,10 @@ import html from './modules/htm.js';
 import Header from "./fragments/Header.js"
 import Login from "./fragments/Login.js"
 import {api} from "./utils/api.js"
-import Home from "./pages/Home.js"
 
+const Home = lazy(() => import('./pages/Home.js'));
 const Panel = lazy(() => import('./pages/Panel.js'));
+const About = lazy(() => import('./pages/About.js'));
 
 export const AuthContext = createContext();
 
@@ -160,8 +161,6 @@ function App() {
             if (response.ok) {
                 const user = await response.json();
                 setUser(user);
-            } else {
-                const error = await response.text();
             }
         }
     }, []);
@@ -180,7 +179,7 @@ function App() {
                             <${Panel}/>
                         <//>
                         <${Route} exact path="/about">
-                            <h1>Ini halaman Tentang.</h1>
+                            <${About}/>
                         <//>
                     <//>
                     <${Login} open=${loginOpen} onClose=${() => setLoginOpen(false)}/>

@@ -9,7 +9,7 @@ import AccountMenu from "./AccountMenu.js"
 
 function Header(props) {
 
-    const { user, setUser } = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
 
     const userPages = user ? [
         {
@@ -25,7 +25,7 @@ function Header(props) {
             path: '',
             exact: true,
         },
-            ...userPages,
+        ...userPages,
         {
             title: 'Tentang',
             path: '/about',
@@ -46,40 +46,40 @@ function Header(props) {
                 <//>
                 <${Button} component=${Link} to="/">
                     <${JarvisLogo} size=${20}/>
-                <//>
-                <${Stack} direction="row" flexGrow=${1}>
-                    ${pages.map(tab => html`
-                        <${Button} component=${NavLink} exact=${tab.exact} to=${tab.path} activeClassName="active" sx=${{
-                            '&.active': {
-                                backgroundColor: useTheme().palette.mode === 'light' ? 'rgba(25, 118, 210, 0.08)' : 'rgba(144, 202, 249, 0.16)',
-                            },
-                        }}>
-                            ${tab.title}
-                        <//>
-                    `)}
-                <//>
-                <${Stack} direction="row" spacing=${1} alignItems="center">
-                    ${useTheme().palette.mode === 'light' ? html`
-                        <${Tooltip} title="Ubah ke tema gelap">
-                            <${IconButton} onClick=${props.handleMode}>
-                                <${MaterialIcon}>dark_mode<//>
+                    <//>
+                    <${Stack} direction="row" flexGrow=${1}>
+                        ${pages.map(tab => html`
+                            <${Button} component=${NavLink} exact=${tab.exact} to=${tab.path} activeClassName="active" sx=${{
+                                '&.active': {
+                                    backgroundColor: useTheme().palette.mode === 'light' ? 'rgba(25, 118, 210, 0.08)' : 'rgba(144, 202, 249, 0.16)',
+                                },
+                            }}>
+                                ${tab.title}
                             <//>
-                        <//>
-                    ` : html`
-                        <${Tooltip} title="Ubah ke tema terang">
-                            <${IconButton} onClick=${props.handleMode}>
-                                <${MaterialIcon}>light_mode<//>
+                        `)}
+                    <//>
+                    <${Stack} direction="row" spacing=${1} alignItems="center">
+                        ${useTheme().palette.mode === 'light' ? html`
+                            <${Tooltip} title="Ubah ke tema gelap">
+                                <${IconButton} onClick=${props.handleMode}>
+                                    <${MaterialIcon}>dark_mode<//>
+                                <//>
                             <//>
-                        <//>
-                    `}
-                    ${user ? html`
-                        <${AccountMenu}/>
-                    ` : html`
-                        <${Button} variant="outlined" onClick=${props.loginButtonOnClick}>Login<//>
-                    `}
+                        ` : html`
+                            <${Tooltip} title="Ubah ke tema terang">
+                                <${IconButton} onClick=${props.handleMode}>
+                                    <${MaterialIcon}>light_mode<//>
+                                <//>
+                            <//>
+                        `}
+                        ${user ? html`
+                            <${AccountMenu}/>
+                        ` : html`
+                            <${Button} variant="outlined" onClick=${props.loginButtonOnClick}>Login<//>
+                        `}
+                    <//>
                 <//>
             <//>
-        <//>
     `;
 }
 
