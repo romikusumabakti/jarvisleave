@@ -30,6 +30,25 @@ JarvisLeave benar-benar gratis dan open source di bawah lisensi MIT.
 
 ## Demo
 Tidak ada yang perlu disiapkan, klik Run dan aplikasi akan menyiapkan basis data secara otomatis.
-Nama pengguna HRD: annisa, candra, dian, romi, tiara
-Nama pengguna karyawan: iqbal, danil, anjar, hera, rizal, maratus, dio, niki, ade, putri, firdi, elvina
-Kata sandi: 1234
+### Nama pengguna HRD
+- annisa
+- candra
+- dian
+- romi
+- tiara
+### Nama pengguna karyawan
+- iqbal
+- danil
+- anjar
+- hera
+- rizal
+- maratus
+- dio
+- niki
+- ade
+- putri
+- firdi
+- elvina
+### Kata sandi
+> 1234
+*Anda juga dapat login menggunakan NIP atau email
