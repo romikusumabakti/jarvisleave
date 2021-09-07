@@ -10,7 +10,7 @@ import {BrowserRouter, Route} from './modules/react-router-dom.js';
 import html from './modules/htm.js';
 import Header from "./fragments/Header.js"
 import Login from "./fragments/Login.js"
-import api from "./utils/api.js"
+import {api} from "./utils/api.js"
 import Home from "./pages/Home.js"
 
 const Panel = lazy(() => import('./pages/Panel.js'));

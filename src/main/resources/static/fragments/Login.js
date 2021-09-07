@@ -2,7 +2,7 @@ import html from '../modules/htm.js';
 import {Button, Dialog, Stack, TextField, Typography} from "../modules/material-ui.js"
 import {useContext, useState} from "../modules/react.js"
 import JarvisIcon from "../components/JarvisIcon.js"
-import api from "../utils/api.js"
+import {api, jsonApi} from "../utils/api.js"
 import {AuthContext} from "../App.js"
 import {useHistory} from "../modules/react-router-dom.js"
 
@@ -35,7 +35,7 @@ function Login(props) {
     const login = async (event) => {
         event.preventDefault();
         setLoading(true);
-        const response = await api('/auth/login', 'POST', {
+        const response = await jsonApi('/auth/login', 'POST', {
             username: checked.username,
             password: event.target.password.value,
         });

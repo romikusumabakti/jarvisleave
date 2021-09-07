@@ -25,7 +25,7 @@ import {
 } from '../../modules/material-ui.js';
 import html from '../../modules/htm.js';
 import MaterialIcon from "../../components/MaterialIcon.js"
-import api from "../../utils/api.js"
+import {api, jsonApi} from "../../utils/api.js"
 
 function Employees() {
 
@@ -90,10 +90,14 @@ function Employees() {
 
     const save = async event => {
         event.preventDefault();
-        const response = await api('/employees', edited.id ? 'PUT' : 'POST', edited)
+        const response = await jsonApi('/employees', edited.id ? 'PUT' : 'POST', edited)
         if (response.ok) {
-            const edited = await response.json();
-            setEmployees(employees.map(employee => (employee.id === edited.id) ? edited : employee));
+            const employee = await response.json();
+            if (edited.id) {
+                setEmployees(employees.map(e => (e.id === employee.id) ? employee : e));
+            } else {
+                setEmployees([...employees, employee]);
+            }
             setEdited(null);
             setNotification("Karyawan disimpan.");
         } else {
@@ -124,16 +128,30 @@ function Employees() {
             });
     };
 
+    const importFromExcel = async () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.xlsx';
+        input.click();
+        input.onchange = () => {
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+            api('/employees/excel', 'POST', formData)
+                .then(setNotification('Daftar karyawan diimpor dari Excel.'));
+        };
+    };
+
     const exportToExcel = async () => {
-        const response = await api('/employees/excel')
-        const filename =  response.headers.get('Content-Disposition').split('filename=')[1];
-        const excel = await response.blob();
-        const a = document.createElement('a');
-        a.href = window.URL.createObjectURL(excel);
-        a.download = filename;
-        a.click();
-        setNotification('Daftar karyawan diekspor ke Excel.');
-    }
+        const response = await api('/employees/excel');
+        const filename = response.headers.get('Content-Disposition').split('filename=')[1];
+        response.blob().then(excel => {
+            const a = document.createElement('a');
+            a.href = window.URL.createObjectURL(excel);
+            a.download = filename;
+            a.click();
+            setNotification('Daftar karyawan diekspor ke Excel.');
+        })
+    };
 
     return html`
         <${Stack} p=${2} spacing=${2}>
@@ -143,11 +161,14 @@ function Employees() {
                     <${Typography} variant="h5">Karyawan<//>
                 <//>
                 <${Stack} direction="row" gap=${2}>
-                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>description<//>`} onClick=${exportToExcel}>
-                        Ekspor ke Excel
-                    <//>
                     <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEdited({})}>
                         Buat karyawan
+                    <//>
+                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>file_upload<//>`} onClick=${importFromExcel}>
+                        Impor dari Excel
+                    <//>
+                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>file_download<//>`} onClick=${exportToExcel}>
+                        Ekspor ke Excel
                     <//>
                 <//>
             <//>

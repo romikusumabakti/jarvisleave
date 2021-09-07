@@ -1,46 +1,12 @@
-import {useContext, useEffect, useState} from '../../modules/react.js';
-import {Button, Card, CardActionArea, IconButton, Snackbar, Stack, Typography} from '../../modules/material-ui.js';
+import {useContext} from '../../modules/react.js';
+import {Button, Card, CardActionArea, Stack, Typography} from '../../modules/material-ui.js';
 import html from '../../modules/htm.js';
 import MaterialIcon from "../../components/MaterialIcon.js"
-import api from "../../utils/api.js"
 import {AuthContext} from "../../App.js"
 
 function Dashboard() {
 
     const { user } = useContext(AuthContext);
-
-    const [employees, setEmployees] = useState();
-    const [deleteOpen, setDeleteOpen] = useState();
-    const [deleted, setDeleted] = useState();
-    const [deletedIndex, setDeletedIndex] = useState();
-
-    useEffect(() => {
-        api('/employee')
-            .then(response => response.json())
-            .then(employees => {
-                setEmployees(employees);
-            });
-    }, []);
-
-    const del = (id) => {
-        api('/employee/' + id, 'DELETE')
-            .then(() => {
-                setDeleted(employees.find(employee => employee.id === id));
-                setDeletedIndex(employees.findIndex(employee => employee.id === id));
-                setEmployees(employees.filter(employee => employee.id !== id));
-                setDeleteOpen(true);
-            });
-    };
-
-    const cancelDelete = () => {
-        api('/employee/' + deleted.id, 'POST')
-            .then(() => {
-                setEmployees([...employees.slice(0, deletedIndex), deleted, ...employees.slice(deletedIndex)]);
-                setDeleted(null);
-                setDeletedIndex(null);
-                setDeleteOpen(false);
-            });
-    };
 
     return html`
         <${Stack} p=${2} spacing=${2}>
@@ -67,23 +33,6 @@ function Dashboard() {
                 <//>
             <//>
         <//>
-        <${Snackbar}
-                open=${deleteOpen}
-                autoHideDuration=${10000}
-                onClose=${() => setDeleteOpen(false)}
-                message="1 karyawan dihapus."
-                action=${html`
-                    <${Button} size="small" onClick=${cancelDelete}>Batal<//>
-                    <${IconButton}
-                            size="small"
-                            aria-label="close"
-                            color="inherit"
-                            onClick=${() => setDeleteOpen(false)}
-                    >
-                        <${MaterialIcon} size="small" >close<//>
-                    <//>
-                `}
-        />
     `;
 }
 

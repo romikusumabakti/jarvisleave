@@ -4,6 +4,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jarvis.leave.dto.EmployeeDto;
 import org.jarvis.leave.model.Employee;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -58,6 +61,9 @@ public class EmployeeController {
         Employee employee = modelMapper.map(employeeDto, Employee.class);
         employee.setRole(roleService.findById(employeeDto.getRole()));
         employee.setDivision(divisionService.findById(employeeDto.getDivision()));
+        if (employeeDto.getPassword() != null) {
+            employee.setPassword(passwordEncoder.encode(employeeDto.getPassword()));
+        }
         return employee;
     }
 
@@ -82,7 +88,7 @@ public class EmployeeController {
             return ResponseEntity.badRequest().body(errors);
         } else {
             Employee employee = map(employeeDto);
-            return ResponseEntity.ok(employee);
+            return ResponseEntity.ok(employeeService.saveOrUpdate(employee));
         }
     }
 
@@ -91,9 +97,7 @@ public class EmployeeController {
 
         Employee employee = map(employeeDto);
 
-        if (employeeDto.getPassword() != null) {
-            employee.setPassword(passwordEncoder.encode(employeeDto.getPassword()));
-        } else {
+        if (employeeDto.getPassword() == null) {
             employee.setPassword(employeeService.findById(employeeDto.getId()).getPassword());
         }
 
@@ -152,5 +156,18 @@ public class EmployeeController {
         workbook.close();
 
         outputStream.close();
+    }
+
+    @PostMapping("/excel")
+    public void importFromExcel(@RequestParam("file") MultipartFile excelFile) throws IOException {
+
+        XSSFWorkbook workbook = new XSSFWorkbook(excelFile.getInputStream());
+        XSSFSheet worksheet = workbook.getSheetAt(0);
+
+        for(int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
+            XSSFRow row = worksheet.getRow(i);
+            String cellValue = row.getCell(0).getStringCellValue();
+            System.out.println(cellValue);
+        }
     }
 }
