@@ -9,8 +9,8 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @Entity
-public class JenisCuti extends Base {
+public class LeaveStatus extends Base {
 
-    private String nama;
-    private String deskripsi;
+    private String name;
+    private String description;
 }

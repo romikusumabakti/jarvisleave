@@ -10,13 +10,13 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-public class DetailPengajuanCuti extends Base {
+public class LeaveSubmissionDetails extends Base {
 
     @ManyToOne
-    private PengajuanCuti pengajuanCuti;
+    private LeaveSubmission submission;
 
     @ManyToOne
-    private JenisCuti jenisCuti;
+    private LeaveType type;
 
-    private LocalDate tanggal;
+    private LocalDate date;
 }

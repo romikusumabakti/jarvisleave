@@ -37,7 +37,7 @@ JarvisLeave benar-benar gratis dan open source di bawah lisensi MIT.
 * Pengguna HRD dapat mengedit permintaan cuti atau lembur.
 * Tetapkan kontrak Anda sendiri dan jenis cuti.
 * Kalender cuti (individu, tim, kolaborator, dll.).
-* Hari non-kerja (akhir pekan dan hari libur) dapat ditentukan dalam kontrak sehingga secara otomatis menghitung durasi cuti dan menampilkannya di kalender.
+* Hari non-kerja (akhir pekan dan hari holiday) dapat ditentukan dalam kontrak sehingga secara otomatis menghitung durasi cuti dan menampilkannya di kalender.
 * REST API.
 * Otentikasi JWT.
 * Tersedia dalam bahasa Indonesia.

@@ -41,8 +41,8 @@ function NavDrawer(props) {
     const adminPages = [
         {
             icon: 'rule',
-            title: 'Pengajuan cuti',
-            path: '/leave_submissions'
+            title: 'Persetujuan',
+            path: '/approvals'
         },
         {
             icon: 'date_range',
@@ -68,40 +68,40 @@ function NavDrawer(props) {
 
     return html`
         <${Drawer}
-        variant="permanent"
-        sx=${{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-        }}
-      >
-        <${Toolbar} />
-        <${Box} sx={{ overflow: 'auto' }}>
-          <${List}>
-            ${pages.map(page => html`
-                <${ListItemButton} key=${page.path} component=${Link} to=${props.url + page.path} selected=${props.url + page.path === useLocation().pathname}>
-                <${ListItemIcon}>
-                  <${MaterialIcon}>${page.icon}<//>
-                <//>
-                <${ListItemText} primary=${page.title} />
-              <//>
-            `)}
-          <//>
+                variant="permanent"
+                sx=${{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+                }}
+        >
+            <${Toolbar} />
+            <${Box} sx={{ overflow: 'auto' }}>
+            <${List}>
+                ${pages.map(page => html`
+                    <${ListItemButton} key=${page.path} component=${Link} to=${props.url + page.path} selected=${props.url + page.path === useLocation().pathname}>
+                        <${ListItemIcon}>
+                            <${MaterialIcon}>${page.icon}<//>
+                        <//>
+                        <${ListItemText} primary=${page.title} />
+                    <//>
+                `)}
+            <//>
             ${user.role.id === 1 ? html`
                 <${Divider} />
                 <${List} subheader=${html`<${ListSubheader}>Panel HRD<//>`}>
                     ${adminPages.map(page => html`
-                <${ListItemButton} key=${page.path} component=${Link} to=${props.url + page.path} selected=${props.url + page.path === useLocation().pathname}>
-                    <${ListItemIcon}>
-                      <${MaterialIcon}>${page.icon}<//>
-                    <//>
-                <${ListItemText} primary=${page.title} />
-              <//>
-            `)}
+                        <${ListItemButton} key=${page.path} component=${Link} to=${props.url + page.path} selected=${props.url + page.path === useLocation().pathname}>
+                            <${ListItemIcon}>
+                                <${MaterialIcon}>${page.icon}<//>
+                            <//>
+                            <${ListItemText} primary=${page.title} />
+                        <//>
+                    `)}
                 <//>
             ` : null}
         <//>
-      <//>
+        <//>
     `;
 }
 

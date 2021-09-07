@@ -9,13 +9,13 @@ import javax.persistence.ManyToOne;
 @Getter
 @Setter
 @Entity
-public class HakCuti extends Base {
+public class LeaveAllowance extends Base {
 
     @ManyToOne
     private Employee employee;
 
     @ManyToOne
-    private JenisCuti jenisCuti;
+    private LeaveType leaveType;
 
-    private Integer sisaCuti;
+    private Integer allowance;
 }

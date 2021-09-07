@@ -27,9 +27,9 @@ import html from '../../modules/htm.js';
 import MaterialIcon from "../../components/MaterialIcon.js"
 import {api, jsonApi} from "../../utils/api.js"
 
-function Employees() {
+function Holidays() {
 
-    const [employees, setEmployees] = useState();
+    const [holidays, setHolidays] = useState();
     const [roles, setRoles] = useState();
     const [divisions, setDivisions] = useState();
 
@@ -42,10 +42,10 @@ function Employees() {
     const [deletedIndex, setDeletedIndex] = useState();
 
     useEffect(() => {
-        api('/employees')
+        api('/holidays')
             .then(response => response.json())
-            .then(employees => {
-                setEmployees(employees);
+            .then(holidays => {
+                setHolidays(holidays);
             });
 
         api('/roles')
@@ -72,13 +72,13 @@ function Employees() {
     };
 
     const edit = id => {
-        api('/employees/' + id)
+        api('/holidays/' + id)
             .then(response => response.json())
-            .then(employee => {
+            .then(holiday => {
                 setEdited({
-                    ...employee,
-                    role: employee.role.id,
-                    division: employee.division.id,
+                    ...holiday,
+                    role: holiday.role.id,
+                    division: holiday.division.id,
                 });
             });
     };
@@ -90,16 +90,16 @@ function Employees() {
 
     const save = async event => {
         event.preventDefault();
-        const response = await jsonApi('/employees', edited.id ? 'PUT' : 'POST', edited)
+        const response = await jsonApi('/holidays', edited.id ? 'PUT' : 'POST', edited)
         if (response.ok) {
-            const employee = await response.json();
+            const holiday = await response.json();
             if (edited.id) {
-                setEmployees(employees.map(e => (e.id === employee.id) ? employee : e));
+                setHolidays(holidays.map(e => (e.id === holiday.id) ? holiday : e));
             } else {
-                setEmployees([...employees, employee]);
+                setHolidays([...holidays, holiday]);
             }
             setEdited(null);
-            setNotification("Karyawan disimpan.");
+            setNotification("Hari libur disimpan.");
         } else {
             const errors = await response.json();
             setEditErrors(errors);
@@ -107,21 +107,21 @@ function Employees() {
     };
 
     const del = id => {
-        api('/employees/' + id, 'DELETE')
+        api('/holidays/' + id, 'DELETE')
             .then(response => {
                 if (response.ok) {
-                    setDeleted(employees.find(employee => employee.id === id));
-                    setDeletedIndex(employees.findIndex(employee => employee.id === id));
-                    setEmployees(employees.filter(employee => employee.id !== id));
+                    setDeleted(holidays.find(holiday => holiday.id === id));
+                    setDeletedIndex(holidays.findIndex(holiday => holiday.id === id));
+                    setHolidays(holidays.filter(holiday => holiday.id !== id));
                 }
             });
     };
 
     const cancelDelete = () => {
-        api('/employees/' + deleted.id, 'POST')
+        api('/holidays/' + deleted.id, 'POST')
             .then(response => {
                 if (response.ok) {
-                    setEmployees([...employees.slice(0, deletedIndex), deleted, ...employees.slice(deletedIndex)]);
+                    setHolidays([...holidays.slice(0, deletedIndex), deleted, ...holidays.slice(deletedIndex)]);
                     setDeleted(null);
                     setDeletedIndex(null);
                 }
@@ -136,20 +136,20 @@ function Employees() {
         input.onchange = () => {
             const formData = new FormData();
             formData.append('file', input.files[0]);
-            api('/employees/excel', 'POST', formData)
-                .then(setNotification('Daftar karyawan diimpor dari Excel.'));
+            api('/holidays/excel', 'POST', formData)
+                .then(setNotification('Daftar hari libur diimpor dari Excel.'));
         };
     };
 
     const exportToExcel = async () => {
-        const response = await api('/employees/excel');
+        const response = await api('/holidays/excel');
         const filename = response.headers.get('Content-Disposition').split('filename=')[1];
         response.blob().then(excel => {
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(excel);
             a.download = filename;
             a.click();
-            setNotification('Daftar karyawan diekspor ke Excel.');
+            setNotification('Daftar hari libur diekspor ke Excel.');
         })
     };
 
@@ -158,11 +158,11 @@ function Employees() {
             <${Stack} direction="row" justifyContent="space-between">
                 <${Stack} direction="row" alignItems="center" gap=${1}>
                     <${MaterialIcon}>people<//>
-                    <${Typography} variant="h5">Karyawan<//>
+                    <${Typography} variant="h5">Hari libur<//>
                 <//>
                 <${Stack} direction="row" gap=${2}>
                     <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEdited({})}>
-                        Buat karyawan
+                        Buat hari libur
                     <//>
                     <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>file_upload<//>`} onClick=${importFromExcel}>
                         Impor dari Excel
@@ -186,20 +186,20 @@ function Employees() {
                         <//>
                     <//>
                     <${TableBody}>
-                        ${employees ? employees.map(employee => html`
+                        ${holidays ? holidays.map(holiday => html`
                             <${TableRow}>
-                                <${TableCell}>${employee.nip}<//>
-                                <${TableCell}>${employee.name}<//>
-                                <${TableCell}>${employee.role.name}<//>
-                                <${TableCell}>${employee.division.name}<//>
-                                    <!--                            <${TableCell}>${employee.email}<//>-->
-                                <${TableCell}>${employee.username}<//>
+                                <${TableCell}>${holiday.nip}<//>
+                                <${TableCell}>${holiday.name}<//>
+                                <${TableCell}>${holiday.role.name}<//>
+                                <${TableCell}>${holiday.division.name}<//>
+                                    <!--                            <${TableCell}>${holiday.email}<//>-->
+                                <${TableCell}>${holiday.username}<//>
                                 <${TableCell}>
                                     <${Stack} direction="row" spacing=${2}>
-                                        <${IconButton} onClick=${() => edit(employee.id)}>
+                                        <${IconButton} onClick=${() => edit(holiday.id)}>
                                             <${MaterialIcon}>edit<//>
                                         <//>
-                                        <${IconButton} onClick=${() => del(employee.id)}>
+                                        <${IconButton} onClick=${() => del(holiday.id)}>
                                             <${MaterialIcon}>delete<//>
                                         <//>
                                     <//>
@@ -218,7 +218,7 @@ function Employees() {
                 component="form"
                 onSubmit=${save}
         >
-            <${DialogTitle}>${edited?.id ? 'Edit' : 'Buat'} karyawan<//>
+            <${DialogTitle}>${edited?.id ? 'Edit' : 'Buat'} hari libur<//>
             <${DialogContent} dividers>
                 <input type="hidden" name="id" value=${edited?.id}/>
                 <${Stack} spacing=${3}>
@@ -331,7 +331,7 @@ function Employees() {
                 open=${deleted}
                 autoHideDuration=${6000}
                 onClose=${() => setDeleted(null)}
-                message="1 karyawan dihapus."
+                message="1 hari libur dihapus."
                 action=${html`
                     <${Button} size="small" color="inherit" onClick=${cancelDelete}>
                         Batal
@@ -349,4 +349,4 @@ function Employees() {
     `;
 }
 
-export default Employees;
+export default Holidays;

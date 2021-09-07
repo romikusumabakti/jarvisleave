@@ -7,40 +7,44 @@ import {AuthContext} from "../App.js"
 import Footer from "../fragments/Footer.js"
 
 const Dashboard = lazy(() => import('./panel/Dashboard.js'));
-const Employee = lazy(() => import('./panel/Employees.js'));
+const Employees = lazy(() => import('./panel/Employees.js'));
+const Holidays = lazy(() => import('./panel/Holidays.js'));
 
 function Panel() {
 
-    const { path, url } = useRouteMatch();
-    const { user, setUser } = useContext(AuthContext);
+    const {path, url} = useRouteMatch();
+    const {user} = useContext(AuthContext);
 
     if (user) {
         return html`
             <${Stack} direction="row">
                 <${NavDrawer} url=${url}/>
-                <${Stack} minWidth=${0} flexGrow=${1}>
-                    <${Suspense} fallback=${html`<${CircularProgress} />`}>
-                        <${Route} exact path="${path}/">
-                            <${Dashboard}/>
+                    <${Stack} minWidth=${0} flexGrow=${1}>
+                        <${Suspense} fallback=${html`<${CircularProgress} />`}>
+                            <${Route} exact path="${path}/">
+                                <${Dashboard}/>
+                            <//>
+                            <${Route} path="${path}/calendar">
+                                <h1>Ini halaman Kalender.</h1>
+                            <//>
+                            <${Route} path="${path}/my_leaves">
+                                <h1>Ini halaman Cuti Saya.</h1>
+                            <//>
+                            <${Route} path="${path}/approvals">
+                                <h1>Ini halaman Persetujuan.</h1>
+                            <//>
+                            <${Route} path="${path}/holidays">
+                                <${Holidays}/>
+                            <//>
+                            <${Route} path="${path}/employees">
+                                <${Employees}/>
+                            <//>
                         <//>
-                        <${Route} path="${path}/calendar">
-                            <h1>Ini halaman Kalender.</h1>
-                        <//>
-                        <${Route} path="${path}/my_leaves">
-                            <h1>Ini halaman Cuti Saya.</h1>
-                        <//>
-                        <${Route} path="${path}/approvals">
-                            <h1>Ini halaman Persetujuan.</h1>
-                        <//>
-                        <${Route} path="${path}/employees">
-                            <${Employee}/>
-                        <//>
+                        <${Divider}/>
+                        <${Footer}/>
                     <//>
-                    <${Divider}/>
-                    <${Footer}/>
                 <//>
-            <//>
-    `} else {
+        `} else {
         return html`<${Redirect} to="/"/>`;
     }
 }

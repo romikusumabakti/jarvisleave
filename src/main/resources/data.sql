@@ -10,14 +10,14 @@ VALUES (1, 'PPMB'),
        (5, 'Kesejahteraan'),
        (6, 'Kesehatan');
 
-INSERT IGNORE INTO status_cuti(id, nama, deskripsi)
+INSERT IGNORE INTO leave_status(id, name, description)
 VALUES (1, 'Draft', 'Draft adalah status cuti di mana pengajuan cuti sudah dibuat tapi belum diajukan'),
        (2, 'Open', 'Open adalah status cuti di mana pengajuan cuti sudah diajukan kepada HRD'),
        (3, 'Approved', 'Approved adalah status cuti di mana pengajuan cuti sudah disetujui oleh HRD'),
        (4, 'Rejected', 'Rejected adalah status cuti di mana pengajuan cuti sudah ditolak oleh HRD'),
        (5, 'Cancelled', 'Cancelled adalah status cuti di mana pengajuan cuti yang sebelumnya open namun digagalkan oleh karyawan itu sendiri');
 
-INSERT IGNORE INTO jenis_cuti(id, nama, deskripsi)
+INSERT IGNORE INTO leave_type(id, name, description)
 VALUES (1, 'Tahunan', 'Cuti tahunan adalah cuti yang disediakan oleh perusahaan di luar cuti bersama pemerintah'),
        (2, 'Cuti lintas tahun', 'Cuti lintas tahun adalah sisa cuti tahunan yang tersisa dari tahun sebelumnya dan hanya bisa dipakai pada 6 bulan pertama saja');
 
