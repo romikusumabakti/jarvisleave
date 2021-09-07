@@ -173,7 +173,7 @@ function App() {
                     <${Header} loginButtonOnClick=${() => setLoginOpen(true)} mode=${mode} handleMode=${handleMode} sx=${{ zIndex: (theme) => theme.zIndex.drawer + 1 }}/>
                     <${Suspense} fallback=${html`<${CircularProgress} />`}>
                         <${Route} exact path="/">
-                            <${Home}/>
+                            <${Home} loginButtonOnClick=${() => setLoginOpen(true)}/>
                         <//>
                         <${Route} path="/panel">
                             <${Panel}/>

@@ -62,7 +62,7 @@ VALUES (1, 1, '02041911003', 'Annisa Nur Wachidah', 1, 'annisanurw@gmail.com', '
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme'),
        (15, 2, '02041911026', 'Putri Melenia', 1, 'putrimelenia@gmail.com', 'putri',
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme'),
-       (16, 2, '02041911012', 'Fatin Firdiansyah', 5, 'fatinfirdiansyah@gmail.com', 'firdi',
+       (16, 2, '02041911012', 'Fatin Firdiansyah', 5, 'fatinfirdiansyah@gmail.com', 'fatin',
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme'),
        (17, 2, '01021911024', 'Elvina Fitriani', 1, 'elvinafitriani@gmail.com', 'elvina',
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme');

@@ -6,7 +6,7 @@ import JarvisLogo from "../components/JarvisLogo.js"
 import {Link} from "../modules/react-router-dom.js"
 import {AuthContext} from "../App.js"
 
-function Home() {
+function Home(props) {
 
     const {user} = useContext(AuthContext);
 
@@ -28,7 +28,7 @@ function Home() {
                                     Buka panel
                                 <//>
                             ` : html`
-                                <${Button} variant="contained" component=${Link} to="/login">
+                                <${Button} variant="contained" onClick=${props.loginButtonOnClick}>
                                     Login
                                 <//>
                             `}

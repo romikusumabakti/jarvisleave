@@ -1,8 +1,11 @@
 package org.jarvis.leave.controller;
 
+import org.jarvis.leave.model.Employee;
+import org.jarvis.leave.model.EmployeeDetails;
 import org.jarvis.leave.model.LeaveAllowance;
 import org.jarvis.leave.service.LeaveAllowanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("/leave_allowances")
-    private List<LeaveAllowance> getLeaveAllowances(Principal principal) {
-        return leaveAllowanceService.findAll();
+    private List<LeaveAllowance> getLeaveAllowances(Authentication authentication) {
+        return leaveAllowanceService.findAllByEmployee(((EmployeeDetails) authentication.getPrincipal()).getEmployee());
     }
 }

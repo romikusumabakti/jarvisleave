@@ -1,5 +1,6 @@
 package org.jarvis.leave.service;
 
+import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.model.LeaveAllowance;
 import org.jarvis.leave.repository.EmployeeRepository;
 import org.jarvis.leave.repository.LeaveAllowanceRepository;
@@ -27,6 +28,10 @@ public class LeaveAllowanceService {
 
     public List<LeaveAllowance> findAll() {
         return leaveAllowanceRepository.findAll();
+    }
+
+    public List<LeaveAllowance> findAllByEmployee(Employee employee) {
+        return leaveAllowanceRepository.findAllByEmployee(employee);
     }
 
     public LeaveAllowance findById(@PathVariable Long id) {

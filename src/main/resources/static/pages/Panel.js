@@ -7,6 +7,7 @@ import {AuthContext} from "../App.js"
 import Footer from "../fragments/Footer.js"
 
 const Dashboard = lazy(() => import('./panel/Dashboard.js'));
+const Calendar = lazy(() => import('./panel/Calendar.js'));
 
 const Approvals = lazy(() => import('./panel/Approvals.js'));
 const Holidays = lazy(() => import('./panel/Holidays.js'));
@@ -24,7 +25,7 @@ export const pages = [
         icon: 'calendar_today',
         title: 'Kalender',
         path: '/calendar',
-        component: Dashboard,
+        component: Calendar,
     },
     {
         icon: 'event',
