@@ -55,11 +55,9 @@ public class EmployeeController {
     }
 
     private Employee map(EmployeeDto employeeDto) {
-
         Employee employee = modelMapper.map(employeeDto, Employee.class);
         employee.setRole(roleService.findById(employeeDto.getRole()));
         employee.setDivision(divisionService.findById(employeeDto.getDivision()));
-
         return employee;
     }
 

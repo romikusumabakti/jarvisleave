@@ -35,16 +35,18 @@ public class DivisionController {
         return divisionService.findById(id);
     }
 
+    private Division map(DivisionDto divisionDto) {
+        return modelMapper.map(divisionDto, Division.class);
+    }
+
     @PostMapping()
     private Division save(@RequestBody DivisionDto divisionDto) {
-        Division division = modelMapper.map(divisionDto, Division.class);
-        return divisionService.saveOrUpdate(division);
+        return divisionService.saveOrUpdate(map(divisionDto));
     }
 
     @PutMapping()
     private Division update(@RequestBody DivisionDto divisionDto) {
-        Division division = modelMapper.map(divisionDto, Division.class);
-        return divisionService.saveOrUpdate(division);
+        return divisionService.saveOrUpdate(map(divisionDto));
     }
 
     @DeleteMapping("/{id}")

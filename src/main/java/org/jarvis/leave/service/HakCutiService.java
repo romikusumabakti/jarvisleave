@@ -1,18 +1,15 @@
 package org.jarvis.leave.service;
 
-import org.jarvis.leave.dto.HakCutiDto;
 import org.jarvis.leave.model.HakCuti;
 import org.jarvis.leave.repository.EmployeeRepository;
 import org.jarvis.leave.repository.HakCutiRepository;
 import org.jarvis.leave.repository.JenisCutiRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class HakCutiService {
@@ -20,14 +17,12 @@ public class HakCutiService {
     HakCutiRepository hakCutiRepository;
     EmployeeRepository employeeRepository;
     JenisCutiRepository jenisCutiRepository;
-    ModelMapper modelMapper;
 
     @Autowired
-    public HakCutiService(HakCutiRepository hakCutiRepository, EmployeeRepository employeeRepository, JenisCutiRepository jenisCutiRepository, ModelMapper modelMapper) {
+    public HakCutiService(HakCutiRepository hakCutiRepository, EmployeeRepository employeeRepository, JenisCutiRepository jenisCutiRepository) {
         this.hakCutiRepository = hakCutiRepository;
         this.employeeRepository = employeeRepository;
         this.jenisCutiRepository = jenisCutiRepository;
-        this.modelMapper = modelMapper;
     }
 
     public List<HakCuti> findAll() {
@@ -40,7 +35,7 @@ public class HakCutiService {
 
     public HakCuti saveOrUpdate(@RequestBody HakCuti hakCuti) {
         hakCutiRepository.save(hakCuti);
-        return hakCuti;
+        return findById(hakCuti.getId());
     }
 
     public void deleteById(@PathVariable Long id) {

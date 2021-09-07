@@ -1,41 +1,35 @@
 package org.jarvis.leave.service;
 
-import org.jarvis.leave.dto.StatusCutiDto;
 import org.jarvis.leave.model.StatusCuti;
 import org.jarvis.leave.repository.StatusCutiRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StatusCutiService {
 
     StatusCutiRepository statusCutiRepository;
-    ModelMapper modelMapper;
 
     @Autowired
-    public StatusCutiService(StatusCutiRepository statusCutiRepository, ModelMapper modelMapper) {
+    public StatusCutiService(StatusCutiRepository statusCutiRepository) {
         this.statusCutiRepository = statusCutiRepository;
-        this.modelMapper = modelMapper;
     }
 
     public List<StatusCuti> findAll() {
         return statusCutiRepository.findAll();
     }
 
-    public Optional<StatusCuti> findById(@PathVariable Long id) {
-        return statusCutiRepository.findById(id);
+    public StatusCuti findById(@PathVariable Long id) {
+        return statusCutiRepository.findById(id).orElse(null);
     }
 
-    public StatusCuti saveOrUpdate(@RequestBody StatusCutiDto statusCutiDto) {
-        StatusCuti statusCuti = modelMapper.map(statusCutiDto, StatusCuti.class);
+    public StatusCuti saveOrUpdate(@RequestBody StatusCuti statusCuti) {
         statusCutiRepository.save(statusCuti);
-        return statusCuti;
+        return findById(statusCuti.getId());
     }
 
     public void deleteById(@PathVariable Long id) {

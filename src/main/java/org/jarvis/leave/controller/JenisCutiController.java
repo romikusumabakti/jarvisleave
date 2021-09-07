@@ -32,16 +32,18 @@ public class JenisCutiController {
         return jenisCutiService.findById(id);
     }
 
+    private JenisCuti map(JenisCutiDto jenisCutiDto) {
+        return modelMapper.map(jenisCutiDto, JenisCuti.class);
+    }
+
     @PostMapping()
     private JenisCuti save(@RequestBody JenisCutiDto jenisCutiDto) {
-        JenisCuti jenisCuti = modelMapper.map(jenisCutiDto, JenisCuti.class);
-        return jenisCutiService.saveOrUpdate(jenisCuti);
+        return jenisCutiService.saveOrUpdate(map(jenisCutiDto));
     }
 
     @PutMapping()
     private JenisCuti update(@RequestBody JenisCutiDto jenisCutiDto) {
-        JenisCuti jenisCuti = modelMapper.map(jenisCutiDto, JenisCuti.class);
-        return jenisCutiService.saveOrUpdate(jenisCuti);
+        return jenisCutiService.saveOrUpdate(map(jenisCutiDto));
     }
 
     @DeleteMapping("/{id}")

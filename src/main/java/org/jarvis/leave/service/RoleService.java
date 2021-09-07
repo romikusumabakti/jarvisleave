@@ -1,9 +1,7 @@
 package org.jarvis.leave.service;
 
-import org.jarvis.leave.dto.RoleDto;
 import org.jarvis.leave.model.Role;
 import org.jarvis.leave.repository.RoleRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +13,10 @@ import java.util.List;
 public class RoleService {
 
     RoleRepository roleRepository;
-    ModelMapper modelMapper;
 
     @Autowired
-    public RoleService(RoleRepository roleRepository, ModelMapper modelMapper) {
+    public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
-        this.modelMapper = modelMapper;
     }
 
     public List<Role> findAll() {
@@ -31,20 +27,19 @@ public class RoleService {
         return roleRepository.findById(id).orElse(null);
     }
 
-    public Role saveOrUpdate(@RequestBody RoleDto roleDto) {
-        Role role = modelMapper.map(roleDto, Role.class);
+    public Role saveOrUpdate(@RequestBody Role role) {
         roleRepository.save(role);
-        return role;
+        return findById(role.getId());
     }
 
     public void deleteById(@PathVariable Long id) {
-        Role role = roleRepository.getById(id);
+        Role role = findById(id);
         role.setIsDeleted(true);
         roleRepository.save(role);
     }
 
     public void cancelDeleteById(Long id) {
-        Role role = roleRepository.getById(id);
+        Role role = findById(id);
         role.setIsDeleted(false);
         roleRepository.save(role);
     }

@@ -37,16 +37,18 @@ public class DetailPengajuanCutiController {
         return detailPengajuanCutiService.findById(id);
     }
 
+    private DetailPengajuanCuti map(DetailPengajuanCutiDto detailPengajuanCutiDto) {
+        return modelMapper.map(detailPengajuanCutiDto, DetailPengajuanCuti.class);
+    }
+
     @PostMapping()
     private DetailPengajuanCuti save(@RequestBody DetailPengajuanCutiDto detailPengajuanCutiDto) {
-        DetailPengajuanCuti detailPengajuanCuti = modelMapper.map(detailPengajuanCutiDto, DetailPengajuanCuti.class);
-        return detailPengajuanCutiService.saveOrUpdate(detailPengajuanCuti);
+        return detailPengajuanCutiService.saveOrUpdate(map(detailPengajuanCutiDto));
     }
 
     @PutMapping()
     private DetailPengajuanCuti update(@RequestBody DetailPengajuanCutiDto detailPengajuanCutiDto) {
-        DetailPengajuanCuti detailPengajuanCuti = modelMapper.map(detailPengajuanCutiDto, DetailPengajuanCuti.class);
-        return detailPengajuanCutiService.saveOrUpdate(detailPengajuanCuti);
+        return detailPengajuanCutiService.saveOrUpdate(map(detailPengajuanCutiDto));
     }
 
     @DeleteMapping("/{id}")

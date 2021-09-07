@@ -3,6 +3,7 @@ package org.jarvis.leave.controller;
 import org.jarvis.leave.dto.RoleDto;
 import org.jarvis.leave.model.Role;
 import org.jarvis.leave.service.RoleService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +14,12 @@ import java.util.List;
 public class RoleController {
 
     RoleService roleService;
+    ModelMapper modelMapper;
 
     @Autowired
-    public RoleController(RoleService roleService) {
+    public RoleController(RoleService roleService, ModelMapper modelMapper) {
         this.roleService = roleService;
-
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping()
@@ -30,14 +32,18 @@ public class RoleController {
         return roleService.findById(id);
     }
 
+    private Role map(RoleDto roleDto) {
+        return modelMapper.map(roleDto, Role.class);
+    }
+
     @PostMapping()
     private Role save(@RequestBody RoleDto roleDto) {
-        return roleService.saveOrUpdate(roleDto);
+        return roleService.saveOrUpdate(map(roleDto));
     }
 
     @PutMapping()
     private Role update(@RequestBody RoleDto roleDto) {
-        return roleService.saveOrUpdate(roleDto);
+        return roleService.saveOrUpdate(map(roleDto));
     }
 
     @DeleteMapping("/{id}")

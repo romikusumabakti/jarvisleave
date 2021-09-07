@@ -33,20 +33,21 @@ public class HakCutiController {
     @GetMapping("/{id}")
     private HakCuti findById(@PathVariable Long id) { return hakCutiService.findById(id); }
 
-    @PostMapping()
-    private HakCuti save(@RequestBody HakCutiDto hakCutiDto) {
+    private HakCuti map(HakCutiDto hakCutiDto) {
         HakCuti hakCuti = modelMapper.map(hakCutiDto, HakCuti.class);
         hakCuti.setEmployee(employeeService.findById(hakCutiDto.getEmployee()));
         hakCuti.setJenisCuti(jenisCutiService.findById(hakCutiDto.getJenisCuti()));
-        return hakCutiService.saveOrUpdate(hakCuti);
+        return hakCuti;
+    }
+
+    @PostMapping()
+    private HakCuti save(@RequestBody HakCutiDto hakCutiDto) {
+        return hakCutiService.saveOrUpdate(map(hakCutiDto));
     }
 
     @PutMapping()
     private HakCuti update(@RequestBody HakCutiDto hakCutiDto) {
-        HakCuti hakCuti = modelMapper.map(hakCutiDto, HakCuti.class);
-        hakCuti.setEmployee(employeeService.findById(hakCutiDto.getEmployee()));
-        hakCuti.setJenisCuti(jenisCutiService.findById(hakCutiDto.getJenisCuti()));
-        return hakCutiService.saveOrUpdate(hakCuti);
+        return hakCutiService.saveOrUpdate(map(hakCutiDto));
     }
 
     @DeleteMapping("/{id}")

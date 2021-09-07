@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pengajuan_cuti")
@@ -17,13 +16,13 @@ public class PengajuanCutiController {
 
     PengajuanCutiService pengajuanCutiService;
     EmployeeRepository employeeRepository;
-    ModelMapper modelMapper = new ModelMapper();
+    ModelMapper modelMapper;
 
     @Autowired
-    public PengajuanCutiController(PengajuanCutiService pengajuanCutiService, EmployeeRepository employeeRepository) {
+    public PengajuanCutiController(PengajuanCutiService pengajuanCutiService, EmployeeRepository employeeRepository, ModelMapper modelMapper) {
         this.pengajuanCutiService = pengajuanCutiService;
         this.employeeRepository = employeeRepository;
-
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping()
@@ -32,18 +31,22 @@ public class PengajuanCutiController {
     }
 
     @GetMapping("/{id}")
-    private Optional<PengajuanCuti> findById(@PathVariable Long id) {
+    private PengajuanCuti findById(@PathVariable Long id) {
         return pengajuanCutiService.findById(id);
+    }
+
+    private PengajuanCuti map(PengajuanCutiDto pengajuanCutiDto) {
+        return modelMapper.map(pengajuanCutiDto, PengajuanCuti.class);
     }
 
     @PostMapping()
     private PengajuanCuti save(@RequestBody PengajuanCutiDto pengajuanCutiDto) {
-        return pengajuanCutiService.saveOrUpdate(pengajuanCutiDto);
+        return pengajuanCutiService.saveOrUpdate(map(pengajuanCutiDto));
     }
 
     @PutMapping()
     private PengajuanCuti update(@RequestBody PengajuanCutiDto pengajuanCutiDto) {
-        return pengajuanCutiService.saveOrUpdate(pengajuanCutiDto);
+        return pengajuanCutiService.saveOrUpdate(map(pengajuanCutiDto));
     }
 
     @DeleteMapping("/{id}")

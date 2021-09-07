@@ -3,7 +3,6 @@ package org.jarvis.leave.service;
 import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.repository.EmployeeRepository;
 import org.jarvis.leave.repository.RoleRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +13,11 @@ public class EmployeeService {
 
     EmployeeRepository employeeRepository;
     RoleRepository roleRepository;
-    ModelMapper modelMapper;
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, RoleRepository roleRepository, ModelMapper modelMapper) {
+    public EmployeeService(EmployeeRepository employeeRepository, RoleRepository roleRepository) {
         this.employeeRepository = employeeRepository;
         this.roleRepository = roleRepository;
-        this.modelMapper = modelMapper;
     }
 
     public List<Employee> findAll() {

@@ -1,9 +1,7 @@
 package org.jarvis.leave.service;
 
-import org.jarvis.leave.dto.JenisCutiDto;
 import org.jarvis.leave.model.JenisCuti;
 import org.jarvis.leave.repository.JenisCutiRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +13,6 @@ import java.util.List;
 public class JenisCutiService {
 
     JenisCutiRepository jenisCutiRepository;
-    ModelMapper modelMapper;
 
     @Autowired
     public JenisCutiService(JenisCutiRepository jenisCutiRepository) {
