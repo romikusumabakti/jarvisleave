@@ -15,7 +15,7 @@ public class LeaveAllowance extends Base {
     private Employee employee;
 
     @ManyToOne
-    private LeaveType leaveType;
+    private LeaveType type;
 
     private Integer allowance;
 }

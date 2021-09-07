@@ -6,6 +6,6 @@ import lombok.Getter;
 public class LeaveAllowanceDto {
     private Long id;
     private Long employee;
-    private Long jenisCuti;
+    private Long type;
     private Long allowance;
 }

@@ -138,7 +138,11 @@ function Employees() {
             const formData = new FormData();
             formData.append('file', input.files[0]);
             api('/employees/excel', 'POST', formData)
-                .then(setNotification('Daftar karyawan diimpor dari Excel.'));
+                .then(response => response.json())
+                .then(employees => {
+                    setNotification('Daftar karyawan diimpor dari Excel.');
+                    setEmployees(employees);
+                });
         };
     };
 

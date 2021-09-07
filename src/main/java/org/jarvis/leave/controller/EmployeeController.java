@@ -1,9 +1,6 @@
 package org.jarvis.leave.controller;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -134,13 +131,12 @@ public class EmployeeController {
         int rowCount = 1;
         for (Employee employee : employees) {
             Row row = sheet.createRow(rowCount++);
-            int cellCount = 0;
-            row.createCell(cellCount++).setCellValue(employee.getNip());
-            row.createCell(cellCount++).setCellValue(employee.getName());
-            row.createCell(cellCount++).setCellValue(employee.getRole().getName());
-            row.createCell(cellCount++).setCellValue(employee.getDivision().getName());
-            row.createCell(cellCount++).setCellValue(employee.getEmail());
-            row.createCell(cellCount).setCellValue(employee.getUsername());
+            row.createCell(0).setCellValue(employee.getNip());
+            row.createCell(1).setCellValue(employee.getName());
+            row.createCell(2).setCellValue(employee.getRole().getName());
+            row.createCell(3).setCellValue(employee.getDivision().getName());
+            row.createCell(4).setCellValue(employee.getEmail());
+            row.createCell(5).setCellValue(employee.getUsername());
         }
 
         response.setContentType("application/octet-stream");
@@ -159,15 +155,25 @@ public class EmployeeController {
     }
 
     @PostMapping("/excel")
-    public void importFromExcel(@RequestParam("file") MultipartFile excelFile) throws IOException {
+    public List<Employee> importFromExcel(@RequestParam("file") MultipartFile excelFile) throws IOException {
 
         XSSFWorkbook workbook = new XSSFWorkbook(excelFile.getInputStream());
-        XSSFSheet worksheet = workbook.getSheetAt(0);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        DataFormatter formatter = new DataFormatter();
 
-        for(int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
-            XSSFRow row = worksheet.getRow(i);
-            String cellValue = row.getCell(0).getStringCellValue();
-            System.out.println(cellValue);
+        for(int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+            XSSFRow row = sheet.getRow(i);
+            Employee employee = new Employee();
+            employee.setNip(formatter.formatCellValue(row.getCell(0)));
+            employee.setName(row.getCell(1).getStringCellValue());
+            employee.setRole(roleService.findByName(row.getCell(2).getStringCellValue()));
+            employee.setDivision(divisionService.findByName(row.getCell(3).getStringCellValue()));
+            employee.setEmail(row.getCell(4).getStringCellValue());
+            employee.setUsername(row.getCell(5).getStringCellValue());
+            employee.setPassword(passwordEncoder.encode(formatter.formatCellValue(row.getCell(6))));
+            employeeService.saveOrUpdate(employee);
         }
+
+        return employeeService.findAll();
     }
 }

@@ -36,7 +36,7 @@ public class LeaveAllowanceController {
     private LeaveAllowance map(LeaveAllowanceDto leaveAllowanceDto) {
         LeaveAllowance leaveAllowance = modelMapper.map(leaveAllowanceDto, LeaveAllowance.class);
         leaveAllowance.setEmployee(employeeService.findById(leaveAllowanceDto.getEmployee()));
-        leaveAllowance.setLeaveType(leaveTypeService.findById(leaveAllowanceDto.getJenisCuti()));
+        leaveAllowance.setType(leaveTypeService.findById(leaveAllowanceDto.getType()));
         return leaveAllowance;
     }
 

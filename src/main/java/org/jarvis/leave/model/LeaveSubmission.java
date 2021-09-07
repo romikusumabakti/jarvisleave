@@ -29,5 +29,5 @@ public class LeaveSubmission extends Base {
     private LeaveStatus status;
 
     @ManyToOne
-    private Employee approver;
+    private Employee hrd;
 }

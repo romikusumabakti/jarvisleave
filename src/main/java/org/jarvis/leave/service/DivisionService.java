@@ -28,6 +28,10 @@ public class DivisionService {
         return divisionRepository.findById(id).orElse(null);
     }
 
+    public Division findByName(String name) {
+        return divisionRepository.findByName(name);
+    }
+
     public Division saveOrUpdate(Division division) {
         divisionRepository.save(division);
         return findById(division.getId());

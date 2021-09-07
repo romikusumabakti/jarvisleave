@@ -4,8 +4,6 @@ import org.jarvis.leave.model.Role;
 import org.jarvis.leave.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -23,16 +21,20 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    public Role findById(@PathVariable Long id) {
+    public Role findById(Long id) {
         return roleRepository.findById(id).orElse(null);
     }
 
-    public Role saveOrUpdate(@RequestBody Role role) {
+    public Role findByName(String name) {
+        return roleRepository.findByName(name);
+    }
+
+    public Role saveOrUpdate(Role role) {
         roleRepository.save(role);
         return findById(role.getId());
     }
 
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(Long id) {
         Role role = findById(id);
         role.setIsDeleted(true);
         roleRepository.save(role);

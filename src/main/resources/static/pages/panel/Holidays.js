@@ -215,7 +215,8 @@ function Holidays() {
                             onChange=${handleChange}
                             required
                     />
-                    <${TextField}
+                    <input
+                            type="date"
                             label="Tanggal"
                             fullWidth
                             variant="outlined"

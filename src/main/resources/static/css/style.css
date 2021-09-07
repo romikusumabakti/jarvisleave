@@ -110,6 +110,13 @@ form {
     margin: 0;
 }
 
-[hidden] {
-    display: none !important;
+input[type=date] {
+    padding: 16px 12px;
+    background: unset;
+    color: unset;
+    font-size: unset;
+    font-family: unset;
+    border: 1px solid #626262;
+    border-radius: 4px;
+    cursor: pointer;
 }

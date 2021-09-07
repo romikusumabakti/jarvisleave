@@ -13,4 +13,6 @@ public interface DivisionRepository extends JpaRepository<Division, Long> {
     @Override
     @Query("select u from Division u where u.isDeleted=false")
     List<Division> findAll();
+
+    Division findByName(String name);
 }

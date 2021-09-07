@@ -12,5 +12,5 @@ public class LeaveSubmissionDto {
     private String phone;
     private String address;
     private Long status;
-    private Long approver;
+    private Long hrd;
 }

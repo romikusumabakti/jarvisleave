@@ -68,6 +68,46 @@ VALUES (1, 1, '02041911003', 'Annisa Nur Wachidah', 1, 'annisanurw@gmail.com', '
         '$2a$10$izN/5EDMPOXQ0MZfCI3rRuZWx6V2tN5xE/9gp.jCziREX261xDmme');
 
 INSERT
+IGNORE INTO leave_allowance(id, employee_id, type_id, allowance)
+VALUES (1, 1, 1, 12),
+       (3, 2, 1, 12),
+       (5, 3, 1, 12),
+       (7, 4, 1, 12),
+       (9, 5, 1, 12),
+       (11, 6, 1, 12),
+       (13, 7, 1, 12),
+       (15, 8, 1, 12),
+       (17, 9, 1, 12),
+       (19, 10, 1, 12),
+       (21, 11, 1, 12),
+       (23, 12, 1, 12),
+       (25, 13, 1, 12),
+       (27, 14, 1, 12),
+       (29, 15, 1, 12),
+       (31, 16, 1, 12),
+       (33, 17, 1, 12);
+
+INSERT
+IGNORE INTO leave_allowance(id, employee_id, type_id, allowance)
+VALUES (2, 1, 2, 0),
+       (4, 2, 2, 0),
+       (6, 3, 2, 0),
+       (8, 4, 2, 0),
+       (10, 5, 2, 0),
+       (12, 6, 2, 0),
+       (14, 7, 2, 0),
+       (16, 8, 2, 0),
+       (18, 9, 2, 0),
+       (20, 10, 2, 0),
+       (22, 11, 2, 0),
+       (24, 12, 2, 0),
+       (26, 13, 2, 0),
+       (28, 14, 2, 0),
+       (30, 15, 2, 0),
+       (32, 16, 2, 0),
+       (34, 17, 2, 0);
+
+INSERT
 IGNORE INTO leave_submission(id, employee_id, replacement_id, duration, description, phone, address, status_id)
 VALUES (1, FLOOR(6 + (RAND() * 6)), FLOOR(12 + (RAND() * 6)), 1, 'Mudik', '081234567890', 'Bandung', 2),
        (2, FLOOR(6 + (RAND() * 6)), FLOOR(12 + (RAND() * 6)), 2, 'Lelah', '081234567890', 'Bandung', 2),
