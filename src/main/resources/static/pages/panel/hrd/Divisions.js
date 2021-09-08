@@ -1,4 +1,4 @@
-import {useEffect, useState} from '../../modules/react.js';
+import {useEffect, useState} from '../../../modules/react.js';
 import {
     Button,
     CircularProgress,
@@ -19,16 +19,14 @@ import {
     TextField,
     Tooltip,
     Typography
-} from '../../modules/material-ui.js';
-import html from '../../modules/htm.js';
-import MaterialIcon from "../../components/MaterialIcon.js"
-import {api, jsonApi} from "../../utils/api.js"
+} from '../../../modules/material-ui.js';
+import html from '../../../modules/htm.js';
+import MaterialIcon from "../../../components/MaterialIcon.js"
+import {api, jsonApi} from "../../../utils/api.js"
 
-function Holidays() {
+function Divisions() {
 
-    const dateFormat = new Intl.DateTimeFormat('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-
-    const [holidays, setHolidays] = useState();
+    const [divisions, setDivisions] = useState();
 
     const [notification, setNotification] = useState();
 
@@ -38,10 +36,10 @@ function Holidays() {
     const [deletedIndex, setDeletedIndex] = useState();
 
     useEffect(() => {
-        api('/holidays')
+        api('/divisions')
             .then(response => response.json())
-            .then(holidays => {
-                setHolidays(holidays);
+            .then(divisions => {
+                setDivisions(divisions);
             });
     }, []);
 
@@ -56,10 +54,10 @@ function Holidays() {
     };
 
     const edit = id => {
-        api('/holidays/' + id)
+        api('/divisions/' + id)
             .then(response => response.json())
-            .then(holiday => {
-                setEdited({...holiday});
+            .then(division => {
+                setEdited({...division});
             });
     };
 
@@ -69,35 +67,35 @@ function Holidays() {
 
     const save = async event => {
         event.preventDefault();
-        jsonApi('/holidays', edited.id ? 'PUT' : 'POST', edited)
+        jsonApi('/divisions', edited.id ? 'PUT' : 'POST', edited)
             .then(response => response.json())
-            .then(holiday => {
+            .then(division => {
                 if (edited.id) {
-                    setHolidays(holidays.map(e => (e.id === holiday.id) ? holiday : e));
+                    setDivisions(divisions.map(e => (e.id === division.id) ? division : e));
                 } else {
-                    setHolidays([...holidays, holiday]);
+                    setDivisions([...divisions, division]);
                 }
                 setEdited(null);
-                setNotification("Hari libur disimpan.");
+                setNotification("Divisi disimpan.");
             });
     };
 
     const del = id => {
-        api('/holidays/' + id, 'DELETE')
+        api('/divisions/' + id, 'DELETE')
             .then(response => {
                 if (response.ok) {
-                    setDeleted(holidays.find(holiday => holiday.id === id));
-                    setDeletedIndex(holidays.findIndex(holiday => holiday.id === id));
-                    setHolidays(holidays.filter(holiday => holiday.id !== id));
+                    setDeleted(divisions.find(division => division.id === id));
+                    setDeletedIndex(divisions.findIndex(division => division.id === id));
+                    setDivisions(divisions.filter(division => division.id !== id));
                 }
             });
     };
 
     const cancelDelete = () => {
-        api('/holidays/' + deleted.id, 'POST')
+        api('/divisions/' + deleted.id, 'POST')
             .then(response => {
                 if (response.ok) {
-                    setHolidays([...holidays.slice(0, deletedIndex), deleted, ...holidays.slice(deletedIndex)]);
+                    setDivisions([...divisions.slice(0, deletedIndex), deleted, ...divisions.slice(deletedIndex)]);
                     setDeleted(null);
                     setDeletedIndex(null);
                 }
@@ -112,20 +110,20 @@ function Holidays() {
         input.onchange = () => {
             const formData = new FormData();
             formData.append('file', input.files[0]);
-            api('/holidays/excel', 'POST', formData)
-                .then(setNotification('Daftar hari libur diimpor dari Excel.'));
+            api('/divisions/excel', 'POST', formData)
+                .then(setNotification('Daftar divisi diimpor dari Excel.'));
         };
     };
 
     const exportToExcel = async () => {
-        const response = await api('/holidays/excel');
+        const response = await api('/divisions/excel');
         const filename = response.headers.get('Content-Disposition').split('filename=')[1];
         response.blob().then(excel => {
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(excel);
             a.download = filename;
             a.click();
-            setNotification('Daftar hari libur diekspor ke Excel.');
+            setNotification('Daftar divisi diekspor ke Excel.');
         })
     };
 
@@ -133,12 +131,12 @@ function Holidays() {
         <${Stack} p=${2} spacing=${2}>
             <${Stack} direction="row" justifyContent="space-between">
                 <${Stack} direction="row" alignItems="center" gap=${1}>
-                    <${MaterialIcon}>date_range<//>
-                    <${Typography} variant="h5">Hari libur<//>
+                    <${MaterialIcon}>groups<//>
+                    <${Typography} variant="h5">Divisi<//>
                 <//>
                 <${Stack} direction="row" gap=${2}>
                     <${Button} variant="contained" startIcon=${html`<${MaterialIcon}>add<//>`} onClick=${() => setEdited({})}>
-                        Buat hari libur
+                        Buat divisi
                     <//>
                     <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>file_upload<//>`} onClick=${importFromExcel}>
                         Impor dari Excel
@@ -153,26 +151,22 @@ function Holidays() {
                     <${TableHead}>
                         <${TableRow}>
                             <${TableCell}>Nama<//>
-                            <${TableCell}>Deskripsi<//>
-                            <${TableCell}>Tanggal<//>
                             <${TableCell}><//>
                         <//>
                     <//>
                     <${TableBody}>
-                        ${holidays ? holidays.map(holiday => html`
+                        ${divisions ? divisions.map(division => html`
                             <${TableRow}>
-                                <${TableCell}>${holiday.name}<//>
-                                <${TableCell}>${holiday.description}<//>
-                                <${TableCell}>${dateFormat.format(new Date(holiday.date))}<//>
+                                <${TableCell}>${division.name}<//>
                                 <${TableCell}>
                                     <${Stack} direction="row" spacing=${2} justifyContent="flex-end">
-                                        <${Tooltip} title="Edit hari libur">
-                                            <${IconButton} onClick=${() => edit(holiday.id)}>
+                                        <${Tooltip} title="Edit divisi">
+                                            <${IconButton} onClick=${() => edit(division.id)}>
                                                 <${MaterialIcon}>edit<//>
                                             <//>
                                         <//>
-                                        <${Tooltip} title="Hapus hari libur">
-                                            <${IconButton} onClick=${() => del(holiday.id)}>
+                                        <${Tooltip} title="Hapus divisi">
+                                            <${IconButton} onClick=${() => del(division.id)}>
                                                 <${MaterialIcon}>delete<//>
                                             <//>
                                         <//>
@@ -192,7 +186,7 @@ function Holidays() {
                 component="form"
                 onSubmit=${save}
         >
-            <${DialogTitle}>${edited?.id ? 'Edit' : 'Buat'} hari libur<//>
+            <${DialogTitle}>${edited?.id ? 'Edit' : 'Buat'} divisi<//>
             <${DialogContent} dividers>
                 <input type="hidden" name="id" value=${edited?.id}/>
                 <${Stack} spacing=${3}>
@@ -205,25 +199,6 @@ function Holidays() {
                             onChange=${handleChange}
                             required
                             autoFocus=${!edited?.id}
-                    />
-                    <${TextField}
-                            label="Deskripsi"
-                            fullWidth
-                            variant="outlined"
-                            name="description"
-                            value=${edited?.description}
-                            onChange=${handleChange}
-                            required
-                    />
-                    <input
-                            type="date"
-                            label="Tanggal"
-                            fullWidth
-                            variant="outlined"
-                            name="date"
-                            value=${edited?.date}
-                            onChange=${handleChange}
-                            required
                     />
                 <//>
             <//>
@@ -252,7 +227,7 @@ function Holidays() {
                 open=${deleted}
                 autoHideDuration=${6000}
                 onClose=${() => setDeleted(null)}
-                message="1 hari libur dihapus."
+                message="1 divisi dihapus."
                 action=${html`
                     <${Button} size="small" color="inherit" onClick=${cancelDelete}>
                         Batal
@@ -270,4 +245,4 @@ function Holidays() {
     `;
 }
 
-export default Holidays;
+export default Divisions;

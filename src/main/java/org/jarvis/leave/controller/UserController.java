@@ -5,6 +5,7 @@ import org.jarvis.leave.model.LeaveAllowance;
 import org.jarvis.leave.model.LeaveSubmission;
 import org.jarvis.leave.service.LeaveAllowanceService;
 import org.jarvis.leave.service.LeaveSubmissionService;
+import org.jarvis.leave.service.LeaveTypeService;
 import org.jarvis.leave.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,15 @@ public class UserController {
 
     LeaveAllowanceService leaveAllowanceService;
     LeaveSubmissionService leaveSubmissionService;
+    LeaveTypeService leaveTypeService;
     UserService userService;
     ModelMapper modelMapper;
 
     @Autowired
-    public UserController(LeaveAllowanceService leaveAllowanceService, LeaveSubmissionService leaveSubmissionService, UserService userService, ModelMapper modelMapper) {
+    public UserController(LeaveAllowanceService leaveAllowanceService, LeaveSubmissionService leaveSubmissionService, LeaveTypeService leaveTypeService, UserService userService, ModelMapper modelMapper) {
         this.leaveAllowanceService = leaveAllowanceService;
         this.leaveSubmissionService = leaveSubmissionService;
+        this.leaveTypeService = leaveTypeService;
         this.userService = userService;
         this.modelMapper = modelMapper;
     }
@@ -50,11 +53,19 @@ public class UserController {
 
     @PostMapping("/leave_submissions")
     private LeaveSubmission submit(@RequestBody LeaveSubmissionDto leaveSubmissionDto) {
-        return leaveSubmissionService.saveOrUpdate(map(leaveSubmissionDto));
+        if (leaveAllowanceService.findByEmployeeAndType(userService.getUser(), leaveTypeService.findById(1L)).getAllowance() > 0) {
+            return leaveSubmissionService.saveOrUpdate(map(leaveSubmissionDto));
+        } else {
+            return null;
+        }
     }
 
     @PutMapping("/leave_submissions")
     private LeaveSubmission update(@RequestBody LeaveSubmissionDto leaveSubmissionDto) {
-        return leaveSubmissionService.saveOrUpdate(map(leaveSubmissionDto));
+        if (leaveSubmissionDto.getId() != null) {
+            return leaveSubmissionService.saveOrUpdate(map(leaveSubmissionDto));
+        } else {
+            return null;
+        }
     }
 }

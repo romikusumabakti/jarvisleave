@@ -2,6 +2,7 @@ package org.jarvis.leave.repository;
 
 import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.model.LeaveAllowance;
+import org.jarvis.leave.model.LeaveType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ public interface LeaveAllowanceRepository extends JpaRepository<LeaveAllowance, 
     List<LeaveAllowance> findAll();
 
     List<LeaveAllowance> findAllByEmployee(Employee employee);
+
+    LeaveAllowance findByEmployeeAndType(Employee employee, LeaveType type);
 }

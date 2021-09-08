@@ -20,7 +20,7 @@ VALUES (1, 'Tahunan', 'Cuti yang disediakan oleh perusahaan di luar cuti bersama
 INSERT
 IGNORE INTO leave_status(id, name, description)
 VALUES (1, 'Draf', 'Pengajuan cuti sudah dibuat tapi belum diajukan.'),
-       (2, 'Tertunda', 'Pengajuan cuti sudah diajukan kepada HRD.'),
+       (2, 'Diajukan', 'Pengajuan cuti sudah diajukan kepada HRD.'),
        (3, 'Disetujui', 'Pengajuan cuti sudah disetujui oleh HRD.'),
        (4, 'Ditolak', 'Pengajuan cuti sudah ditolak oleh HRD.'),
        (5, 'Dibatalkan', 'Pengajuan cuti dibatalkan oleh karyawan itu sendiri.');

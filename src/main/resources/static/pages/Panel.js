@@ -8,11 +8,12 @@ import Footer from "../fragments/Footer.js"
 
 const Dashboard = lazy(() => import('./panel/Dashboard.js'));
 const Calendar = lazy(() => import('./panel/Calendar.js'));
+const MyLeaves = lazy(() => import('./panel/MyLeaves.js'));
 
-const Approvals = lazy(() => import('./panel/Approvals.js'));
-const Holidays = lazy(() => import('./panel/Holidays.js'));
-const Employees = lazy(() => import('./panel/Employees.js'));
-const Divisions = lazy(() => import('./panel/Divisions.js'));
+const Approvals = lazy(() => import('./panel/hrd/Approvals.js'));
+const Holidays = lazy(() => import('./panel/hrd/Holidays.js'));
+const Employees = lazy(() => import('./panel/hrd/Employees.js'));
+const Divisions = lazy(() => import('./panel/hrd/Divisions.js'));
 
 export const pages = [
     {
@@ -31,7 +32,7 @@ export const pages = [
         icon: 'event',
         title: 'Cuti saya',
         path: '/my_leaves',
-        component: Dashboard,
+        component: MyLeaves,
     },
 ];
 

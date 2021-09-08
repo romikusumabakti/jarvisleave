@@ -110,4 +110,14 @@ public class LeaveSubmissionController {
 
         outputStream.close();
     }
+
+    @PostMapping("/{id}/approve")
+    private void approve(@PathVariable Long id) {
+        leaveSubmissionService.approve(id);
+    }
+
+    @PostMapping("/{id}/reject")
+    private void reject(@PathVariable Long id) {
+        leaveSubmissionService.reject(id);
+    }
 }

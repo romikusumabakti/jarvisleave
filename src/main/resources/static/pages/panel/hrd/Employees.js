@@ -1,4 +1,4 @@
-import {useEffect, useState} from '../../modules/react.js';
+import {useEffect, useState} from '../../../modules/react.js';
 import {
     Button,
     CircularProgress,
@@ -23,10 +23,10 @@ import {
     TextField,
     Tooltip,
     Typography
-} from '../../modules/material-ui.js';
-import html from '../../modules/htm.js';
-import MaterialIcon from "../../components/MaterialIcon.js"
-import {api, jsonApi} from "../../utils/api.js"
+} from '../../../modules/material-ui.js';
+import html from '../../../modules/htm.js';
+import MaterialIcon from "../../../components/MaterialIcon.js"
+import {api, jsonApi} from "../../../utils/api.js"
 
 function Employees() {
 

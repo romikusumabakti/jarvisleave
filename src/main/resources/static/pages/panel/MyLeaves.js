@@ -38,7 +38,7 @@ function Approvals() {
     const [deletedIndex, setDeletedIndex] = useState();
 
     useEffect(() => {
-        api('/leave_submissions')
+        api('/user/leave_submissions')
             .then(response => response.json())
             .then(leaveSubmissions => {
                 setLeaveSubmissions(leaveSubmissions);
@@ -104,7 +104,7 @@ function Approvals() {
             });
     };
 
-    const importFromExcel = async () => {
+    const importFromPdf = async () => {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = '.xlsx';
@@ -112,20 +112,20 @@ function Approvals() {
         input.onchange = () => {
             const formData = new FormData();
             formData.append('file', input.files[0]);
-            api('/leave_submissions/excel', 'POST', formData)
-                .then(setNotification('Daftar persetujuan diimpor dari Excel.'));
+            api('/leave_submissions/pdf', 'POST', formData)
+                .then(setNotification('Daftar persetujuan diimpor dari Pdf.'));
         };
     };
 
-    const exportToExcel = async () => {
-        const response = await api('/leave_submissions/excel');
+    const exportToPdf = async () => {
+        const response = await api('/leave_submissions/pdf');
         const filename = response.headers.get('Content-Disposition').split('filename=')[1];
-        response.blob().then(excel => {
+        response.blob().then(pdf => {
             const a = document.createElement('a');
-            a.href = window.URL.createObjectURL(excel);
+            a.href = window.URL.createObjectURL(pdf);
             a.download = filename;
             a.click();
-            setNotification('Daftar persetujuan diekspor ke Excel.');
+            setNotification('Daftar persetujuan diekspor ke Pdf.');
         })
     };
 
@@ -133,12 +133,12 @@ function Approvals() {
         <${Stack} p=${2} spacing=${2}>
             <${Stack} direction="row" justifyContent="space-between">
                 <${Stack} direction="row" alignItems="center" gap=${1}>
-                    <${MaterialIcon}>rule<//>
-                    <${Typography} variant="h5">Persetujuan<//>
+                    <${MaterialIcon}>event<//>
+                    <${Typography} variant="h5">Cuti saya<//>
                 <//>
                 <${Stack} direction="row" gap=${2}>
-                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>file_download<//>`} onClick=${exportToExcel}>
-                        Ekspor ke Excel
+                    <${Button} variant="outlined" startIcon=${html`<${MaterialIcon}>file_download<//>`} onClick=${exportToPdf}>
+                        Ekspor ke PDF
                     <//>
                 <//>
             <//>
@@ -146,32 +146,35 @@ function Approvals() {
                 <${Table}>
                     <${TableHead}>
                         <${TableRow}>
-                            <${TableCell}>Karyawan<//>
                             <${TableCell}>Pengganti<//>
                             <${TableCell}>Durasi<//>
                             <${TableCell}>Deskripsi<//>
+                            <${TableCell}>Status<//>
                             <${TableCell}><//>
                         <//>
                     <//>
                     <${TableBody}>
                         ${leaveSubmissions ? leaveSubmissions.map(leaveSubmission => html`
                             <${TableRow}>
-                                <${TableCell}>${leaveSubmission.employee.name}<//>
                                 <${TableCell}>${leaveSubmission.replacement.name}<//>
                                 <${TableCell}>${leaveSubmission.duration} hari<//>
                                 <${TableCell}>${leaveSubmission.description}<//>
+                                <${TableCell}>${leaveSubmission.status.name}<//>
                                 <${TableCell}>
                                     <${Stack} direction="row" spacing=${2} justifyContent="flex-end">
-                                        <${Tooltip} title="Setujui pengajuan">
-                                            <${IconButton} onClick=${() => edit(leaveSubmission.id)}>
-                                                <${MaterialIcon}>done<//>
+                                        ${leaveSubmission.status.id === 1 ? html`
+                                            <${Tooltip} title="Edit pengajuan">
+                                                <${IconButton} onClick=${() => edit(leaveSubmission.id)}>
+                                                    <${MaterialIcon}>edit<//>
+                                                <//>
                                             <//>
-                                        <//>
-                                        <${Tooltip} title="Tolak pengajuan">
-                                            <${IconButton} onClick=${() => del(leaveSubmission.id)}>
-                                                <${MaterialIcon}>close<//>
+                                        ` : leaveSubmission.status.id === 2 ? html`
+                                            <${Tooltip} title="Batalkan pengajuan">
+                                                <${IconButton} onClick=${() => del(leaveSubmission.id)}>
+                                                    <${MaterialIcon}>close<//>
+                                                <//>
                                             <//>
-                                        <//>
+                                        ` : null}
                                         <${Tooltip} title="Detail pengajuan">
                                             <${IconButton} onClick=${() => edit(leaveSubmission.id)}>
                                                 <${MaterialIcon}>info<//>

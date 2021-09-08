@@ -12,7 +12,7 @@ function Dashboard() {
                     <${Typography} variant="h5">Kalender<//>
                 <//>
             <//>
-            <${Typography} variant="h4">Maaf, fitur ini belum tersedia saat ini :(<//>
+            <${Typography} variant="h4">Maaf, fitur ini belum tersedia untuk saat ini :(<//>
         <//>
     `;
 }

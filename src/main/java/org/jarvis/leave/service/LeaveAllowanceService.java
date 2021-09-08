@@ -2,6 +2,7 @@ package org.jarvis.leave.service;
 
 import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.model.LeaveAllowance;
+import org.jarvis.leave.model.LeaveType;
 import org.jarvis.leave.repository.EmployeeRepository;
 import org.jarvis.leave.repository.LeaveAllowanceRepository;
 import org.jarvis.leave.repository.LeaveTypeRepository;
@@ -30,6 +31,10 @@ public class LeaveAllowanceService {
 
     public List<LeaveAllowance> findAllByEmployee(Employee employee) {
         return leaveAllowanceRepository.findAllByEmployee(employee);
+    }
+
+    public LeaveAllowance findByEmployeeAndType(Employee employee, LeaveType type) {
+        return leaveAllowanceRepository.findByEmployeeAndType(employee, type);
     }
 
     public LeaveAllowance findById(Long id) {
