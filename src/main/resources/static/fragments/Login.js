@@ -12,13 +12,13 @@ function Login(props) {
     const history = useHistory();
 
     const [checked, setChecked] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [usernameError, setUsernameError] = useState(null);
     const [passwordError, setPasswordError] = useState(null);
 
     const check = async (event) => {
         event.preventDefault();
-        setLoading(true);
+        setIsLoading(true);
         const response = await api(`/auth/check?username=${event.target.username.value}`);
         if (response.ok) {
             const checked = await response.json();
@@ -29,12 +29,12 @@ function Login(props) {
             setUsernameError(error);
             event.target.username.focus();
         }
-        setLoading(false);
+        setIsLoading(false);
     };
 
     const login = async (event) => {
         event.preventDefault();
-        setLoading(true);
+        setIsLoading(true);
         const response = await jsonApi('/auth/login', 'POST', {
             username: checked.username,
             password: event.target.password.value,
@@ -52,11 +52,11 @@ function Login(props) {
             setPasswordError(error);
             event.target.password.focus();
         }
-        setLoading(false);
+        setIsLoading(false);
     };
 
     const onClose = () => {
-        if (!loading) {
+        if (!isLoading) {
             setChecked(null);
             props.onClose();
         }
@@ -86,8 +86,8 @@ function Login(props) {
                             helperText=${usernameError}
                     />
                     <${Stack} direction="row" justifyContent="space-between">
-                        <${Button} type="reset" onClick=${onClose} disabled=${loading}>Batal<//>
-                        <${Button} type="submit" variant="contained" disabled=${loading}>Berikutnya<//>
+                        <${Button} type="reset" onClick=${onClose} disabled=${isLoading}>Batal<//>
+                        <${Button} type="submit" variant="contained" disabled=${isLoading}>Berikutnya<//>
                     <//>
                 ` : null}
             <//>
@@ -118,8 +118,8 @@ function Login(props) {
                             helperText=${passwordError}
                     />
                     <${Stack} direction="row" justifyContent="space-between">
-                        <${Button} type="reset" onClick=${() => setChecked(null)} disabled=${loading}>Kembali<//>
-                        <${Button} type="submit" variant="contained" disabled=${loading}>Login<//>
+                        <${Button} type="reset" onClick=${() => setChecked(null)} disabled=${isLoading}>Kembali<//>
+                        <${Button} type="submit" variant="contained" disabled=${isLoading}>Login<//>
                     <//>
                 ` : null}
             <//>

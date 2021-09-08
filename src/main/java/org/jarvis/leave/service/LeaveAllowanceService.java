@@ -7,8 +7,6 @@ import org.jarvis.leave.repository.LeaveAllowanceRepository;
 import org.jarvis.leave.repository.LeaveTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -34,16 +32,16 @@ public class LeaveAllowanceService {
         return leaveAllowanceRepository.findAllByEmployee(employee);
     }
 
-    public LeaveAllowance findById(@PathVariable Long id) {
+    public LeaveAllowance findById(Long id) {
         return leaveAllowanceRepository.findById(id).orElse(null);
     }
 
-    public LeaveAllowance saveOrUpdate(@RequestBody LeaveAllowance leaveAllowance) {
+    public LeaveAllowance saveOrUpdate(LeaveAllowance leaveAllowance) {
         leaveAllowanceRepository.save(leaveAllowance);
         return findById(leaveAllowance.getId());
     }
 
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(Long id) {
         LeaveAllowance leaveAllowance = findById(id);
         leaveAllowance.setIsDeleted(true);
         leaveAllowanceRepository.save(leaveAllowance);

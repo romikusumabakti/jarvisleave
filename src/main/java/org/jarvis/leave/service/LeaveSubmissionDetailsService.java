@@ -23,16 +23,16 @@ public class LeaveSubmissionDetailsService {
         return leaveSubmissionDetailsRepository.findAll();
     }
 
-    public LeaveSubmissionDetails findById(@PathVariable Long id) {
+    public LeaveSubmissionDetails findById(Long id) {
         return leaveSubmissionDetailsRepository.findById(id).orElse(null);
     }
 
-    public LeaveSubmissionDetails saveOrUpdate(@RequestBody LeaveSubmissionDetails leaveSubmissionDetails) {
+    public LeaveSubmissionDetails saveOrUpdate(LeaveSubmissionDetails leaveSubmissionDetails) {
         leaveSubmissionDetailsRepository.save(leaveSubmissionDetails);
         return findById(leaveSubmissionDetails.getId());
     }
 
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(Long id) {
         LeaveSubmissionDetails leaveSubmissionDetails = findById(id);
         leaveSubmissionDetails.setIsDeleted(true);
         leaveSubmissionDetailsRepository.save(leaveSubmissionDetails);

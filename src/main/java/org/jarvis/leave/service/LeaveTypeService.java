@@ -4,8 +4,6 @@ import org.jarvis.leave.model.LeaveType;
 import org.jarvis.leave.repository.LeaveTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -23,16 +21,16 @@ public class LeaveTypeService {
         return leaveTypeRepository.findAll();
     }
 
-    public LeaveType findById(@PathVariable Long id) {
+    public LeaveType findById(Long id) {
         return leaveTypeRepository.findById(id).orElse(null);
     }
 
-    public LeaveType saveOrUpdate(@RequestBody LeaveType leaveType) {
+    public LeaveType saveOrUpdate(LeaveType leaveType) {
         leaveTypeRepository.save(leaveType);
         return findById(leaveType.getId());
     }
 
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(Long id) {
         LeaveType leaveType = findById(id);
         leaveType.setIsDeleted(true);
         leaveTypeRepository.save(leaveType);

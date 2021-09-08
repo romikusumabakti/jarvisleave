@@ -116,7 +116,7 @@ input[type=date] {
     color: unset;
     font-size: unset;
     font-family: unset;
-    border: 1px solid #626262;
+    border: 1px solid #8888;
     border-radius: 4px;
     cursor: pointer;
 }

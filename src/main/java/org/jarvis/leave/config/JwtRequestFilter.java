@@ -1,4 +1,4 @@
-package org.jarvis.leave.filter;
+package org.jarvis.leave.config;
 
 import org.jarvis.leave.service.AuthService;
 import org.jarvis.leave.service.EmployeeDetailsService;

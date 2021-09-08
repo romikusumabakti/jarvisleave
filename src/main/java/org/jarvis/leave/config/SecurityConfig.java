@@ -1,6 +1,5 @@
 package org.jarvis.leave.config;
 
-import org.jarvis.leave.filter.JwtRequestFilter;
 import org.jarvis.leave.service.EmployeeDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

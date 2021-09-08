@@ -2,8 +2,19 @@ import {useContext} from "../modules/react.js"
 import {AuthContext} from "../App.js"
 import html from "../modules/htm.js"
 import MaterialIcon from "../components/MaterialIcon.js"
-import {Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip} from "../modules/material-ui.js"
-import {useHistory} from "../modules/react-router-dom.js"
+import {
+    Avatar,
+    Box,
+    Button,
+    Divider,
+    IconButton,
+    ListItemIcon,
+    Menu,
+    MenuItem,
+    Stack,
+    Tooltip,
+    Typography
+} from "../modules/material-ui.js"
 
 function AccountMenu() {
 
@@ -30,44 +41,38 @@ function AccountMenu() {
             <${Tooltip} title=${'Akun JarvisLeave (' + user.name + ')'}>
                 <${IconButton} onClick=${handleClick} size="small">
                     <${Avatar} alt=${user.nama}/>
+                    <//>
                 <//>
             <//>
-        <//>
-        <${Menu}
-            anchorEl=${anchorEl}
-            open=${open}
-            onClose=${handleClose}
-            onClick=${handleClose}
-            PaperProps=${{
-                sx: {
-                    '& .MuiAvatar-root': {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                    },
-                },
-            }}
-            transformOrigin=${{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin=${{ horizontal: 'right', vertical: 'bottom' }}
-        >
-            <${MenuItem}>
-                <${Avatar} alt=${user.name}/> ${user.name}
-            <//>
-            <${Divider} />
-            <${MenuItem}>
-                <${ListItemIcon}>
-                    <${MaterialIcon} fontSize="small">settings<//>
+            <${Menu}
+                    anchorEl=${anchorEl}
+                    open=${open}
+                    onClose=${handleClose}
+                    onClick=${handleClose}
+                    transformOrigin=${{ horizontal: 'right', vertical: 'top' }}
+                    anchorOrigin=${{ horizontal: 'right', vertical: 'bottom' }}
+            >
+                <${Stack} px=${4} py=${2} spacing=${1} alignItems="center">
+                    <${Avatar} alt=${user.name} sx=${{width: 64, height: 64}}/>
+                        <${Typography} variant="subtitle1">${user.name}<//>
+                        <${Button} variant="outlined">
+                            Kelola Akun JarvisLeave Anda
+                        <//>
+                    <//>
+                    <${Divider} />
+                    <${MenuItem}>
+                        <${ListItemIcon}>
+                            <${MaterialIcon} fontSize="small">settings<//>
+                        <//>
+                        Setelan
+                    <//>
+                    <${MenuItem} onClick=${logout}>
+                        <${ListItemIcon}>
+                            <${MaterialIcon} fontSize="small">logout<//>
+                        <//>
+                        Logout
+                    <//>
                 <//>
-                Setelan
-            <//>
-            <${MenuItem} onClick=${logout}>
-                <${ListItemIcon}>
-                    <${MaterialIcon} fontSize="small">logout<//>
-                <//>
-                Keluar
-            <//>
-        <//>
     `;
 }
 

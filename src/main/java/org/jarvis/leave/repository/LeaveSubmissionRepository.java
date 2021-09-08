@@ -1,5 +1,6 @@
 package org.jarvis.leave.repository;
 
+import org.jarvis.leave.model.Employee;
 import org.jarvis.leave.model.LeaveSubmission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,4 +14,6 @@ public interface LeaveSubmissionRepository extends JpaRepository<LeaveSubmission
     @Override
     @Query("select u from LeaveSubmission u where u.isDeleted=false")
     List<LeaveSubmission> findAll();
+
+    List<LeaveSubmission> findAllByEmployee(Employee employee);
 }

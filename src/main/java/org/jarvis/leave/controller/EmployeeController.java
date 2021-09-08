@@ -6,9 +6,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jarvis.leave.dto.EmployeeDto;
 import org.jarvis.leave.model.Employee;
-import org.jarvis.leave.service.DivisionService;
-import org.jarvis.leave.service.EmployeeService;
-import org.jarvis.leave.service.RoleService;
+import org.jarvis.leave.model.LeaveAllowance;
+import org.jarvis.leave.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -32,14 +34,23 @@ public class EmployeeController {
     EmployeeService employeeService;
     RoleService roleService;
     DivisionService divisionService;
+    LeaveAllowanceService leaveAllowanceService;
+    LeaveTypeService leaveTypeService;
+    MailService mailService;
+    UserService userService;
+
     ModelMapper modelMapper;
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService, RoleService roleService, DivisionService divisionService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public EmployeeController(EmployeeService employeeService, RoleService roleService, DivisionService divisionService, LeaveAllowanceService leaveAllowanceService, LeaveTypeService leaveTypeService, MailService mailService, UserService userService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.employeeService = employeeService;
         this.roleService = roleService;
         this.divisionService = divisionService;
+        this.leaveAllowanceService = leaveAllowanceService;
+        this.leaveTypeService = leaveTypeService;
+        this.mailService = mailService;
+        this.userService = userService;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }
@@ -64,8 +75,19 @@ public class EmployeeController {
         return employee;
     }
 
+    public String generateRandomString() {
+        String SALTCHARS = "abcdefghijklmnopqrstuvwxyz1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 8) {
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        return salt.toString();
+    }
+
     @PostMapping()
-    private ResponseEntity<?> save(@RequestBody EmployeeDto employeeDto) {
+    private ResponseEntity<?> save(@RequestBody EmployeeDto employeeDto) throws MessagingException {
 
         Map<String, String> errors = new HashMap<>();
 
@@ -85,7 +107,32 @@ public class EmployeeController {
             return ResponseEntity.badRequest().body(errors);
         } else {
             Employee employee = map(employeeDto);
-            return ResponseEntity.ok(employeeService.saveOrUpdate(employee));
+
+            if (employeeDto.getPassword() == null) {
+                String rawPassword = generateRandomString();
+                employee.setPassword(passwordEncoder.encode(rawPassword));
+                mailService.send(employee.getEmail(),
+                        "Anda direkrut menjadi " + employee.getRole().getName() + " - JarvisLeave",
+                        "Hai, " + employee.getName()
+                        + "! Anda direkrut menjadi " + employee.getRole().getName()
+                        + " oleh " + userService.getUser().getName() + ". Kata sandi Anda: " + rawPassword);
+            }
+
+            employee = employeeService.saveOrUpdate(employee);
+
+            LeaveAllowance annualLeaveAllowance = new LeaveAllowance();
+            annualLeaveAllowance.setEmployee(employee);
+            annualLeaveAllowance.setType(leaveTypeService.findById(1L));
+            annualLeaveAllowance.setAllowance(12);
+            leaveAllowanceService.saveOrUpdate(annualLeaveAllowance);
+
+            LeaveAllowance crossYearLeaveAllowance = new LeaveAllowance();
+            crossYearLeaveAllowance.setEmployee(employee);
+            crossYearLeaveAllowance.setType(leaveTypeService.findById(2L));
+            crossYearLeaveAllowance.setAllowance(0);
+            leaveAllowanceService.saveOrUpdate(crossYearLeaveAllowance);
+
+            return ResponseEntity.ok(employee);
         }
     }
 

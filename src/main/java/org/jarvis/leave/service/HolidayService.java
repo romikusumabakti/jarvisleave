@@ -4,8 +4,6 @@ import org.jarvis.leave.model.Holiday;
 import org.jarvis.leave.repository.HolidayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -23,16 +21,16 @@ public class HolidayService {
         return holidayRepository.findAll();
     }
 
-    public Holiday findById(@PathVariable Long id) {
+    public Holiday findById(Long id) {
         return holidayRepository.findById(id).orElse(null);
     }
 
-    public Holiday saveOrUpdate(@RequestBody Holiday holiday) {
+    public Holiday saveOrUpdate(Holiday holiday) {
         holidayRepository.save(holiday);
         return findById(holiday.getId());
     }
 
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(Long id) {
         Holiday holiday = findById(id);
         holiday.setIsDeleted(true);
         holidayRepository.save(holiday);

@@ -16,7 +16,7 @@ function Home(props) {
                 <${Grow} in=${true} style=${{ transformOrigin: '50% 0' }}>
                     <${Paper} sx=${{p: 4}}>
                         <${JarvisLogo} size=${24} />
-                        <${Typography} variant="h5" sx=${{pt: 2}}>
+                        <${Typography} variant="h4" sx=${{pt: 2}}>
                             Selamat datang!
                         <//>
                         <p>

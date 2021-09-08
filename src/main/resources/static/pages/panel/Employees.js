@@ -42,6 +42,8 @@ function Employees() {
     const [deleted, setDeleted] = useState();
     const [deletedIndex, setDeletedIndex] = useState();
 
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         api('/employees')
             .then(response => response.json())
@@ -91,6 +93,7 @@ function Employees() {
 
     const save = async event => {
         event.preventDefault();
+        setIsLoading(true);
         const response = await jsonApi('/employees', edited.id ? 'PUT' : 'POST', edited)
         if (response.ok) {
             const employee = await response.json();
@@ -98,12 +101,22 @@ function Employees() {
                 setEmployees(employees.map(e => (e.id === employee.id) ? employee : e));
             } else {
                 setEmployees([...employees, employee]);
+                setIsLoading(false);
             }
             setEdited(null);
-            setNotification("Karyawan disimpan.");
+            if (!edited.id) {
+                if (!edited.password) {
+                    setNotification("Karyawan direkrut. Kata sandi dikirim ke email karyawan.");
+                } else {
+                    setNotification("Karyawan direkrut.");
+                }
+            } else {
+                setNotification("Karyawan disimpan.");
+            }
         } else {
             const errors = await response.json();
             setEditErrors(errors);
+            setIsLoading(false);
         }
     };
 
@@ -227,7 +240,7 @@ function Employees() {
                 component="form"
                 onSubmit=${save}
         >
-            <${DialogTitle}>${edited?.id ? 'Edit' : 'Buat'} karyawan<//>
+            <${DialogTitle}>${edited?.id ? 'Edit' : 'Rekrut'} karyawan<//>
             <${DialogContent} dividers>
                 <input type="hidden" name="id" value=${edited?.id}/>
                 <${Stack} spacing=${3}>
@@ -304,20 +317,19 @@ function Employees() {
                             helperText=${editErrors.username}
                     />
                     <${TextField}
-                            label="Kata sandi${edited?.id ? ' ' + (edited?.password ? '(diubah)' : '(tidak diubah)') : ''}"
+                            label="Kata sandi ${edited?.id ? (edited?.password ? '(diubah)' : '(tidak diubah)') : (edited?.password ? '(manual)' : '(acak dan dikirim melalui email)')}"
                             type="password"
                             fullWidth
                             variant="outlined"
                             name="password"
                             value=${edited?.password}
                             onChange=${handleChange}
-                            required=${!edited?.id}
                     />
                 <//>
             <//>
             <${DialogActions}>
-                <${Button} variant="outlined" type="reset" onClick=${cancelEdit}>Batal<//>
-                <${Button} variant="contained" type="submit">Simpan<//>
+                <${Button} variant="outlined" type="reset" onClick=${cancelEdit} disabled=${isLoading}>Batal<//>
+                <${Button} variant="contained" type="submit" disabled=${isLoading}>Simpan<//>
             <//>
         <//>
         <${Snackbar}

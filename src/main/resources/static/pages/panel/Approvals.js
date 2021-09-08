@@ -162,11 +162,6 @@ function Approvals() {
                                 <${TableCell}>${leaveSubmission.description}<//>
                                 <${TableCell}>
                                     <${Stack} direction="row" spacing=${2} justifyContent="flex-end">
-                                        <${Tooltip} title="Detail pengajuan">
-                                            <${IconButton} onClick=${() => edit(leaveSubmission.id)}>
-                                                <${MaterialIcon}>info<//>
-                                            <//>
-                                        <//>
                                         <${Tooltip} title="Setujui pengajuan">
                                             <${IconButton} onClick=${() => edit(leaveSubmission.id)}>
                                                 <${MaterialIcon}>done<//>
@@ -175,6 +170,11 @@ function Approvals() {
                                         <${Tooltip} title="Tolak pengajuan">
                                             <${IconButton} onClick=${() => del(leaveSubmission.id)}>
                                                 <${MaterialIcon}>close<//>
+                                            <//>
+                                        <//>
+                                        <${Tooltip} title="Detail pengajuan">
+                                            <${IconButton} onClick=${() => edit(leaveSubmission.id)}>
+                                                <${MaterialIcon}>info<//>
                                             <//>
                                         <//>
                                     <//>
